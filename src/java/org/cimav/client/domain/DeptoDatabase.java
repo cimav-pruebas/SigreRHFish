@@ -9,6 +9,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
@@ -26,6 +27,10 @@ import org.fusesource.restygwt.client.Resource;
 public class DeptoDatabase {
 
     private static final String  URL_REST = "http://localhost:8080/SigreRHFish/api/departamento";
+    private static final String  URL_REST_ALL = URL_REST + "";
+    private static final String  URL_REST_ADD = URL_REST + "/add";
+    private static final String  URL_REST_UPDATE = URL_REST + "/update";
+    private static final String  URL_REST_DELETE = URL_REST + "/delete";
     
     public static Departamento currentDepto;
     
@@ -89,10 +94,9 @@ public class DeptoDatabase {
         JSONValue deptoJSONValue = dpartamentoCodec.encode(depto); 
         
         HashMap<String, String> headers = new HashMap<>();
-        //headers.put(Resource.HEADER_ACCEPT, "application/json; charset=utf-8");
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
         
-        Resource rb = new Resource(URL_REST + "/add", headers);
+        Resource rb = new Resource(URL_REST_ADD, headers);
         
         rb.post().json(deptoJSONValue).send(new JsonCallback() {
             @Override
@@ -115,21 +119,18 @@ public class DeptoDatabase {
 
     public void removeDepto(final Departamento depto) {
 
-        List<Departamento> deptos = dataProvider.getList();
-        deptos.remove(depto);
-
-//        Resource r = new Resource(URL_REST);
-//        r.delete().send(new JsonCallback() {
-//            @Override
-//            public void onFailure(Method method, Throwable exception) {
-//                Window.alert("Error: "+exception);
-//            }
-//            @Override
-//            public void onSuccess(Method method, JSONValue response) {
-//                List<Departamento> deptos = dataProvider.getList();
-//                deptos.remove(depto);
-//            }
-//        });
+        Resource r = new Resource(URL_REST_DELETE + "/" + depto.getId()); //TODO Meter el Id en el Resource
+        r.delete().send(new JsonCallback() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                Window.alert("Error: "+exception);
+            }
+            @Override
+            public void onSuccess(Method method, JSONValue response) {
+                List<Departamento> deptos = dataProvider.getList();
+                deptos.remove(depto);
+            }
+        });
         
     }
 
@@ -184,12 +185,14 @@ public class DeptoDatabase {
                     throw new NullPointerException("EL arreglo de Departamentos es Nulo en: " + URL_REST);
                 }
                 
-                for (int i = 0; i < array.size(); ++i) {
+                for (int i = 0; i < array.size(); i++) {
                     JSONObject item = array.get(i).isObject();
+                    
                     Integer id = (int) item.get("id").isNumber().doubleValue();
-                    String codigo = item.get("codigo").isString().stringValue();
-                    String nombre = item.get("nombre").isString().stringValue();
-                    Integer status = (int) item.get("status").isNumber().doubleValue();
+                    
+                    String codigo = item.get("codigo") != null ? item.get("codigo").isString().stringValue() : "NO_COD_" +  Random.nextInt(100000);
+                    String nombre = item.get("nombre") != null ? item.get("nombre").isString().stringValue() : "NO_NOM_"  + Random.nextInt(100000);
+                    Integer status = item.get("status") != null ? (int) item.get("status").isNumber().doubleValue() : -1;
 
                     Departamento depto = new Departamento(id, codigo, nombre, status);
                     

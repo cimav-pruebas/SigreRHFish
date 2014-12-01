@@ -11,16 +11,6 @@ Uncomment this for XHTML entities
     
     <ui:style src="departamentosUI.css" />
     
-    <!--    <g:DockLayoutPanel>
-        <g:center>
-            <g:VerticalPanel addStyleNames="{style.vertical-panel}">
-                <c:DataGrid ui:field='dataGrid' addStyleNames="{style.data-grid}" />
-                <g:Button >LookME</g:Button>
-            </g:VerticalPanel>
-        </g:center>
-    </g:DockLayoutPanel>-->
-    
-    <!--    <g:VerticalPanel addStyleNames="{style.vertical-panel}">-->
     <g:DockLayoutPanel addStyleNames="{style.work-panel}">
         <g:center >
             <g:VerticalPanel addStyleNames="{style.vertical-panel}">
@@ -29,7 +19,20 @@ Uncomment this for XHTML entities
                         <g:header>Explorar</g:header>
                         <g:DockLayoutPanel unit="EM"> 
                             <g:center>
-                                <c:DataGrid ui:field="dataGrid"/>
+                                <g:HTMLPanel>
+                                    <table cellspacing='0' cellpadding='0' style='width:100%; height:100%;'>
+                                        <tr style="height:100%;">
+                                            <td valign='top'>
+                                                <c:DataGrid ui:field='dataGrid' />
+                                            </td>
+                                        </tr>
+                                        <tr >
+                                            <td align='center'>
+                                                <c:SimplePager ui:field='pager' />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </g:HTMLPanel>
                             </g:center>
                             <g:south size="3">
                                 <g:HorizontalPanel addStyleNames="{style.buttons-bar}" >
@@ -51,6 +54,5 @@ Uncomment this for XHTML entities
             </g:VerticalPanel>
         </g:center>
     </g:DockLayoutPanel>
-    <!--    </g:VerticalPanel>-->
     
 </ui:UiBinder>

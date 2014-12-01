@@ -6,8 +6,6 @@
 package org.cimav.client.domain;
 
 //import org.codehaus.jackson.annotate.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gwt.view.client.ProvidesKey;
 
 /**
@@ -33,7 +31,7 @@ public class Departamento implements Comparable<Departamento> {
     @Override
     public int compareTo(Departamento item) {
         //TODO compareTo(DeptoInfo item) hacerlo bien
-        int r = (item == null || item.nombre == null) ? -1 : -item.nombre.compareTo(nombre);
+        int r = (item == null || item.codigo == null) ? -1 : -item.codigo.compareTo(codigo);
         return r;
     }
 
@@ -43,15 +41,7 @@ public class Departamento implements Comparable<Departamento> {
     private Integer status;
 
     public Departamento() {
-        // JAXB needs this
     }
-
-//    @JsonCreator
-//    public Departamento(@JsonProperty("id") Integer id, @JsonProperty("codigo") String codigo, @JsonProperty("nombre") String nombre) {
-//        this.id = id;
-//        this.codigo = codigo;
-//        this.nombre = nombre;
-//    }
     
     public Departamento(Integer id, String codigo, String nombre, Integer status) {
         this.id = id;

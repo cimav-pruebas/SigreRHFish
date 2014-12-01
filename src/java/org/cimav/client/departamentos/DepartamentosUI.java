@@ -18,6 +18,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
@@ -40,14 +42,18 @@ public class DepartamentosUI extends Composite {
     interface DepartamentosUIUiBinder extends UiBinder<Widget, DepartamentosUI> {
     }
 
+    @UiField TabLayoutPanel tabLayout;
+    @UiField DepartamentoEditorUI departamentoEditorUI;
+    
     /**
      * The main DataGrid.
      */
-    @UiField(provided = true) 
-    DataGrid<Departamento> dataGrid;
+    @UiField(provided = true) DataGrid<Departamento> dataGrid;
     
-    @UiField TabLayoutPanel tabLayout;
-    @UiField DepartamentoEditorUI departamentoEditorUI;
+    /**
+    * The pager used to change the range of data.
+    */
+    @UiField(provided = true) SimplePager pager;    
     
     @UiField Button btnReload;
     @UiField Button btnAdd;
@@ -167,6 +173,13 @@ public class DepartamentosUI extends Composite {
         // Attach a column sort handler to the ListDataProvider to sort the list.
          ListHandler<Departamento> sortHandler = new ListHandler<>(DeptoDatabase.get().getDataProvider().getList());
         dataGrid.addColumnSortHandler(sortHandler);
+        
+        // Create a Pager to control the table.
+        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
+        pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
+        pager.setDisplay(dataGrid);
+        
+        dataGrid.setPageSize(30);
         
         // Add a selection model so we can select cells.
         final SelectionModel<Departamento> selectionModel = new SingleSelectionModel<>(Departamento.KEY_PROVIDER);

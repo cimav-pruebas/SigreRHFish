@@ -56,14 +56,14 @@ public class DepartamentoFacadeREST extends AbstractFacade<Departamento> {
     }
 
     @PUT
-    @Path("{id}")
+    @Path("update/{id}")
     @Consumes("application/json")
     public void edit(@PathParam("id") Integer id, Departamento entity) {
         super.edit(entity);
     }
 
     @DELETE
-    @Path("{id}")
+    @Path("/delete/{id}")
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
