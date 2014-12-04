@@ -7,6 +7,9 @@ package org.cimav.client.domain;
 
 //import org.codehaus.jackson.annotate.JsonProperty;
 import com.google.gwt.view.client.ProvidesKey;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -37,6 +40,8 @@ public class Departamento implements Comparable<Departamento> {
 
     private Integer id;
     private String codigo;
+    @NotNull
+    @Size(min = 10, message = "Nombre deber tener al menos 10 caracteres")
     private String nombre;
     private Integer status;
 
@@ -50,6 +55,11 @@ public class Departamento implements Comparable<Departamento> {
         this.status = status;
     }
 
+    @Pattern(regexp="(.*), (.*)")
+    public String getFullName() {
+        return this.codigo + ", " + this.nombre;
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Departamento)) {

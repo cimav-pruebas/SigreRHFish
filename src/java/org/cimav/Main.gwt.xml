@@ -16,7 +16,13 @@
     <inherits name="com.github.gwtbootstrap.Bootstrap"/> 
     
     <inherits name="org.fusesource.restygwt.RestyGWT"/>
-
+    
+    <inherits name="org.hibernate.validator.HibernateValidator" />
+    <replace-with
+        class="org.cimav.client.domain.DepartamentoValidatorFactory">
+        <when-type-is class="javax.validation.ValidatorFactory" />
+    </replace-with>
+    
     <entry-point class="org.cimav.client.MainEntryPoint"/>
 
     <!-- Specify the paths for translatable code                    -->

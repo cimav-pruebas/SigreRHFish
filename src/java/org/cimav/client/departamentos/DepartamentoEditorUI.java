@@ -5,7 +5,10 @@
  */
 package org.cimav.client.departamentos;
 
+import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.Collapse;
+import com.github.gwtbootstrap.client.ui.CollapseTrigger;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -18,6 +21,12 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import java.util.Iterator;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import org.cimav.client.domain.Departamento;
 import org.cimav.client.domain.DeptoDatabase;
 
@@ -37,6 +46,8 @@ public final class DepartamentoEditorUI extends Composite {
     @UiField Button btnGuardar;
     @UiField Button btnCancelar;
 
+    @UiField Alert alertEditor;
+    
     com.google.gwt.user.client.ui.TextBox txtCodigo;
     com.github.gwtbootstrap.client.ui.TextBox txtNombre;
 //    com.github.gwtbootstrap.client.ui.TextArea txt3;
@@ -86,7 +97,6 @@ public final class DepartamentoEditorUI extends Composite {
         // De inicio, poner en nulo
         this.setDepartamento(null);
         
-        
         btnGuardar.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -96,6 +106,24 @@ public final class DepartamentoEditorUI extends Composite {
                 inputDepto.setId(originDepto.getId());
                 inputDepto.setCodigo(txtCodigo.getValue());
                 inputDepto.setNombre(txtNombre.getValue());
+                
+                //validation des données
+                ValidatorFactory factory = Validation.byDefaultProvider().configure().buildValidatorFactory();
+                Validator validator = factory.getValidator();
+                Set<ConstraintViolation<Departamento>> violations = validator.validate(inputDepto);
+                Boolean isValid = violations.isEmpty();                       
+                if (!isValid) {
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("<ul>");
+                    Iterator itr = violations.iterator();
+                    while(itr.hasNext()) {
+                        ConstraintViolation constraintViolation = (ConstraintViolation) itr.next();
+                        builder.append("<li>" + constraintViolation.getMessage() + "</li>");
+                    }
+                    builder.append("</ul>");
+                    alertEditor.setHTML(builder.toString());
+                }
+                alertEditor.setVisible(!isValid);
                 
                 boolean isNew = inputDepto.getId() == null || inputDepto.getId() <= 0;
                 if (isNew) {

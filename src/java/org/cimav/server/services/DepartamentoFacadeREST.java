@@ -58,6 +58,20 @@ public class DepartamentoFacadeREST extends AbstractFacade<Departamento> {
     @PUT
     @Path("update/{id}")
     @Consumes("application/json")
+    @Produces("application/json")
+    public Departamento editWithReturn(@PathParam("id") Integer id, Departamento entity) {
+        super.edit(entity);
+        
+        // TODO Eliminar el AbstractFacade y hacerlo todo en directo o dejarlo solo para instanciar el EntityManager
+        Query q = getEntityManager().createNamedQuery("Departamento.findByCodigo");
+        q.setParameter("codigo", entity.getCodigo());
+        Departamento result = (Departamento) q.getSingleResult();
+        return result;
+    }
+
+    @PUT
+    @Path("update/{id}")
+    @Consumes("application/json")
     public void edit(@PathParam("id") Integer id, Departamento entity) {
         super.edit(entity);
     }

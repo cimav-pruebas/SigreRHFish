@@ -11,6 +11,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -205,6 +207,19 @@ public class DepartamentosUI extends Composite {
             }
         });
         dataGrid.setSelectionModel(selectionModel);
+
+        dataGrid.addDomHandler(new DoubleClickHandler() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public void onDoubleClick(DoubleClickEvent event) {
+//                DataGrid<Departamento> grid = (DataGrid<Departamento>) event.getSource();
+//                int row = grid.getKeyboardSelectedRow();
+//                Departamento item = grid.getVisibleItem(row);
+                
+                // simple selecciona el tab del Editor
+                tabLayout.selectTab(1);
+            }
+        }, DoubleClickEvent.getType());
         
         initTableColumns(sortHandler);
 
@@ -227,7 +242,7 @@ public class DepartamentosUI extends Composite {
                     }
                 };
         dataGrid.addColumn(idCol, "ID");
-        dataGrid.setColumnWidth(idCol, 20, Unit.PCT);
+        dataGrid.setColumnWidth(idCol, 40, Unit.PX);
 
         // Clave
         Column<Departamento, String> codigoCol = new Column<Departamento, String>((new TextCell())) {
@@ -244,7 +259,7 @@ public class DepartamentosUI extends Composite {
             }
         });
         dataGrid.addColumn(codigoCol, "Código");
-        dataGrid.setColumnWidth(codigoCol, 15, Unit.PCT);
+        dataGrid.setColumnWidth(codigoCol, 70, Unit.PX);
         
         // Nombre
         Column<Departamento, String> nombreCol

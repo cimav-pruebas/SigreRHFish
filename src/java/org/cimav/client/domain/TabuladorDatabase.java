@@ -24,29 +24,25 @@ import org.fusesource.restygwt.client.Resource;
  *
  * @author juan.calderon
  */
-public class DeptoDatabase {
-
-    private static final String  URL_REST = "http://localhost:8080/SigreRHFish/api/departamento";
-    private static final String  URL_REST_ALL = URL_REST + "";
-    private static final String  URL_REST_ADD = URL_REST + "/add";
-    private static final String  URL_REST_UPDATE = URL_REST + "/update";
-    private static final String  URL_REST_DELETE = URL_REST + "/delete";
+public class TabuladorDatabase {
+    
+    private static final String  URL_REST = "http://localhost:8080/SigreRHFish/api/tabulador";
     
     public static Departamento currentDepto;
     
     /**
      * The singleton instance of the database.
      */
-    private static DeptoDatabase instance;
+    private static TabuladorDatabase instance;
 
     /**
      * Get the singleton instance of the contact database.
      *
      * @return the singleton instance
      */
-    public static DeptoDatabase get() {
+    public static TabuladorDatabase get() {
         if (instance == null) {
-            instance = new DeptoDatabase();
+            instance = new TabuladorDatabase();
         }
         return instance;
     }
@@ -54,33 +50,33 @@ public class DeptoDatabase {
     /**
      * The provider that holds the list of contacts in the database.
      */
-    private ListDataProvider<Departamento> dataProvider = new ListDataProvider<Departamento>();
+    private ListDataProvider<Tabulador> dataProvider = new ListDataProvider<Tabulador>();
 
     /**
      * Construct a new contact database.
      */
-    private DeptoDatabase() {
+    private TabuladorDatabase() {
         // Generate initial data.
         //generateContacts(250);
 
         dataProvider = new ListDataProvider<>();
         
-        dpartamentoCodec = GWT.create( DepartamentoCodec.class );
+        dpartamentoCodec = GWT.create( TabuladorCodec.class );
     }
 
-    public interface DepartamentoCodec extends JsonEncoderDecoder<Departamento> {}
-    public DepartamentoCodec dpartamentoCodec;
+    public interface TabuladorCodec extends JsonEncoderDecoder<Tabulador> {}
+    public TabuladorCodec dpartamentoCodec;
     
-    public void updateDepto(Departamento depto) {
+    public void updateDepto(Tabulador tabulador) {
         
-        JSONValue deptoJSONValue = dpartamentoCodec.encode(depto); 
+        JSONValue tabuladorJSONValue = dpartamentoCodec.encode(tabulador); 
         
         HashMap<String, String> headers = new HashMap<>();
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
         
-        Resource rb = new Resource(URL_REST_UPDATE + "/" + depto.getId(), headers);
+        Resource rb = new Resource(URL_REST + "/" + tabulador.getId(), headers);
         
-        rb.put().json(deptoJSONValue).send(new JsonCallback() {
+        rb.put().json(tabuladorJSONValue).send(new JsonCallback() {
             @Override
             public void onFailure(Method method, Throwable exception) {
                 Window.alert("Error: "+exception);
@@ -88,14 +84,14 @@ public class DeptoDatabase {
             @Override
             public void onSuccess(Method method, JSONValue response) {
                 
-                Departamento deptoUpdated = dpartamentoCodec.decode(response);
+                Tabulador tabuladorUpdated = dpartamentoCodec.decode(response);
 
-                List<Departamento> deptos = dataProvider.getList();
-                int idx = deptos.indexOf(deptoUpdated);
+                List<Tabulador> tabuladors = dataProvider.getList();
+                int idx = tabuladors.indexOf(tabuladorUpdated);
                 if (idx >= 0) {
-                    Departamento deptoInList = deptos.get(idx);
-                    deptoInList.setCodigo(deptoUpdated.getCodigo());
-                    deptoInList.setNombre(deptoUpdated.getNombre());
+                    Tabulador tabuladorInList = tabuladors.get(idx);
+                    tabuladorInList.setNivel(tabuladorUpdated.getNivel());
+                    tabuladorInList.setNombre(tabuladorUpdated.getNombre());
                 }
             }
         });
@@ -106,21 +102,21 @@ public class DeptoDatabase {
     /**
      * Add a new contact.
      *
-     * @param depto the DeptoInfo to add.
+     * @param tabulador the DeptoInfo to add.
      */
-    public void addDepto(Departamento depto) {
+    public void addDepto(Tabulador tabulador) {
 
         //Create a PersonJsonizer instance
-        //Departamento.DepartamentoJsonizer dj = (Departamento.DepartamentoJsonizer)GWT.create(Departamento.DepartamentoJsonizer.class);
+        //Tabulador.TabuladorJsonizer dj = (Tabulador.TabuladorJsonizer)GWT.create(Tabulador.TabuladorJsonizer.class);
         
-        JSONValue deptoJSONValue = dpartamentoCodec.encode(depto); 
+        JSONValue tabuladorJSONValue = dpartamentoCodec.encode(tabulador); 
         
         HashMap<String, String> headers = new HashMap<>();
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
         
-        Resource rb = new Resource(URL_REST_ADD, headers);
+        Resource rb = new Resource(URL_REST, headers);
         
-        rb.post().json(deptoJSONValue).send(new JsonCallback() {
+        rb.post().json(tabuladorJSONValue).send(new JsonCallback() {
             @Override
             public void onFailure(Method method, Throwable exception) {
                 Window.alert("Error: "+exception);
@@ -128,19 +124,19 @@ public class DeptoDatabase {
             @Override
             public void onSuccess(Method method, JSONValue response) {
                 
-                Departamento newDepto = dpartamentoCodec.decode(response);
+                Tabulador newDepto = dpartamentoCodec.decode(response);
                 
-                List<Departamento> deptos = dataProvider.getList();
-                deptos.remove(newDepto); // en caso de que existiera, lo elimina
-                deptos.add(newDepto); // lo agrega
+                List<Tabulador> tabuladors = dataProvider.getList();
+                tabuladors.remove(newDepto); // en caso de que existiera, lo elimina
+                tabuladors.add(newDepto); // lo agrega
             }
         });
         
     }
 
-    public void removeDepto(final Departamento depto) {
+    public void removeDepto(final Tabulador tabulador) {
 
-        Resource r = new Resource(URL_REST_DELETE + "/" + depto.getId()); //TODO Meter el Id en el Resource
+        Resource r = new Resource(URL_REST + "/" + tabulador.getId()); //TODO Meter el Id en el Resource
         r.delete().send(new JsonCallback() {
             @Override
             public void onFailure(Method method, Throwable exception) {
@@ -148,8 +144,8 @@ public class DeptoDatabase {
             }
             @Override
             public void onSuccess(Method method, JSONValue response) {
-                List<Departamento> deptos = dataProvider.getList();
-                deptos.remove(depto);
+                List<Tabulador> tabuladors = dataProvider.getList();
+                tabuladors.remove(tabulador);
             }
         });
         
@@ -161,11 +157,11 @@ public class DeptoDatabase {
      *
      * @param display a {@Link HasData}.
      */
-    public void addDataDisplay(HasData<Departamento> display) {
+    public void addDataDisplay(HasData<Tabulador> display) {
         dataProvider.addDataDisplay(display);
     }
 
-    public ListDataProvider<Departamento> getDataProvider() {
+    public ListDataProvider<Tabulador> getDataProvider() {
         return dataProvider;
     }
 
@@ -194,16 +190,16 @@ public class DeptoDatabase {
             @Override
             public void onSuccess(Method method, JSONValue response) {
                                 
-                List<Departamento> deptosProvider = dataProvider.getList();
+                List<Tabulador> tabuladorsProvider = dataProvider.getList();
 
                 JSONArray array = null;
                 if (response instanceof JSONObject) {
                     JSONObject obj = (JSONObject) response;
-                    array = obj.get("departamento").isArray(); //TODO que el elemento-root se llame 'Departamento'
+                    array = obj.get("tabulador").isArray(); //TODO que el elemento-root se llame 'Tabulador'
                 } else if (response instanceof JSONArray) {
                     array = response.isArray();
                 } else {
-                    throw new NullPointerException("EL arreglo de Departamentos es Nulo en: " + URL_REST);
+                    throw new NullPointerException("EL arreglo de Tabuladors es Nulo en: " + URL_REST);
                 }
                 
                 for (int i = 0; i < array.size(); i++) {
@@ -211,20 +207,19 @@ public class DeptoDatabase {
                     
                     Integer id = (int) item.get("id").isNumber().doubleValue();
                     
-                    String codigo = item.get("codigo") != null ? item.get("codigo").isString().stringValue() : "NO_COD_" +  Random.nextInt(100000);
+                    String nivel = item.get("nivel") != null ? item.get("nivel").isString().stringValue() : "NO_NIV_" +  Random.nextInt(100000);
                     String nombre = item.get("nombre") != null ? item.get("nombre").isString().stringValue() : "NO_NOM_"  + Random.nextInt(100000);
-                    Integer status = item.get("status") != null ? (int) item.get("status").isNumber().doubleValue() : -1;
 
-                    Departamento depto = new Departamento(id, codigo, nombre, status);
+                    Tabulador tabulador = new Tabulador(id, nivel, nombre);
                     
                     // Remove the contact first so we don't add a duplicate.
-                    deptosProvider.remove(depto);
-                    deptosProvider.add(depto);
+                    tabuladorsProvider.remove(tabulador);
+                    tabuladorsProvider.add(tabulador);
                 }
                 
             }
         });
 
     }
-
+    
 }
