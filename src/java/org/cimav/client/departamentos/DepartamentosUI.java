@@ -100,8 +100,6 @@ public class DepartamentosUI extends Composite {
             public void onClick(ClickEvent event) {
                 clearSelection();
                 DeptoDatabase.get().load();
-                
-                InfoView.show("Registros recargados");
             }
         });
         btnAdd.addClickHandler(new ClickHandler() {
