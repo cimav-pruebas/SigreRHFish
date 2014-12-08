@@ -31,11 +31,13 @@ Uncomment this for XHTML entities
                                                 <c:SimplePager ui:field='pager' />
                                             </td>
                                         </tr>
+                                        <!-- 
                                         <tr >
                                             <td align='center'>
                                                 <b:Alert type="DEFAULT" close="false" animation="true">Alerta sin Cerrar (TODO cerrarla por segundos)</b:Alert>
                                             </td>
                                         </tr>
+                                        -->
                                     </table>
                                 </g:HTMLPanel>
                             </g:center>

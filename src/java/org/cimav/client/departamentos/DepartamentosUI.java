@@ -32,6 +32,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.Comparator;
 import org.cimav.client.domain.Departamento;
 import org.cimav.client.domain.DeptoDatabase;
+import org.cimav.client.tools.InfoView;
 
 /**
  *
@@ -99,6 +100,8 @@ public class DepartamentosUI extends Composite {
             public void onClick(ClickEvent event) {
                 clearSelection();
                 DeptoDatabase.get().load();
+                
+                InfoView.show("Registros recargados");
             }
         });
         btnAdd.addClickHandler(new ClickHandler() {
@@ -113,7 +116,7 @@ public class DepartamentosUI extends Composite {
                 Departamento nuevoDepto = new Departamento();
                 // con -1 para indicar que es nuevo
                 nuevoDepto.setId(idNegativo);
-                nuevoDepto.setCodigo("NN");
+                nuevoDepto.setCodigo("");
                 DeptoDatabase.currentDepto = nuevoDepto;
                 
                 // en vez del clearSelection
@@ -121,7 +124,6 @@ public class DepartamentosUI extends Composite {
                 // dispara el OnSelect (si cambia dado que )
                 //clearSelection();
                 
-                // BUG TODO: En agregar y con el tabLayout.selectTab(1), se "esconde" el contenido del grid
                 tabLayout.selectTab(1);
             }
         });
@@ -145,6 +147,8 @@ public class DepartamentosUI extends Composite {
                 updateWidgets();
                 // elimina el depto a remove
                 DeptoDatabase.get().removeDepto(deptoToRemove);
+                
+                InfoView.show("Registro " + deptoToRemove.getCodigo() + " eliminado" );
             }
         });
         

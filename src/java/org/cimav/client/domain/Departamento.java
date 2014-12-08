@@ -7,6 +7,7 @@ package org.cimav.client.domain;
 
 //import org.codehaus.jackson.annotate.JsonProperty;
 import com.google.gwt.view.client.ProvidesKey;
+import java.util.Objects;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -39,13 +40,14 @@ public class Departamento implements Comparable<Departamento> {
     }
 
     private Integer id;
+    @Pattern(regexp="^[A-Z][a-zA-Z]{1,7}$", message = "Código debe ser de 2 a 8 letras empezando con mayúscula.")
     private String codigo;
-    @NotNull
     @Size(min = 10, message = "Nombre deber tener al menos 10 caracteres")
     private String nombre;
     private Integer status;
 
     public Departamento() {
+        this.id = -1; // evita que la Gwt-Validation falle por nulo
     }
     
     public Departamento(Integer id, String codigo, String nombre, Integer status) {
@@ -55,29 +57,56 @@ public class Departamento implements Comparable<Departamento> {
         this.status = status;
     }
 
-    @Pattern(regexp="(.*), (.*)")
-    public String getFullName() {
-        return this.codigo + ", " + this.nombre;
-    }
-    
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Departamento)) {
-            return false;
-        }
-        Departamento other = (Departamento) obj;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.id);
+        hash = 83 * hash + Objects.hashCode(this.codigo);
+        return hash;
     }
 
     @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 89 * hash + this.id;
-        return hash;
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Departamento other = (Departamento) obj;
+        if (this.id > 0)  {
+            // si hay Id, igual por Id
+            if (!Objects.equals(this.id, other.id)) {
+                return false;
+            }
+        } else {
+            // Si no hay ID, igual por Codigo
+            if (!Objects.equals(this.codigo, other.codigo)) {
+                return false;
+            }
+        }
+        return true;
     }
+    
+    
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (!(obj instanceof Departamento)) {
+//            return false;
+//        }
+//        Departamento other = (Departamento) obj;
+//        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+//            return false;
+//        }
+//        return true;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int hash = 5;
+//        hash = 89 * hash + this.id;
+//        return hash;
+//    }
 
     public Integer getStatus() {
         return status;

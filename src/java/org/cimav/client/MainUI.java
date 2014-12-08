@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;
 import java.util.Iterator;
+import org.cimav.client.tools.InfoView;
 
 /**
  *
@@ -39,14 +40,14 @@ public class MainUI extends Composite {
     public static final String OPT_DEPARTAMENTOS = "optionDepartamentos";
     public static final String OPT_TABULADOR = "optionTabulador";
     
-    @UiField
-    StackLayoutPanel westPanel;
-    @UiField
-    FlowPanel workPanel;
-    @UiField
-    Label lTitulo;
-    @UiField
-    Label lSubTitulo;
+    @UiField StackLayoutPanel westPanel;
+    @UiField FlowPanel workPanel;
+    @UiField Label lTitulo;
+    @UiField Label lSubTitulo;
+    
+    @UiField InfoView infoView;
+    
+    Widget currentWorkWidget;
 
     public void setTit(String t) {
         lSubTitulo.setText(t);
@@ -83,16 +84,26 @@ public class MainUI extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
 
         westPanel.getElement().setAttribute("id", "west-panel");
+        
+        infoView.getElement().setAttribute("id", "info-view-id");
     }
 
     public void setCenterPanel(String titulo, String subTitulo, Widget widget) {
-        workPanel.clear(); // remover lo anterior
+        
+        // remover el widget anterior (si habia)
+        if (currentWorkWidget != null && workPanel.getWidgetIndex(currentWorkWidget) >= 0) {
+            workPanel.remove(currentWorkWidget);
+        }
+        //workPanel.clear(); // remover lo anterior
+                
+        // keep el widget nuevo
+        currentWorkWidget = widget;
         
         lTitulo.setText(titulo);
         lSubTitulo.setText(subTitulo);
         
-        if (widget != null) {
-            workPanel.add(widget); // agregar el enviado
+        if (currentWorkWidget != null) {
+            workPanel.add(currentWorkWidget); // agregar el enviado
         }
     }
     
