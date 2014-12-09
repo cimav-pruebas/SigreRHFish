@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.fusesource.restygwt.client.JsonCallback;
 import org.fusesource.restygwt.client.Method;
-import org.fusesource.restygwt.client.MethodCallback;
 
 /**
  *
@@ -58,12 +57,12 @@ public class Ajax {
         };
     }
     
-    private static final List<JsonCallback> callstack2 = new ArrayList<JsonCallback>();
-    public static JsonCallback enviar(final JsonCallback back) {
+    private static final List<JsonCallback> jsonCallStack = new ArrayList<JsonCallback>();
+    public static JsonCallback jsonCall(final JsonCallback back) {
         if(!loadingIndicator.isShowing()){
             loadingIndicator.center();
         }
-        callstack2.add(back);
+        jsonCallStack.add(back);
         return new JsonCallback() {
 
             @Override
@@ -78,8 +77,8 @@ public class Ajax {
                 back.onSuccess(method, response);
             }
             private void handleReturn(){
-                callstack2.remove(back);
-                if(callstack2.size() < 1) {
+                jsonCallStack.remove(back);
+                if(jsonCallStack.size() < 1) {
                     loadingIndicator.hide();
                 }
             }

@@ -83,7 +83,7 @@ public class DeptoDatabase {
 
         Resource rb = new Resource(URL_REST_UPDATE + "/" + depto.getId(), headers);
 
-        rb.put().json(deptoJSONValue).send(new JsonCallback() {
+        rb.put().json(deptoJSONValue).send(Ajax.jsonCall(new JsonCallback() {
             @Override
             public void onFailure(Method method, Throwable exception) {
                 Window.alert("Error: " + exception);
@@ -102,7 +102,7 @@ public class DeptoDatabase {
                     deptoInList.setNombre(deptoUpdated.getNombre());
                 }
             }
-        });
+        }));
 
     }
 
@@ -121,8 +121,8 @@ public class DeptoDatabase {
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
 
         Resource rb = new Resource(URL_REST_ADD, headers);
-
-        rb.post().json(deptoJSONValue).send(new JsonCallback() {
+        
+        rb.post().json(deptoJSONValue).send(Ajax.jsonCall(new JsonCallback() {
             @Override
             public void onFailure(Method method, Throwable exception) {
                 Window.alert("Error: " + exception);
@@ -137,14 +137,14 @@ public class DeptoDatabase {
                 deptos.remove(newDepto); // en caso de que existiera, lo elimina
                 deptos.add(newDepto); // lo agrega
             }
-        });
+        }));
 
     }
 
     public void removeDepto(final Departamento depto) {
 
         Resource r = new Resource(URL_REST_DELETE + "/" + depto.getId()); //TODO Meter el Id en el Resource
-        r.delete().send(new JsonCallback() {
+        r.delete().send(Ajax.jsonCall(new JsonCallback() {
             @Override
             public void onFailure(Method method, Throwable exception) {
                 Window.alert("Error: " + exception);
@@ -155,7 +155,7 @@ public class DeptoDatabase {
                 List<Departamento> deptos = dataProvider.getList();
                 deptos.remove(depto);
             }
-        });
+        }));
 
     }
 
@@ -187,7 +187,7 @@ public class DeptoDatabase {
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
 
         Resource rb = new Resource(URL_REST, headers);
-        rb.get().send(Ajax.enviar(new JsonCallback() {
+        rb.get().send(Ajax.jsonCall(new JsonCallback() {
             @Override
             public void onFailure(Method method, Throwable exception) {
                 Window.alert(exception.getLocalizedMessage());
