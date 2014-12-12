@@ -29,7 +29,8 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(org.cimav.server.services.DepartamentoFacadeREST.class);
+        resources.add(org.cimav.server.services.DepartamentoREST.class);
+        resources.add(org.cimav.server.services.EmpleadoREST.class);
         resources.add(org.cimav.server.services.TabuladorREST.class);
     }
     

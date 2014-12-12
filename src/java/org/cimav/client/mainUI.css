@@ -49,7 +49,7 @@ h2 {
 }
 .work-panel {
     position: absolute;
-    border: 0px solid red;
+    border: 1px solid red;
     margin: 13px;
 }
 

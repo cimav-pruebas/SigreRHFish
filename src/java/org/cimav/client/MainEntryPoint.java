@@ -11,6 +11,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.UmbrellaException;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import javax.validation.constraints.NotNull;
+import org.cimav.client.personal.PersonalUI;
 
 
 import org.fusesource.restygwt.client.Defaults;
@@ -55,7 +56,7 @@ public class MainEntryPoint implements EntryPoint {
             @Override
             public void onOptionChange(String option) {
                 if (option.equals(MainUI.OPT_PERSONAL)) {
-                    mainUi.setCenterPanel("Personal", "Consultas, altas, bajas y cambios", null);
+                    mainUi.setCenterPanel("Personal", "Consultas, altas, bajas y cambios", new PersonalUI());
                 } else if (option.equals(MainUI.OPT_DEPARTAMENTOS)) {
                     mainUi.setCenterPanel("Departamentos", "Consultas, altas, bajas y cambios", new DepartamentosUI());
                 } else {

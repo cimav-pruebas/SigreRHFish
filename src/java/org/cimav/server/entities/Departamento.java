@@ -7,6 +7,7 @@ package org.cimav.server.entities;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,9 +16,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,6 +36,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Departamento.findByNombre", query = "SELECT d FROM Departamento d WHERE d.nombre = :nombre"),
     @NamedQuery(name = "Departamento.findByStatus", query = "SELECT d FROM Departamento d WHERE d.status = :status")})
 public class Departamento implements Serializable {
+    @OneToMany(mappedBy = "departamento")
+    private Collection<Empleado> empleadoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -110,6 +115,15 @@ public class Departamento implements Serializable {
     @Override
     public String toString() {
         return "org.cimav.server.entities.Departamento[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Empleado> getEmpleadoCollection() {
+        return empleadoCollection;
+    }
+
+    public void setEmpleadoCollection(Collection<Empleado> empleadoCollection) {
+        this.empleadoCollection = empleadoCollection;
     }
     
 }
