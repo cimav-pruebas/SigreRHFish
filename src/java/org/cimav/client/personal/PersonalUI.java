@@ -29,6 +29,11 @@ import org.cimav.client.domain.Empleado;
 import org.cimav.client.tools.DBEvent;
 import org.cimav.client.tools.DBMethod;
 import org.cimav.client.tools.DBTypeResult;
+import org.gwtbootstrap3.client.ui.constants.IconType;
+import org.gwtbootstrap3.client.ui.constants.Styles;
+import org.gwtbootstrap3.extras.growl.client.ui.Growl;
+import org.gwtbootstrap3.extras.growl.client.ui.GrowlHelper;
+import org.gwtbootstrap3.extras.growl.client.ui.GrowlOptions;
 
 /**
  *
@@ -86,9 +91,25 @@ public class PersonalUI extends Composite {
             public void onMethodExecuted(DBEvent dbEvent) {
                 if (DBMethod.FIND_ALL.equals(dbEvent.getDbMethod())) {
                     if (DBTypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
-                        totalRegistrosLbl.setText("Registros: " + PersonalDB.get().getDataProvider().getList().size());
+                        String msg = "Registros: " + PersonalDB.get().getDataProvider().getList().size();
+                        totalRegistrosLbl.setText(msg);
+                        
+                        GrowlOptions go = GrowlHelper.getNewOptions();
+                        go.setSuccessType();
+                        go.setAllowDismiss(false);
+                        Growl.growl("",msg,Styles.FADE + " " + Styles.FONT_AWESOME_BASE /*+ " " + IconType.SMILE_O.getCssName()*/, go);
+                        
+                        
                     } else {
-                        totalRegistrosLbl.setText("Falló la carga de registros");
+                        String msg = "Falló la carga de registros";
+                        totalRegistrosLbl.setText(msg);
+                        
+                        GrowlOptions go = GrowlHelper.getNewOptions();
+                        go.setDangerType();
+                        go.setDelay(15000); // 15 segs
+                        //go.setAllowDismiss(false);
+                        Growl.growl("",msg,Styles.FONT_AWESOME_BASE /*+ " " + IconType.SMILE_O.getCssName()*/, go);
+
                     }
                 }
             }
@@ -118,10 +139,20 @@ public class PersonalUI extends Composite {
             if (value == null) {
                 return;
             }
+            String grupoStr = value.getGrupo() != null ? value.getGrupo().getCode() : "SIN_GRP";
+            String deptoStr = value.getDepartamento() != null ? value.getDepartamento().getCodigo() : "SIN_DEPTO";
+            String nivelStr = value.getNivel()!= null ? value.getNivel().getCode() : "SIN_NIVEL";
+            
             String html =
-                    "<table class='tableDoc' cellspacing='0' cellpadding='0'> " + 
+                    "<table class='XXXX' cellspacing='0' cellpadding='0'> " + 
                     "   <tr> " +
-                    "       <td colspan='2' align='left'> <img src='" + value.getUrlPhoto() + "'> <span>" + value.getClave() + "</span> </td> " +
+                    "       <td colspan='2' align='left'> <img src='" + value.getUrlPhoto() + "'> <span>" 
+                        + value.getCode() + "</bR>"  
+                        + value.getName() + "</bR>"  
+                        + value.getRfc() + "</bR>"  
+                        + nivelStr + "</bR>"  
+                        + deptoStr + "</bR>"  
+                        + grupoStr +  " </span> </td> " +
                     "   </tr> " +
                     "</table> ";
             

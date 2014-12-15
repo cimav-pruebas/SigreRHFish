@@ -56,6 +56,7 @@ public class MainUI extends Composite {
     @UiHandler({"optionUno", "optionDos", "optionTres", OPT_PERSONAL, OPT_DEPARTAMENTOS, OPT_TABULADOR})
     protected void onClick(ClickEvent e) {
 
+        // Pone todos los sub-menus en DesActivados
         Iterator<Widget> arrayOfWidgets = westPanel.iterator();
         while (arrayOfWidgets.hasNext()) {
             Widget widgetNavList = arrayOfWidgets.next();
@@ -70,11 +71,13 @@ public class MainUI extends Composite {
                 }
             }
         }
+        // Activa el clickeado
         IconAnchor src = (IconAnchor) e.getSource();
         NavLink navLink = (NavLink) src.getParent();
         navLink.setActive(true);
         
-        onOptionChange(navLink.getName());
+        // just to know...
+        onOptionMenuChange(navLink.getName());
         if (OPT_PERSONAL.equals(navLink.getName())) {
         } else {
         }
@@ -85,6 +88,7 @@ public class MainUI extends Composite {
 
         westPanel.getElement().setAttribute("id", "west-panel");
         
+        // TODO Sustituir InfoView por Grow
         infoView.getElement().setAttribute("id", "info-view-id");
     }
 
@@ -107,21 +111,21 @@ public class MainUI extends Composite {
         }
     }
     
-    // <editor-fold defaultstate="collapsed" desc="interface OptionChangeListener"> 
-    public interface OptionChangeListener extends java.util.EventListener {
-        void onOptionChange(String option);
+    // <editor-fold defaultstate="collapsed" desc="interface OptionMenuChangeListener para cuando selecciona una Option"> 
+    public interface OptionMenuChangeListener extends java.util.EventListener {
+        void onOptionMenuChange(String option);
     }
     private final ArrayList listeners = new ArrayList();
-    public void addOptionChangeListener(OptionChangeListener listener) {
+    public void addOptionMenuChangeListener(OptionMenuChangeListener listener) {
         listeners.add(listener);
     }
-    public void removeOptionChangeListener(OptionChangeListener listener) {
+    public void removeOptionMenuChangeListener(OptionMenuChangeListener listener) {
         listeners.remove(listener);
     }
-    public void onOptionChange(String option) {
+    public void onOptionMenuChange(String option) {
         for(Iterator it = listeners.iterator(); it.hasNext();) {
-            OptionChangeListener listener = (OptionChangeListener) it.next();
-            listener.onOptionChange(option);
+            OptionMenuChangeListener listener = (OptionMenuChangeListener) it.next();
+            listener.onOptionMenuChange(option);
         }
     }
     // </editor-fold>

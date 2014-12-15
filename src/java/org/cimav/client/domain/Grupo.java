@@ -5,13 +5,11 @@
  */
 package org.cimav.client.domain;
 
-import com.google.gwt.view.client.ProvidesKey;
-import java.util.Objects;
-
 /**
  *
  * @author juan.calderon
  */
-public class Tabulador extends BaseDomain<Tabulador> {
-
+public class Grupo extends BaseDomain<Grupo> {
+    
+    
 }

@@ -90,8 +90,8 @@ public class TabuladorDatabase {
                 int idx = tabuladors.indexOf(tabuladorUpdated);
                 if (idx >= 0) {
                     Tabulador tabuladorInList = tabuladors.get(idx);
-                    tabuladorInList.setNivel(tabuladorUpdated.getNivel());
-                    tabuladorInList.setNombre(tabuladorUpdated.getNombre());
+                    tabuladorInList.setCode(tabuladorUpdated.getCode());
+                    tabuladorInList.setName(tabuladorUpdated.getName());
                 }
             }
         });
@@ -210,7 +210,10 @@ public class TabuladorDatabase {
                     String nivel = item.get("nivel") != null ? item.get("nivel").isString().stringValue() : "NO_NIV_" +  Random.nextInt(100000);
                     String nombre = item.get("nombre") != null ? item.get("nombre").isString().stringValue() : "NO_NOM_"  + Random.nextInt(100000);
 
-                    Tabulador tabulador = new Tabulador(id, nivel, nombre);
+                    Tabulador tabulador = new Tabulador();
+                    tabulador.setId(id);
+                    tabulador.setCode(nivel);
+                    tabulador.setName(nombre);
                     
                     // Remove the contact first so we don't add a duplicate.
                     tabuladorsProvider.remove(tabulador);

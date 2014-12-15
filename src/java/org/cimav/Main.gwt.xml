@@ -14,6 +14,7 @@
 
      <!--  inherit the GWT-Bootstrap widget library -->
     <inherits name="com.github.gwtbootstrap.Bootstrap"/> 
+    <inherits name="org.gwtbootstrap3.extras.growl.Growl"/>
     
     <inherits name="org.fusesource.restygwt.RestyGWT"/>
     

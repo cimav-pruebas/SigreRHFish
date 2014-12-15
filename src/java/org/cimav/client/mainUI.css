@@ -8,6 +8,18 @@ and open the template in the editor.
     Author     : juan.calderon
 */
 
+html, body {
+    height: 100%; 
+    width: 100%;
+    margin: 0;   
+    padding: 0;
+    border: none;
+    // NECESARIO. 
+    // hace que el height: 100%; de la table funcione
+    // margin, padding y border en 0 hacen que NO aparezca el SCROLL INCOMODO
+    // y que los componentes internos no se "COMAN UN PEDACITO" del margen y padding
+}
+
 .north-panel {
     border-top: 3px solid red;
     border-bottom: 1px solid gray;

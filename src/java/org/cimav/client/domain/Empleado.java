@@ -5,56 +5,18 @@
  */
 package org.cimav.client.domain;
 
-import com.google.gwt.view.client.ProvidesKey;
-import java.util.List;
-import java.util.Objects;
-
 /**
  *
  * @author juan.calderon
  */
-public class Empleado implements Comparable<Empleado> {
+public class Empleado extends BaseDomain<Empleado> { 
 
-    private Integer id;
-    private String clave;
+    private String rfc;
     private String urlPhoto;
-
-    public Empleado() {
-        this.id = -1; // evita que la Gwt-Validation falle por nulo
-    }
     
-    /**
-     * The key provider that provides the unique ID of a contact.
-     */
-    public static final ProvidesKey<Empleado> KEY_PROVIDER = new ProvidesKey<Empleado>() {
-        @Override
-        public Object getKey(Empleado item) {
-            Object r = item == null ? null : item.getId();
-            return r;
-        }
-    };
-    
-    @Override
-    public int compareTo(Empleado item) {
-        //TODO el -item es correcto?
-        int r = (item == null || item.clave == null) ? -1 : -item.clave.compareTo(clave);
-        return r;
-    }
-    
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getClave() {
-        return clave;
-    }
-    public void setClave(String clave) {
-        this.clave = clave;
-    }
+    private Grupo grupo;
+    private Tabulador nivel;
+    private Departamento departamento;
 
     public String getUrlPhoto() {
         return urlPhoto;
@@ -64,35 +26,37 @@ public class Empleado implements Comparable<Empleado> {
         this.urlPhoto = urlPhoto;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.id);
-        hash = 67 * hash + Objects.hashCode(this.clave);
-        return hash;
+    public Grupo getGrupo() {
+        return grupo;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Empleado other = (Empleado) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.clave, other.clave)) {
-            return false;
-        }
-        return true;
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
     }
 
-    @Override
-    public String toString() {
-        return "Empleado{" + "id=" + id + ", clave=" + clave + '}';
+    public String getRfc() {
+        return rfc;
     }
+
+    public void setRfc(String rfc) {
+        this.rfc = rfc;
+    }
+
+    public Tabulador getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(Tabulador nivel) {
+        this.nivel = nivel;
+    }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
+    }
+
     
 }

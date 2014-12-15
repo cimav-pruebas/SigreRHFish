@@ -49,6 +49,12 @@ public class PersonalDB implements IFilter<Empleado> {
     public interface EmpleadoJsonCodec extends JsonEncoderDecoder<Empleado> {}
     public EmpleadoJsonCodec empleadoListJsonCodec = GWT.create(EmpleadoJsonCodec.class);
     
+    /**
+     * Se crea una sola vez en todo el ciclo de vida de la aplicacion.
+     * Por eso, cuando se re-entra ya esta cargada la Lista (sin filtrar).
+     * 
+     * @return PersonalDB singleton
+     */
     public static PersonalDB get() {
         if (instance == null) {
             instance = new PersonalDB();
@@ -76,13 +82,16 @@ public class PersonalDB implements IFilter<Empleado> {
         // la frase completa debe tener todos los terminos
         
         String pattern = "^";
+        filter = filter.toLowerCase();
         String[] array = filter.split("\\s+");
         for (String term : array) {
             pattern = pattern + "(?=.*?" + term.trim() + ")";
         }
         pattern = pattern + ".+";
         
-        String string = value.getClave().toLowerCase() + " " + value.getUrlPhoto().toLowerCase();
+        String grupoStr = value.getGrupo() != null ? value.getGrupo().getCode() + " " + value.getGrupo().getName() : "";
+        String nivelStr = value.getNivel() != null ? value.getNivel().getCode() + " " + value.getNivel().getName() : "";
+        String string = (value.getCode() + " " + value.getUrlPhoto() + " " + grupoStr.toLowerCase() + " " + nivelStr.toLowerCase());
         
         RegExp regExp = RegExp.compile(pattern);
         MatchResult matcher = regExp.exec(string);

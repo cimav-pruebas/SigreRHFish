@@ -6,12 +6,8 @@
 package org.cimav.server.entities;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -27,12 +23,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "empleados")
-@XmlRootElement(name="employees", namespace = "empleadiux")
+@XmlRootElement(name = "employees", namespace = "empleadiux")
 //@XmlType(propOrder = { "id", "clave", "consecutivo", "email", "telephone" })
 @NamedQueries({
     @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e"),
     @NamedQuery(name = "Empleado.findById", query = "SELECT e FROM Empleado e WHERE e.id = :id"),
-    @NamedQuery(name = "Empleado.findByClave", query = "SELECT e FROM Empleado e WHERE e.clave = :clave"),
+    @NamedQuery(name = "Empleado.findByCode", query = "SELECT e FROM Empleado e WHERE e.code = :code"),
+    @NamedQuery(name = "Empleado.findByName", query = "SELECT e FROM Empleado e WHERE e.name = :name"),
     @NamedQuery(name = "Empleado.findByConsecutivo", query = "SELECT e FROM Empleado e WHERE e.consecutivo = :consecutivo"),
     @NamedQuery(name = "Empleado.findByStatus", query = "SELECT e FROM Empleado e WHERE e.status = :status"),
     @NamedQuery(name = "Empleado.findByCurp", query = "SELECT e FROM Empleado e WHERE e.curp = :curp"),
@@ -40,77 +37,60 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Empleado.findByImss", query = "SELECT e FROM Empleado e WHERE e.imss = :imss"),
     @NamedQuery(name = "Empleado.findByIdproyecto", query = "SELECT e FROM Empleado e WHERE e.idproyecto = :idproyecto"),
     @NamedQuery(name = "Empleado.findByNumcuentabanco", query = "SELECT e FROM Empleado e WHERE e.numcuentabanco = :numcuentabanco")})
-public class Empleado implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
-    @Size(max = 5)
-    @Column(name = "clave")
-    private String clave;
+public class Empleado extends BaseEntity implements Serializable {
+
     @Column(name = "consecutivo")
     private Integer consecutivo;
+
     @Column(name = "status")
     private Short status;
+
     @Size(max = 100)
     @Column(name = "curp")
+
     private String curp;
     @Size(max = 50)
     @Column(name = "rfc")
     private String rfc;
+
     @Size(max = 100)
     @Column(name = "imss")
     private String imss;
+
     @Column(name = "idproyecto")
     private Short idproyecto;
+
     @Size(max = 40)
     @Column(name = "numcuentabanco")
     private String numcuentabanco;
 
     @Column(name = "urlPhoto")
     private String urlPhoto;
-    
-    @XmlElement(name="king")
-    @JoinColumn(name = "idnivel", referencedColumnName = "id")
-    @ManyToOne
-    private Tabulador nivel;
-    
-//    @OneToMany(mappedBy = "jefe")
-//    private Collection<Empleado> empleadoCollection;
-    
-    @JoinColumn(name = "idjefe", referencedColumnName = "id")
-    @ManyToOne
-    private Empleado jefe;
-    
-    @XmlElement(name="departamento")
+
+    @XmlElement(name = "departamento")
     @JoinColumn(name = "iddepartamento", referencedColumnName = "id")
     @ManyToOne
     private Departamento departamento;
 
-    public Empleado() {
-    }
+    @JoinColumn(name = "id_grupo", referencedColumnName = "id")
+    @ManyToOne
+    private Grupo grupo;
 
-    public Empleado(Integer id) {
-        this.id = id;
-    }
+    @JoinColumn(name = "id_tabulador", referencedColumnName = "id")
+    @ManyToOne
+    private Tabulador nivel;
 
-    public Integer getId() {
-        return id;
-    }
+    @Size(max = 40)
+    @Column(name = "nombre")
+    private String nombre;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @Size(max = 40)
+    @Column(name = "apellido_paterno")
+    private String apellidoPaterno;
 
-    public String getClave() {
-        return clave;
-    }
-
-    public void setClave(String clave) {
-        this.clave = clave;
-    }
+    @Size(max = 40)
+    @Column(name = "apellido_materno")
+    private String apellidoMaterno;
 
     public Integer getConsecutivo() {
         return consecutivo;
@@ -168,31 +148,6 @@ public class Empleado implements Serializable {
         this.numcuentabanco = numcuentabanco;
     }
 
-    public Tabulador getNivel() {
-        return nivel;
-    }
-
-    public void setNivel(Tabulador nivel) {
-        this.nivel = nivel;
-    }
-
-//    @XmlTransient
-//    public Collection<Empleado> getEmpleadoCollection() {
-//        return empleadoCollection;
-//    }
-//
-//    public void setEmpleadoCollection(Collection<Empleado> empleadoCollection) {
-//        this.empleadoCollection = empleadoCollection;
-//    }
-
-    public Empleado getJefe() {
-        return jefe;
-    }
-
-    public void setJefe(Empleado jefe) {
-        this.jefe = jefe;
-    }
-
     public Departamento getDepartamento() {
         return departamento;
     }
@@ -208,30 +163,62 @@ public class Empleado implements Serializable {
     public void setUrlPhoto(String urlPhoto) {
         this.urlPhoto = urlPhoto;
     }
-    
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+
+    public Grupo getGrupo() {
+        return grupo;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Empleado)) {
-            return false;
-        }
-        Empleado other = (Empleado) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
     }
 
-    @Override
-    public String toString() {
-        return "org.cimav.server.entities.Empleado[ id=" + id + " - " + consecutivo + " ]";
+    public Tabulador getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(Tabulador nivel) {
+        this.nivel = nivel;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+        this.setFullName();
+    }
+
+    private void setFullName() {
+        // String fullName = this.getApellidoPaterno().toUpperCase() + " " + this.getApellidoMaterno().toUpperCase() + " " + WordUtils.capitalize(this.nombre);
+        String fullName = this.getApellidoPaterno().toUpperCase() + " " + this.getApellidoMaterno().toUpperCase() + " " + this.nombre;
+        this.setName(fullName);
     }
     
+    public String getApellidoMaterno() {
+        if (apellidoMaterno == null) {
+            return "";
+        }
+        return apellidoMaterno;
+    }
+
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
+        
+        this.setFullName();
+    }
+
+    public String getApellidoPaterno() {
+        if (apellidoPaterno == null) {
+            return "";
+        }
+        return apellidoPaterno;
+    }
+
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
+        
+        this.setFullName();
+    }
+
 }

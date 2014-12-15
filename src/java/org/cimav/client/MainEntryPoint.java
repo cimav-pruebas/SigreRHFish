@@ -23,7 +23,10 @@ import org.fusesource.restygwt.client.Defaults;
  */
 public class MainEntryPoint implements EntryPoint {
 
+    // Vistas UI
     private final MainUI mainUi;
+    private PersonalUI personalUI;
+    private DepartamentosUI departamentosUI;
 
     /**
      * Creates a new instance of MainEntryPoint
@@ -51,16 +54,27 @@ public class MainEntryPoint implements EntryPoint {
         //RootPanel.get("gwtContainer").add(mainUiBinder);
         RootLayoutPanel.get().add(mainUi);
 
-        mainUi.addOptionChangeListener(new MainUI.OptionChangeListener() {
+        mainUi.addOptionMenuChangeListener(new MainUI.OptionMenuChangeListener() {
 
             @Override
-            public void onOptionChange(String option) {
-                if (option.equals(MainUI.OPT_PERSONAL)) {
-                    mainUi.setCenterPanel("Personal", "Consultas, altas, bajas y cambios", new PersonalUI());
-                } else if (option.equals(MainUI.OPT_DEPARTAMENTOS)) {
-                    mainUi.setCenterPanel("Departamentos", "Consultas, altas, bajas y cambios", new DepartamentosUI());
-                } else {
-                    mainUi.setCenterPanel(option, "Not Yet Implemented...", null);
+            public void onOptionMenuChange(String option) {
+                switch (option) {
+                    case MainUI.OPT_PERSONAL:
+                        if (personalUI == null) {
+                            // actua como Singleton en el ciclo de vida
+                            personalUI = new PersonalUI();
+                        }
+                        mainUi.setCenterPanel("Personal", "Consultas, altas, bajas y cambios", personalUI);
+                        break;
+                    case MainUI.OPT_DEPARTAMENTOS:
+                        if (departamentosUI == null) {
+                            departamentosUI = new DepartamentosUI();
+                        }
+                        mainUi.setCenterPanel("Departamentos", "Consultas, altas, bajas y cambios", departamentosUI);
+                        break;
+                    default:
+                        mainUi.setCenterPanel(option, "Not Yet Implemented...", null);
+                        break;
                 }
 
             }
