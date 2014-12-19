@@ -56,8 +56,8 @@ public class PersonalUI extends Composite {
     public PersonalUI() {
         initWidget(uiBinder.createAndBindUi(this));
         
-        CellList.Resources cellListResources = GWT.create(CellList.Resources.class);
-        // CellList.Resources cellListResources = GWT.create(ICellListResources.class);
+        //CellList.Resources cellListResources = GWT.create(CellList.Resources.class);
+        CellList.Resources cellListResources = GWT.create(ICellListResources.class);
         SingleSelectionModel<Empleado> selectionModel = new SingleSelectionModel<>();
         cellList = new CellList<>(new EmpleadoCell(selectionModel), cellListResources, PersonalDB.get().getDataProvider());
         cellList.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
@@ -134,10 +134,10 @@ public class PersonalUI extends Composite {
     
     private class EmpleadoCell extends AbstractCell<Empleado> {
         
-        private SingleSelectionModel<Empleado> docSelectionModel;
+        private SingleSelectionModel<Empleado> selectionModel;
         
         EmpleadoCell(SingleSelectionModel<Empleado> docSelectionModel) {
-            this.docSelectionModel = docSelectionModel;
+            this.selectionModel = docSelectionModel;
         }
         
         @Override
@@ -145,6 +145,10 @@ public class PersonalUI extends Composite {
             if (value == null) {
                 return;
             }
+            
+            boolean isSelected = this.selectionModel != null && this.selectionModel.getSelectedObject() != null
+                    && this.selectionModel.getSelectedObject().equals(value);
+            
             String grupoStr = value.getGrupo() != null ? value.getGrupo().getCode() : "SIN_GRP";
             String deptoStr = value.getDepartamento() != null ? value.getDepartamento().getCodigo() : "SIN_DEPTO";
             String nivelStr = value.getNivel()!= null ? value.getNivel().getCode() : "SIN_NIVEL";
@@ -152,10 +156,10 @@ public class PersonalUI extends Composite {
             String html =
                     "<table width='100%' cellspacing='0' cellpadding='0' style='text-align: left; vertical-align: middle; border-bottom:1px solid lightgray;'>\n" +
                     "  <tr>\n" +
-                    "    <td colspan='4'></td>\n" +
+                    "    <td width='4px' rowspan='6' style='height:auto; width: 5px; SELECTED_COLOR_REEMPLAZO'></td>\n" +
+                    "    <td colspan='3' style='height:3px;'></td>\n" +
                     "  </tr>\n" +
                     "  <tr>\n" +
-                    "    <td width='4px' rowspan='4'>F</td>\n" +
                     "    <td width='78px' rowspan='3' style='text-align: center;'><img src='URL_FOTO_REEMPLAZO' style='border:1px solid lightgray; margin-top: 3px;'></td>\n" +
                     "    <td colspan='2'><h4 style='margin-top: 0px; margin-bottom: 0px;'>APELLIDOS_REEMPLAZO</h4></td>\n" +
                     "  </tr>\n" +
@@ -176,52 +180,16 @@ public class PersonalUI extends Composite {
                     "    <td style='text-align: right;'><i class=\"fa fa-info-circle fa-lg\" style='opacity: 0.5; padding-right: 5px;'></i></td>\n" +
                     "  </tr>\n" +
                     "  <tr>\n" +
-                    "    <td colspan='4' style='height:3px;'></td>\n" +
+                    "    <td colspan='3' style='height:3px;'></td>\n" +
                     "  </tr>\n" +
                     "</table>";
-                    
-                    
-// "       <table width='100%' cellspacing='0' cellpadding='0'> " + 
-// "           <tr > " + 
-// "               <td width='4px' >F</td> " + 
-// "               <td width='85px'> " + 
-// "                   <table width='100%' height='100%' cellspacing='0' cellpadding='0' style='text-align: center; vertical-align: middle;'> " + 
-// "                       <tr> " + 
-// "                           <td> " + 
-// "                               <img src='URL_FOTO_REEMPLAZO' alt='juan.calderon' > " + 
-// "                           </td> " + 
-// "                       </tr> " + 
-// "                       <tr> " + 
-// "                           <td style='height:24px'>CODE_REEMPLAZO</td> " + 
-// "                       </tr> " + 
-// "                   </table> " + 
-// "               </td> " + 
-// "               <td style='text-align: left; vertical-align: top;'> " + 
-// "                   <table width='100%' cellspacing='0' cellpadding='0'> " + 
-// "                       <tr> " + 
-// "                           <td colspan='2'><h4>APELLIDOS_REEMPLAZO</h4></td> " + 
-// "                       </tr> " + 
-// "                       <tr> " + 
-// "                           <td colspan='2'><h5>NOMBRE_REEMPLAZO</h5></td> " + 
-// "                       </tr> " + 
-// "                       <tr> " + 
-// "                           <td >RFC_REEMPLAZO</td> " + 
-// "                       </tr> " + 
-// "                       <tr> " + 
-//                            " <td> " + 
-//                                " <code class=\"label-cyt-grp-niv\"><span >GRUPO_REEMPLAZO</span></code> " + 
-//                                " <code class=\"label-cyt-grp-niv\"><span >NIVEL_REEMPLAZO</span></code> " + 
-//                                " <code class=\"label-cyt-grp-niv\"><span >DEPTO_REEMPLAZO</span></code> " + 
-//                            "</td> " + 
-// "                           <td style='text-align: right;'>" +
-// "                              <i class=\"fa fa-info-circle fa-lg\" style='opacity: 0.5; padding-right: 5px;'></i> " +                    
-// "                           </td> " + 
-// "                       </tr> " + 
-// "                   </table> " + 
-// " " + 
-// "               </td> " + 
-// "           </tr> " + 
-// "       </table>        ";
+            
+            if (isSelected) {
+                html = html.replace("SELECTED_COLOR_REEMPLAZO", "background-color: #628cd5;");
+            } else {
+                html = html.replace("SELECTED_COLOR_REEMPLAZO", "background-color: #F8F8F8;");
+            }
+            
             
             html = html.replace("CODE_REEMPLAZO", value.getCode());
             html = html.replace("URL_FOTO_REEMPLAZO", value.getUrlPhoto());
