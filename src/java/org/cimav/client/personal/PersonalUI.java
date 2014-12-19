@@ -18,9 +18,11 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import org.cimav.client.domain.Empleado;
 import org.cimav.client.tools.DBEvent;
@@ -55,7 +57,12 @@ public class PersonalUI extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
         
         CellList.Resources cellListResources = GWT.create(CellList.Resources.class);
-        cellList = new CellList<Empleado>(new EmpleadoCell(new SingleSelectionModel<Empleado>()), cellListResources, PersonalDB.get().getDataProvider());
+        // CellList.Resources cellListResources = GWT.create(ICellListResources.class);
+        SingleSelectionModel<Empleado> selectionModel = new SingleSelectionModel<>();
+        cellList = new CellList<>(new EmpleadoCell(selectionModel), cellListResources, PersonalDB.get().getDataProvider());
+        cellList.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
+        cellList.setSelectionModel(selectionModel);
+        selectionModel.addSelectionChangeHandler(new SelectionHandler());
         cellList.setPageSize(600);  // máximo son 400 empleados. Al mostrarlos todos, no se requiere Pager.
         scrollPanel.add(cellList);
         
@@ -143,8 +150,10 @@ public class PersonalUI extends Composite {
             String nivelStr = value.getNivel()!= null ? value.getNivel().getCode() : "SIN_NIVEL";
             
             String html =
-                    "<div style='height: 15px;'/>" +
-                    "<table width='100%' cellspacing='0' cellpadding='0' style='text-align: left; vertical-align: middle;'>\n" +
+                    "<table width='100%' cellspacing='0' cellpadding='0' style='text-align: left; vertical-align: middle; border-bottom:1px solid lightgray;'>\n" +
+                    "  <tr>\n" +
+                    "    <td colspan='4'></td>\n" +
+                    "  </tr>\n" +
                     "  <tr>\n" +
                     "    <td width='4px' rowspan='4'>F</td>\n" +
                     "    <td width='78px' rowspan='3' style='text-align: center;'><img src='URL_FOTO_REEMPLAZO' style='border:1px solid lightgray; margin-top: 3px;'></td>\n" +
@@ -166,8 +175,10 @@ public class PersonalUI extends Composite {
                     "    </td>\n" +
                     "    <td style='text-align: right;'><i class=\"fa fa-info-circle fa-lg\" style='opacity: 0.5; padding-right: 5px;'></i></td>\n" +
                     "  </tr>\n" +
-                    "</table>" +
-                    "<div style='height: 10px; border-bottom:1px solid lightgray;'/>";
+                    "  <tr>\n" +
+                    "    <td colspan='4' style='height:3px;'></td>\n" +
+                    "  </tr>\n" +
+                    "</table>";
                     
                     
 // "       <table width='100%' cellspacing='0' cellpadding='0'> " + 
@@ -247,5 +258,24 @@ public class PersonalUI extends Composite {
 //    }
 //    return value;
 //  }
+
+    private class SelectionHandler implements SelectionChangeEvent.Handler {
+        @Override
+        public void onSelectionChange(SelectionChangeEvent event) {
+            if (event.getSource() instanceof SingleSelectionModel) {
+                SingleSelectionModel selModel = (SingleSelectionModel) event.getSource();
+                if (selModel.getSelectedObject() == null) {
+                    // Limpiar seleccion
+                } else {
+                    if (selModel.getSelectedObject() instanceof Empleado) {
+
+                        Empleado empleado = (Empleado) selModel.getSelectedObject();
+                        
+                        System.out.println(">> " + empleado);
+                    }
+                }
+            }
+        }
+    }
 
 }
