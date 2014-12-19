@@ -18,18 +18,17 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
 import org.cimav.client.domain.Empleado;
 import org.cimav.client.tools.DBEvent;
 import org.cimav.client.tools.DBMethod;
 import org.cimav.client.tools.DBTypeResult;
-import org.gwtbootstrap3.client.ui.constants.IconType;
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.TextBox;
+import org.gwtbootstrap3.client.ui.constants.IconFlip;
 import org.gwtbootstrap3.client.ui.constants.Styles;
 import org.gwtbootstrap3.extras.growl.client.ui.Growl;
 import org.gwtbootstrap3.extras.growl.client.ui.GrowlHelper;
@@ -49,9 +48,8 @@ public class PersonalUI extends Composite {
     @UiField public ScrollPanel scrollPanel;
     CellList<Empleado> cellList;
     
-    @UiField Button cargarBtn;
-    @UiField Label totalRegistrosLbl;
     @UiField TextBox searchTxt;
+    @UiField Button reloadBtn;
     
     public PersonalUI() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -77,10 +75,11 @@ public class PersonalUI extends Composite {
         // Add the CellList to the adapter in the database.
         PersonalDB.get().addDataDisplay(cellList);
         
-        cargarBtn.addClickHandler(new ClickHandler() {
+        reloadBtn.setIconFlip(IconFlip.HORIZONTAL);
+        reloadBtn.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                totalRegistrosLbl.setText("Cargando registros...");
+                reloadBtn.setIconSpin(true);  
                 PersonalDB.get().findAll();
             }
         });
@@ -90,26 +89,25 @@ public class PersonalUI extends Composite {
             @Override
             public void onMethodExecuted(DBEvent dbEvent) {
                 if (DBMethod.FIND_ALL.equals(dbEvent.getDbMethod())) {
+                    
+                    reloadBtn.setIconSpin(false);
+                    String m = "" + PersonalDB.get().getDataProvider().getDataDisplays().size() + "/" + PersonalDB.get().getDataProvider().getList().size();
+                    reloadBtn.setText(m);
+                    
                     if (DBTypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
                         String msg = "Registros: " + PersonalDB.get().getDataProvider().getList().size();
-                        totalRegistrosLbl.setText(msg);
-                        
                         GrowlOptions go = GrowlHelper.getNewOptions();
                         go.setSuccessType();
                         go.setAllowDismiss(false);
                         Growl.growl("",msg,Styles.FADE + " " + Styles.FONT_AWESOME_BASE /*+ " " + IconType.SMILE_O.getCssName()*/, go);
                         
-                        
                     } else {
                         String msg = "Falló la carga de registros";
-                        totalRegistrosLbl.setText(msg);
-                        
                         GrowlOptions go = GrowlHelper.getNewOptions();
                         go.setDangerType();
                         go.setDelay(15000); // 15 segs
                         //go.setAllowDismiss(false);
                         Growl.growl("",msg,Styles.FONT_AWESOME_BASE /*+ " " + IconType.SMILE_O.getCssName()*/, go);
-
                     }
                 }
             }
@@ -120,7 +118,8 @@ public class PersonalUI extends Composite {
             public void onKeyUp(KeyUpEvent event) {
                 final String txtToSearch = searchTxt.getText();
                 PersonalDB.get().getDataProvider().setFilter(txtToSearch);
-                totalRegistrosLbl.setText("Registros: " + PersonalDB.get().getRowCount());
+                String rows = PersonalDB.get().getRowCountPropotional();
+                reloadBtn.setText(rows);
             }
         });
         
@@ -144,20 +143,109 @@ public class PersonalUI extends Composite {
             String nivelStr = value.getNivel()!= null ? value.getNivel().getCode() : "SIN_NIVEL";
             
             String html =
-                    "<table class='XXXX' cellspacing='0' cellpadding='0'> " + 
-                    "   <tr> " +
-                    "       <td colspan='2' align='left'> <img src='" + value.getUrlPhoto() + "'> <span>" 
-                        + value.getCode() + "</bR>"  
-                        + value.getName() + "</bR>"  
-                        + value.getRfc() + "</bR>"  
-                        + nivelStr + "</bR>"  
-                        + deptoStr + "</bR>"  
-                        + grupoStr +  " </span> </td> " +
-                    "   </tr> " +
-                    "</table> ";
+                    "<div style='height: 15px;'/>" +
+                    "<table width='100%' cellspacing='0' cellpadding='0' style='text-align: left; vertical-align: middle;'>\n" +
+                    "  <tr>\n" +
+                    "    <td width='4px' rowspan='4'>F</td>\n" +
+                    "    <td width='78px' rowspan='3' style='text-align: center;'><img src='URL_FOTO_REEMPLAZO' style='border:1px solid lightgray; margin-top: 3px;'></td>\n" +
+                    "    <td colspan='2'><h4 style='margin-top: 0px; margin-bottom: 0px;'>APELLIDOS_REEMPLAZO</h4></td>\n" +
+                    "  </tr>\n" +
+                    "  <tr>\n" +
+                    "    <td colspan='2'><h5 style='margin-top: 0px; margin-bottom: 0px;'>NOMBRE_REEMPLAZO</h5></td>\n" +
+                    "  </tr>\n" +
+                    "  <tr>\n" +
+                    "    <td>RFC_REEMPLAZO</td>\n" +
+                    "    <td></td>\n" +
+                    "  </tr>\n" +
+                    "  <tr>\n" +
+                    "    <td style='text-align:center;' ><code class='label-cyt-grp-niv'><span style='font-size: medium;' >CODE_REEMPLAZO</span></code></td>\n" +
+                    "    <td> " + 
+                                " <code class=\"label-cyt-grp-niv\"><span >GRUPO_REEMPLAZO</span></code> " + 
+                                " <code class=\"label-cyt-grp-niv\"><span >NIVEL_REEMPLAZO</span></code> " + 
+                                " <code class=\"label-cyt-grp-niv\"><span >DEPTO_REEMPLAZO</span></code> " + 
+                    "    </td>\n" +
+                    "    <td style='text-align: right;'><i class=\"fa fa-info-circle fa-lg\" style='opacity: 0.5; padding-right: 5px;'></i></td>\n" +
+                    "  </tr>\n" +
+                    "</table>" +
+                    "<div style='height: 10px; border-bottom:1px solid lightgray;'/>";
+                    
+                    
+// "       <table width='100%' cellspacing='0' cellpadding='0'> " + 
+// "           <tr > " + 
+// "               <td width='4px' >F</td> " + 
+// "               <td width='85px'> " + 
+// "                   <table width='100%' height='100%' cellspacing='0' cellpadding='0' style='text-align: center; vertical-align: middle;'> " + 
+// "                       <tr> " + 
+// "                           <td> " + 
+// "                               <img src='URL_FOTO_REEMPLAZO' alt='juan.calderon' > " + 
+// "                           </td> " + 
+// "                       </tr> " + 
+// "                       <tr> " + 
+// "                           <td style='height:24px'>CODE_REEMPLAZO</td> " + 
+// "                       </tr> " + 
+// "                   </table> " + 
+// "               </td> " + 
+// "               <td style='text-align: left; vertical-align: top;'> " + 
+// "                   <table width='100%' cellspacing='0' cellpadding='0'> " + 
+// "                       <tr> " + 
+// "                           <td colspan='2'><h4>APELLIDOS_REEMPLAZO</h4></td> " + 
+// "                       </tr> " + 
+// "                       <tr> " + 
+// "                           <td colspan='2'><h5>NOMBRE_REEMPLAZO</h5></td> " + 
+// "                       </tr> " + 
+// "                       <tr> " + 
+// "                           <td >RFC_REEMPLAZO</td> " + 
+// "                       </tr> " + 
+// "                       <tr> " + 
+//                            " <td> " + 
+//                                " <code class=\"label-cyt-grp-niv\"><span >GRUPO_REEMPLAZO</span></code> " + 
+//                                " <code class=\"label-cyt-grp-niv\"><span >NIVEL_REEMPLAZO</span></code> " + 
+//                                " <code class=\"label-cyt-grp-niv\"><span >DEPTO_REEMPLAZO</span></code> " + 
+//                            "</td> " + 
+// "                           <td style='text-align: right;'>" +
+// "                              <i class=\"fa fa-info-circle fa-lg\" style='opacity: 0.5; padding-right: 5px;'></i> " +                    
+// "                           </td> " + 
+// "                       </tr> " + 
+// "                   </table> " + 
+// " " + 
+// "               </td> " + 
+// "           </tr> " + 
+// "       </table>        ";
+            
+            html = html.replace("CODE_REEMPLAZO", value.getCode());
+            html = html.replace("URL_FOTO_REEMPLAZO", value.getUrlPhoto());
+            html = html.replace("APELLIDOS_REEMPLAZO", value.getApellidoPaterno() + " " + value.getApellidoMaterno());
+            html = html.replace("NOMBRE_REEMPLAZO", value.getNombre());
+            html = html.replaceAll("RFC_REEMPLAZO", value.getRfc());
+            html = html.replace("GRUPO_REEMPLAZO", grupoStr);
+            html = html.replace("NIVEL_REEMPLAZO", nivelStr);
+            html = html.replace("DEPTO_REEMPLAZO", deptoStr);
             
             sb.appendHtmlConstant(html);
         }
     }
     
+//    public static native String camelize(String str)/*-{
+//            return (str.match(/\-/gi) ? str.toLowerCase().replace(/\-(\w)/gi, function(a, c){return c.toUpperCase();}) : str);
+//    }-*/;    
+//    
+//    public static String capitalize(String value) {
+//    return value == null ? value : value.substring(0, 1).toUpperCase() + value.substring(1).toLowerCase();
+//  }
+//
+//  /**
+//   * Truncate a string and add an ellipsis ('...') to the end if it exceeds the
+//   * specified length.
+//   * 
+//   * @param value the string to truncate
+//   * @param len the maximum length to allow before truncating
+//   * @return the converted text
+//   */
+//  public static String ellipse(String value, int len) {
+//    if (value != null && value.length() > len) {
+//      return value.substring(0, len - 3) + "...";
+//    }
+//    return value;
+//  }
+
 }

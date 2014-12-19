@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.apache.commons.lang3.text.WordUtils;
 
 /**
  *
@@ -181,7 +182,10 @@ public class Empleado extends BaseEntity implements Serializable {
     }
 
     public String getNombre() {
-        return nombre;
+        if (nombre == null) {
+            nombre = "";
+        }
+        return  WordUtils.capitalizeFully(nombre);
     }
 
     public void setNombre(String nombre) {
@@ -189,35 +193,43 @@ public class Empleado extends BaseEntity implements Serializable {
         this.setFullName();
     }
 
+    @Override
+    public String getName() {
+        if (super.getName().isEmpty()) {
+            // si name es vacío, asignarlo
+            String fullName = this.getApellidoPaterno().toUpperCase() + " " + this.getApellidoMaterno().toUpperCase() + " " + this.getNombre();
+            super.setName(fullName);
+        }
+        return super.getName();
+    }
+    
     private void setFullName() {
-        // String fullName = this.getApellidoPaterno().toUpperCase() + " " + this.getApellidoMaterno().toUpperCase() + " " + WordUtils.capitalize(this.nombre);
-        String fullName = this.getApellidoPaterno().toUpperCase() + " " + this.getApellidoMaterno().toUpperCase() + " " + this.nombre;
+        // cuando cambia nombre y/o apellidos, cambiar name.
+        String fullName = this.getApellidoPaterno().toUpperCase() + " " + this.getApellidoMaterno().toUpperCase() + " " + this.getNombre();
         this.setName(fullName);
     }
     
     public String getApellidoMaterno() {
         if (apellidoMaterno == null) {
-            return "";
+            apellidoMaterno = "";
         }
         return apellidoMaterno;
     }
 
     public void setApellidoMaterno(String apellidoMaterno) {
         this.apellidoMaterno = apellidoMaterno;
-        
         this.setFullName();
     }
 
     public String getApellidoPaterno() {
         if (apellidoPaterno == null) {
-            return "";
+            apellidoPaterno = "";
         }
         return apellidoPaterno;
     }
 
     public void setApellidoPaterno(String apellidoPaterno) {
         this.apellidoPaterno = apellidoPaterno;
-        
         this.setFullName();
     }
 

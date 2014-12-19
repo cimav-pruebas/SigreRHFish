@@ -109,20 +109,19 @@ public class PersonalDB implements IFilter<Empleado> {
         this.display = display;
     }
     private HasData<Empleado> display;
-//    private HasData<Empleado> getDataDisplay() {
-//        return (HasData<Empleado>) dataProvider.getDataDisplays();
-//    }
 
     public FilteredListDataProvider<Empleado> getDataProvider() {
         return dataProvider;
     }
 
     public int getRowCount() {
-        if (this.display == null) {
-            return dataProvider.getList().size();
-        } else {
-            return this.display.getRowCount();
-        }
+        return this.display.getRowCount();
+    }
+    public int getTotalRowCount() {
+        return dataProvider.getList().size();
+    }
+    public String getRowCountPropotional() {
+        return "" + getRowCount() + "/" + getTotalRowCount();
     }
 
     /**

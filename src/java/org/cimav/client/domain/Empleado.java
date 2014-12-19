@@ -13,6 +13,9 @@ public class Empleado extends BaseDomain<Empleado> {
 
     private String rfc;
     private String urlPhoto;
+    private String nombre;
+    private String apellidoPaterno;
+    private String apellidoMaterno;
     
     private Grupo grupo;
     private Tabulador nivel;
@@ -58,5 +61,28 @@ public class Empleado extends BaseDomain<Empleado> {
         this.departamento = departamento;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
+    }
+
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
+    }
+
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
+
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
+    }
     
 }

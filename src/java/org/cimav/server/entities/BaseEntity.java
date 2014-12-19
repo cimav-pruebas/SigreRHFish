@@ -57,6 +57,9 @@ public abstract class BaseEntity implements Serializable {
     }
 
     public String getName() {
+        if (name == null) {
+            name = "";
+        }
         return name;
     }
 
