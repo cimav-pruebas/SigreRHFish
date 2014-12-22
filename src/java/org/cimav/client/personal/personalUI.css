@@ -62,4 +62,9 @@ code {
     font-family: Monaco,Menlo,Consolas,'Courier New',monospace; 
     font-size: 12px; border-radius: 3px;
 }
-
+.personal-editor {
+    margin: 5px;
+}
+.personal-editor-buttons-bar {
+    border-top: 1px solid lightgray;
+}

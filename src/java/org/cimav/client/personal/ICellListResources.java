@@ -24,7 +24,7 @@ import com.google.gwt.user.cellview.client.CellList;
  */
 public interface ICellListResources extends CellList.Resources {
     
-     @ClientBundle.Source("CellList_1.css") 
+     @ClientBundle.Source("CellList.css") 
      @Override
      CellList.Style cellListStyle(); 
 }

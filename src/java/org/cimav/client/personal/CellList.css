@@ -12,37 +12,17 @@
 }
 
 .cellListEvenItem {
-/*cursor: pointer;
-zoom: 1;
-background: cyan;*/
-  padding-top: 0px;
-  padding-bottom: 0px;
-  cursor: pointer;
-/*  border-left: 1px solid #bbb;*/
-  border-top: 1px dotted white;
-  border-bottom: 1px dotted #CECECE;
+    background-color: #F8F8F8; /* blanco */
 }
 
 .cellListOddItem {
-/*cursor: pointer;
-zoom: 1;
-background: greenyellow;*/
-  padding-top: 0px;
-  padding-bottom: 0px;
-  cursor: pointer;
-/*  border-left: 1px solid #bbb;*/
-  border-top: 1px dotted white;
-  border-bottom: 1px dotted #CECECE;
-
+    background: #F8F8F8 /*#F0F0F0; */
 }
 /*background-color: #628cd5;*/
 .cellListKeyboardSelectedItem {
 /*background: #ffc;*/
-  background-color: #F3F3F3; /*#ffc;*/
+  background-color: #F0F0F0;  /* griseson */
   overflow: hidden;
-  border-left: 1px solid #bbb;
-  border-top: 1px dotted #bbb;
-  border-bottom: 1px dotted #bbb;
 }
 
 .cellListSelectedItem {
@@ -50,11 +30,8 @@ background: greenyellow;*/
 color: white;
 height: auto;
 overflow: visible;*/
-  background-color: #DDDDDD;
-  color: #555555; 
+  background-color: #F0F0F0;
+/*  color: #555555; */
   height: auto;
   overflow: auto;
-  border-top: 1px dotted #515151;
-  border-bottom: 1px dotted #717171;
-  border-left: 1px solid #bbb;
 }

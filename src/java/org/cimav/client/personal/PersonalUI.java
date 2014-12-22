@@ -53,6 +53,8 @@ public class PersonalUI extends Composite {
     @UiField TextBox searchTxt;
     @UiField Button reloadBtn;
     
+    @UiField PersonalEditorUI personalEditorUI;
+    
     public PersonalUI() {
         initWidget(uiBinder.createAndBindUi(this));
         

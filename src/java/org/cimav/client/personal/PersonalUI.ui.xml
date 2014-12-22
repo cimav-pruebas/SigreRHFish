@@ -7,62 +7,56 @@ Uncomment this for XHTML entities
              xmlns:c="urn:import:com.google.gwt.user.cellview.client"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:b3="urn:import:org.gwtbootstrap3.client.ui"
+             xmlns:p="urn:import:org.cimav.client.personal"
 >
              
-<ui:style src="personalUI.css"/>
+    <ui:style src="personalUI.css"/>
     
-<g:DockLayoutPanel unit='PX' addStyleNames="{style.work-panel}">
+    <g:DockLayoutPanel unit='PX' addStyleNames="{style.work-panel}">
 
-    <g:west size='340' styleName="{style.el-west}">
-        <g:FlowPanel styleName="{style.west-search-panel}">
-        <g:DockLayoutPanel unit='PX' addStyleNames="{style.west-search-panel-wrapper}">
-            <g:north size='60'>
+        <g:west size='340' styleName="{style.el-west}">
+            <g:FlowPanel styleName="{style.west-search-panel}">
+                <g:DockLayoutPanel unit='PX' addStyleNames="{style.west-search-panel-wrapper}">
+                    <g:north size='60'>
                     
-                <g:HTMLPanel width="100%">
-                    <table cellspacing='0' cellpadding='0'  width="100%">
-                        <tr>
-                            <td colspan="2">
-                                <b3:TextBox addStyleNames="{style.search-txt}" ui:field="searchTxt" placeholder="Teclear para buscar/filtrar..."/>
-                            </td>
-                        </tr>
-                        <tr >
-                            <td>
-                                <table width="100%" style="top: 2px; position: relative;">
-                                    <td style="text-align: left;">
-                                        <b3:ButtonGroup dataToggle="BUTTONS">
-                                            <b3:RadioButton ui:field="btnByName" size="EXTRA_SMALL" type="DEFAULT">Name</b3:RadioButton>
-                                            <b3:RadioButton ui:field="btnByCode" size="EXTRA_SMALL" type="DEFAULT">Code</b3:RadioButton>
-                                            <b3:RadioButton ui:field="btnByGrupo" size="EXTRA_SMALL" type="DEFAULT">Grp</b3:RadioButton>
-                                            <b3:RadioButton ui:field="btnByNivel" size="EXTRA_SMALL" type="DEFAULT">Niv</b3:RadioButton>
-                                        </b3:ButtonGroup>
+                        <g:HTMLPanel width="100%">
+                            <table cellspacing='0' cellpadding='0'  width="100%">
+                                <tr>
+                                    <td colspan="2">
+                                        <b3:TextBox addStyleNames="{style.search-txt}" ui:field="searchTxt" placeholder="Teclear para buscar/filtrar..."/>
                                     </td>
-                                    <td style="text-align: right;">
-                                        <b3:Button ui:field="reloadBtn" size="EXTRA_SMALL" type="DEFAULT" icon="UNDO" text="888/888"  addStyleNames="{style.reload-btn}"/>
+                                </tr>
+                                <tr >
+                                    <td>
+                                        <table width="100%" style="top: 2px; position: relative;">
+                                            <td style="text-align: left;">
+                                                <b3:ButtonGroup dataToggle="BUTTONS">
+                                                    <b3:RadioButton ui:field="btnByName" size="EXTRA_SMALL" type="DEFAULT">Name</b3:RadioButton>
+                                                    <b3:RadioButton ui:field="btnByCode" size="EXTRA_SMALL" type="DEFAULT">Code</b3:RadioButton>
+                                                    <b3:RadioButton ui:field="btnByGrupo" size="EXTRA_SMALL" type="DEFAULT">Grp</b3:RadioButton>
+                                                    <b3:RadioButton ui:field="btnByNivel" size="EXTRA_SMALL" type="DEFAULT">Niv</b3:RadioButton>
+                                                </b3:ButtonGroup>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <b3:Button ui:field="reloadBtn" size="EXTRA_SMALL" type="DEFAULT" icon="UNDO" text="888/888"  addStyleNames="{style.reload-btn}"/>
+                                            </td>
+                                        </table>
                                     </td>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </g:HTMLPanel>
-            </g:north>
-            <g:center>
-                <g:ScrollPanel ui:field="scrollPanel" addStyleNames="{style.scroll-panel}" />
-            </g:center>
-        </g:DockLayoutPanel>
-        </g:FlowPanel>
-    </g:west>   
+                                </tr>
+                            </table>
+                        </g:HTMLPanel>
+                    </g:north>
+                    <g:center>
+                        <g:ScrollPanel ui:field="scrollPanel" addStyleNames="{style.scroll-panel}" />
+                    </g:center>
+                </g:DockLayoutPanel>
+            </g:FlowPanel>
+        </g:west>   
         
-    <g:center >
-        <g:DockLayoutPanel unit='PX'>
-            <g:center >
-                <g:Label>Center-Dos</g:Label>
-            </g:center>
-            <g:south size='80'>
-                <g:Label>South</g:Label>
-            </g:south>
-        </g:DockLayoutPanel>
-    </g:center>
+        <g:center >
+            <p:PersonalEditorUI ui:field="personalEditorUI"></p:PersonalEditorUI>
+        </g:center>
         
-</g:DockLayoutPanel>
+    </g:DockLayoutPanel>
     
 </ui:UiBinder>
