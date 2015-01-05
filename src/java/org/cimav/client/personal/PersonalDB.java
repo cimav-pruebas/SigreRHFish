@@ -13,6 +13,8 @@ import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -98,6 +100,57 @@ public class PersonalDB implements IFilter<Empleado> {
         
         return matcher != null;
     }
+    
+    public static final int ORDER_BY_NAME = 0;
+    public static final int ORDER_BY_CODE = 1;
+    public static final int ORDER_BY_GRUPO = 2;
+    public static final int ORDER_BY_NIVEL = 3;
+    
+    public void order(int orderBy) {
+        switch(orderBy) {
+            case ORDER_BY_NAME: {
+                Collections.sort(dataProvider.getList(), new Comparator<Empleado>() {
+                    @Override
+                    public int compare(Empleado emp1, Empleado emp2) {
+                         return  emp1.getName().compareTo(emp2.getName());
+                    }
+                });
+                break;
+            }
+            case ORDER_BY_CODE: {
+                Collections.sort(dataProvider.getList(), new Comparator<Empleado>() {
+                    @Override
+                    public int compare(Empleado emp1, Empleado emp2) {
+                         return  emp1.getCode().compareTo(emp2.getCode());
+                    }
+                });
+                break;
+            }
+            case ORDER_BY_GRUPO: {
+                Collections.sort(dataProvider.getList(), new Comparator<Empleado>() {
+                    @Override
+                    public int compare(Empleado emp1, Empleado emp2) {
+                        String grp1 = emp1.getGrupo() != null ? emp1.getGrupo().getCode() : "";
+                        String grp2 = emp2.getGrupo() != null ? emp2.getGrupo().getCode() : "";
+                        return grp1.compareTo(grp2);
+                    }
+                });
+                break;
+            }
+            case ORDER_BY_NIVEL: {
+                Collections.sort(dataProvider.getList(), new Comparator<Empleado>() {
+                    @Override
+                    public int compare(Empleado emp1, Empleado emp2) {
+                        String niv1 = emp1.getNivel() != null ? emp1.getNivel().getCode() : "";
+                        String niv2 = emp2.getNivel() != null ? emp2.getNivel().getCode() : "";
+                        return niv1.compareTo(niv2);
+                    }
+                });
+                break;
+            }
+        }
+    }
+    //return  fruite1.fruitName.compareTo(fruite2.fruitName);
     
     /**
      * Add a display to the database. The current range of interest of the display will be populated with data.

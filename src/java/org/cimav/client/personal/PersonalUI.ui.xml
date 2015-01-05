@@ -31,14 +31,14 @@ Uncomment this for XHTML entities
                                         <table width="100%" style="top: 2px; position: relative;">
                                             <td style="text-align: left;">
                                                 <b3:ButtonGroup dataToggle="BUTTONS">
-                                                    <b3:RadioButton ui:field="btnByName" size="EXTRA_SMALL" type="DEFAULT">Name</b3:RadioButton>
-                                                    <b3:RadioButton ui:field="btnByCode" size="EXTRA_SMALL" type="DEFAULT">Code</b3:RadioButton>
+                                                    <b3:RadioButton ui:field="btnByName" size="EXTRA_SMALL" type="DEFAULT" active="true">Nombre</b3:RadioButton>
+                                                    <b3:RadioButton ui:field="btnByCode" size="EXTRA_SMALL" type="DEFAULT">Num</b3:RadioButton>
                                                     <b3:RadioButton ui:field="btnByGrupo" size="EXTRA_SMALL" type="DEFAULT">Grp</b3:RadioButton>
                                                     <b3:RadioButton ui:field="btnByNivel" size="EXTRA_SMALL" type="DEFAULT">Niv</b3:RadioButton>
                                                 </b3:ButtonGroup>
                                             </td>
                                             <td style="text-align: right;">
-                                                <b3:Button ui:field="reloadBtn" size="EXTRA_SMALL" type="DEFAULT" icon="UNDO" text="888/888"  addStyleNames="{style.reload-btn}"/>
+                                                <b3:Button ui:field="reloadBtn" size="EXTRA_SMALL" type="DEFAULT" icon="UNDO" text="000/000"  addStyleNames="{style.reload-btn}"/>
                                             </td>
                                         </table>
                                     </td>

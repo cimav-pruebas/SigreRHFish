@@ -22,3 +22,35 @@ body{
     //border-color: chartreuse !important;
 }
 
+div.gwt-StackLayoutPanel .gwt-StackLayoutPanelHeader {
+/*     usa el div. en vez del !important; */
+  color: #F0F0F0;
+  font-weight: normal;
+  font-size: 1.3em;
+  padding: 3px;
+  background: #2F7D9C; /*  #3399FF; */
+  border: 0px;
+  border-bottom: 1px solid #bbbbbb;
+}
+div.gwt-StackLayoutPanel .gwt-StackLayoutPanelHeader-hovering {
+    background: #1C5A7D; /* #297ACC; */
+}
+div.gwt-StackLayoutPanel .gwt-StackLayoutPanelContent {
+    border: 0px solid #bbbbbb  !important;
+    border-bottom: 0px;
+    background: white;
+    padding: 2px 2px 10px 5px;
+    background: #404040;
+}
+div.gwt-StackLayoutPanel .gwt-StackLayoutPanelContent >li>a, a:visited, a:hover {
+    color: #F0F0F0;
+}
+div.gwt-StackLayoutPanel .gwt-StackLayoutPanelContent >li>a:hover, div.gwt-StackLayoutPanel .gwt-StackLayoutPanelContent >li>a:focus {
+    background-color: #505050;
+}
+
+/*#505050
+.nav>li>a:hover, .nav>li>a:focus {
+text-decoration: none;
+background-color: #eee;
+}*/

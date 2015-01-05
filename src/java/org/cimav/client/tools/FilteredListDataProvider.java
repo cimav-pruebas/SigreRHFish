@@ -15,7 +15,6 @@ import com.google.gwt.view.client.Range;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /*
 * http://www.artiom.pro/2012/09/gwt-celltable-filtering.html#comment-form/
@@ -30,7 +29,6 @@ public class FilteredListDataProvider<T> extends ListDataProvider<T> {
     public FilteredListDataProvider(IFilter<T> filter) {
         this.filter = filter;
     }
-
 
     public String getFilter() {
         return filterString;

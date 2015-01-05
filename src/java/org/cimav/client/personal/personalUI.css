@@ -68,3 +68,7 @@ code {
 .personal-editor-buttons-bar {
     border-top: 1px solid lightgray;
 }
+.my-style {
+    border: 1px dashed red;
+    background-color: greenyellow;
+}

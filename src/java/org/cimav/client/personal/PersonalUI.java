@@ -17,6 +17,7 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
 import com.google.gwt.user.client.ui.Composite;
@@ -55,12 +56,14 @@ public class PersonalUI extends Composite {
     
     @UiField PersonalEditorUI personalEditorUI;
     
+    private SingleSelectionModel<Empleado> selectionModel;
+    
     public PersonalUI() {
         initWidget(uiBinder.createAndBindUi(this));
         
         //CellList.Resources cellListResources = GWT.create(CellList.Resources.class);
         CellList.Resources cellListResources = GWT.create(ICellListResources.class);
-        SingleSelectionModel<Empleado> selectionModel = new SingleSelectionModel<>();
+        selectionModel = new SingleSelectionModel<>();
         cellList = new CellList<>(new EmpleadoCell(selectionModel), cellListResources, PersonalDB.get().getDataProvider());
         cellList.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
         cellList.setSelectionModel(selectionModel);
@@ -84,41 +87,13 @@ public class PersonalUI extends Composite {
         // Add the CellList to the adapter in the database.
         PersonalDB.get().addDataDisplay(cellList);
         
+        PersonalDB.get().addMethodExecutedListener(new RestMethodExecutedListener());
+        
         reloadBtn.setIconFlip(IconFlip.HORIZONTAL);
         reloadBtn.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                reloadBtn.setIconSpin(true);  
-                PersonalDB.get().findAll();
-            }
-        });
-        
-        
-        PersonalDB.get().addMethodExecutedListener(new PersonalDB.MethodExecutedListener() {
-            @Override
-            public void onMethodExecuted(DBEvent dbEvent) {
-                if (DBMethod.FIND_ALL.equals(dbEvent.getDbMethod())) {
-                    
-                    reloadBtn.setIconSpin(false);
-                    String m = "" + PersonalDB.get().getDataProvider().getDataDisplays().size() + "/" + PersonalDB.get().getDataProvider().getList().size();
-                    reloadBtn.setText(m);
-                    
-                    if (DBTypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
-                        String msg = "Registros: " + PersonalDB.get().getDataProvider().getList().size();
-                        GrowlOptions go = GrowlHelper.getNewOptions();
-                        go.setSuccessType();
-                        go.setAllowDismiss(false);
-                        Growl.growl("",msg,Styles.FADE + " " + Styles.FONT_AWESOME_BASE /*+ " " + IconType.SMILE_O.getCssName()*/, go);
-                        
-                    } else {
-                        String msg = "Falló la carga de registros";
-                        GrowlOptions go = GrowlHelper.getNewOptions();
-                        go.setDangerType();
-                        go.setDelay(15000); // 15 segs
-                        //go.setAllowDismiss(false);
-                        Growl.growl("",msg,Styles.FONT_AWESOME_BASE /*+ " " + IconType.SMILE_O.getCssName()*/, go);
-                    }
-                }
+                reloadAll();
             }
         });
         
@@ -132,6 +107,65 @@ public class PersonalUI extends Composite {
             }
         });
         
+        // orden inicial
+        orderBy = PersonalDB.ORDER_BY_NAME;
+        
+        /* Al arrancar, cargar a todos los empleados */
+        reloadAll();
+    }
+
+    private int orderBy;
+    @UiHandler({"btnByName", "btnByCode", "btnByGrupo", "btnByNivel"})
+    void handleClick(ClickEvent e) {
+        orderBy = -1;
+        if (e.getSource().toString().contains("Nombre")) {
+            orderBy = PersonalDB.ORDER_BY_NAME;
+        } else if (e.getSource().toString().contains("Num")) {
+            orderBy = PersonalDB.ORDER_BY_CODE;
+        } else if (e.getSource().toString().contains("Grp")) {
+            orderBy = PersonalDB.ORDER_BY_GRUPO;
+        } else if (e.getSource().toString().contains("Niv")) {
+            orderBy = PersonalDB.ORDER_BY_NIVEL;
+            
+            //selectionModel.setSelected(new Empleado(), true);
+        }
+        this.orderBy();
+    }
+    
+    private void orderBy() {
+        PersonalDB.get().order(this.orderBy);
+    }
+    
+    private void reloadAll() {
+        PersonalDB.get().findAll();
+        this.orderBy();
+    }
+    
+    private class RestMethodExecutedListener implements PersonalDB.MethodExecutedListener {
+
+        @Override
+        public void onMethodExecuted(DBEvent dbEvent) {
+            if (DBMethod.FIND_ALL.equals(dbEvent.getDbMethod())) {
+                String m = "" + PersonalDB.get().getDataProvider().getDataDisplays().size() + "/" + PersonalDB.get().getDataProvider().getList().size();
+                reloadBtn.setText(m);
+
+                if (DBTypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
+                    String msg = "Registros: " + PersonalDB.get().getDataProvider().getList().size();
+                    GrowlOptions go = GrowlHelper.getNewOptions();
+                    go.setSuccessType();
+                    go.setAllowDismiss(false);
+                    Growl.growl("", msg, Styles.FADE + " " + Styles.FONT_AWESOME_BASE /*+ " " + IconType.SMILE_O.getCssName()*/, go);
+
+                } else {
+                    String msg = "Falló la carga de registros";
+                    GrowlOptions go = GrowlHelper.getNewOptions();
+                    go.setDangerType();
+                    go.setDelay(15000); // 15 segs
+                    //go.setAllowDismiss(false);
+                    Growl.growl("", msg, Styles.FONT_AWESOME_BASE /*+ " " + IconType.SMILE_O.getCssName()*/, go);
+                }
+            }
+        }
     }
     
     private class EmpleadoCell extends AbstractCell<Empleado> {
@@ -156,7 +190,7 @@ public class PersonalUI extends Composite {
             String nivelStr = value.getNivel()!= null ? value.getNivel().getCode() : "SIN_NIVEL";
             
             String html =
-                    "<table width='100%' cellspacing='0' cellpadding='0' style='text-align: left; vertical-align: middle; border-bottom:1px solid lightgray;'>\n" +
+                    "<table width='100%' cellspacing='0' cellpadding='0' style='cursor: pointer; text-align: left; vertical-align: middle; border-bottom:1px solid lightgray;'>\n" +
                     "  <tr>\n" +
                     "    <td width='4px' rowspan='6' style='height:auto; width: 5px; SELECTED_COLOR_REEMPLAZO'></td>\n" +
                     "    <td colspan='3' style='height:3px;'></td>\n" +
