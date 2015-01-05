@@ -39,7 +39,7 @@ div.gwt-StackLayoutPanel .gwt-StackLayoutPanelContent {
     border: 0px solid #bbbbbb  !important;
     border-bottom: 0px;
     background: white;
-    padding: 2px 2px 10px 5px;
+    padding: 0px; /* 2px 2px 10px 5px; */
     background: #404040;
 }
 div.gwt-StackLayoutPanel .gwt-StackLayoutPanelContent >li>a, a:visited, a:hover {
@@ -48,9 +48,3 @@ div.gwt-StackLayoutPanel .gwt-StackLayoutPanelContent >li>a, a:visited, a:hover 
 div.gwt-StackLayoutPanel .gwt-StackLayoutPanelContent >li>a:hover, div.gwt-StackLayoutPanel .gwt-StackLayoutPanelContent >li>a:focus {
     background-color: #505050;
 }
-
-/*#505050
-.nav>li>a:hover, .nav>li>a:focus {
-text-decoration: none;
-background-color: #eee;
-}*/
