@@ -1,0 +1,22 @@
+<!--
+Uncomment this for XHTML entities
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+-->
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b3="urn:import:org.gwtbootstrap3.client.ui"
+>
+    <ui:style>
+
+    </ui:style>
+    <g:HTMLPanel>
+        
+        <b3:InputGroup>
+            <b3:InputGroupButton>
+                <b3:CheckBoxButton ui:field="hasCreditoChkBox"/>
+            </b3:InputGroupButton>
+            <b3:TextBox ui:field="creditoTxtBox" /> <!-- placeholder="Type here" autoComplete="false" -->
+        </b3:InputGroup>     
+           
+    </g:HTMLPanel>
+</ui:UiBinder>

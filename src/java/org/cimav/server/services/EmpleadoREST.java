@@ -17,7 +17,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import org.cimav.server.entities.Empleado;
 
 /**
@@ -39,13 +38,21 @@ public class EmpleadoREST extends AbstractREST<Empleado> {
     @Override
     @Consumes("application/json")
     public void create(Empleado entity) {
+        this.setName(entity);
         super.create(entity);
     }
 
+    private void setName(Empleado entity) {
+        // al guardar (POST y PUT), actualizar el Name
+        String name = entity.getApellidoPaterno() + " " + entity.getApellidoMaterno() + " " + entity.getNombre();
+        entity.setName(name);
+    }
+    
     @PUT
     @Path("{id}")
     @Consumes("application/json")
     public void edit(@PathParam("id") Integer id, Empleado entity) {
+        this.setName(entity);
         super.edit(entity);
     }
 

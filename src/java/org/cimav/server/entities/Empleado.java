@@ -24,7 +24,7 @@ import org.apache.commons.lang3.text.WordUtils;
  */
 @Entity
 @Table(name = "empleados")
-@XmlRootElement(name = "employees", namespace = "empleadiux")
+@XmlRootElement(name = "employees")
 //@XmlType(propOrder = { "id", "clave", "consecutivo", "email", "telephone" })
 @NamedQueries({
     @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e"),
@@ -48,8 +48,8 @@ public class Empleado extends BaseEntity implements Serializable {
 
     @Size(max = 100)
     @Column(name = "curp")
-
     private String curp;
+
     @Size(max = 50)
     @Column(name = "rfc")
     private String rfc;
@@ -185,30 +185,13 @@ public class Empleado extends BaseEntity implements Serializable {
         if (nombre == null) {
             nombre = "";
         }
-        return  WordUtils.capitalizeFully(nombre);
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
-        this.setFullName();
+        this.nombre = WordUtils.capitalizeFully(nombre);
     }
 
-    @Override
-    public String getName() {
-        if (super.getName().isEmpty()) {
-            // si name es vacío, asignarlo
-            String fullName = this.getApellidoPaterno().toUpperCase() + " " + this.getApellidoMaterno().toUpperCase() + " " + this.getNombre();
-            super.setName(fullName);
-        }
-        return super.getName();
-    }
-    
-    private void setFullName() {
-        // cuando cambia nombre y/o apellidos, cambiar name.
-        String fullName = this.getApellidoPaterno().toUpperCase() + " " + this.getApellidoMaterno().toUpperCase() + " " + this.getNombre();
-        this.setName(fullName);
-    }
-    
     public String getApellidoMaterno() {
         if (apellidoMaterno == null) {
             apellidoMaterno = "";
@@ -217,8 +200,7 @@ public class Empleado extends BaseEntity implements Serializable {
     }
 
     public void setApellidoMaterno(String apellidoMaterno) {
-        this.apellidoMaterno = apellidoMaterno;
-        this.setFullName();
+        this.apellidoMaterno = apellidoMaterno.toUpperCase();
     }
 
     public String getApellidoPaterno() {
@@ -229,8 +211,7 @@ public class Empleado extends BaseEntity implements Serializable {
     }
 
     public void setApellidoPaterno(String apellidoPaterno) {
-        this.apellidoPaterno = apellidoPaterno;
-        this.setFullName();
+        this.apellidoPaterno = apellidoPaterno.toUpperCase();
     }
 
 }

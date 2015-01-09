@@ -18,62 +18,14 @@ Uncomment this for XHTML entities
                 </b3:NavTabs>
                 <b3:TabContent >
                     <b3:TabPane active="true" b3:id="tabEditorPersonalId">
-                        <!--                        <g:FlexTable ui:field="editor"/>-->
-                        
-                        <b3:Form type="HORIZONTAL">
-                            <b3:FieldSet>
-                                <b3:Legend>Sample form</b3:Legend>
-
-                                <b3:FormGroup>
-                                    <b3:FormLabel for="formEmail" addStyleNames="col-lg-2 style.my-style">Email</b3:FormLabel>
-                                    <g:FlowPanel addStyleNames="col-lg-10">
-                                        <b3:FormControlStatic b3:id="formEmail" addStyleNames="style.my-style">email@example.example</b3:FormControlStatic>
-                                    </g:FlowPanel>
-                                </b3:FormGroup>
-
-                                <b3:FormGroup>
-                                    <b3:FormLabel for="formName" addStyleNames="col-lg-2 style.my-style">Name</b3:FormLabel>
-                                    <g:FlowPanel addStyleNames="col-lg-10 my-style">
-                                        <b3:TextBox text="blabla" b3:id="formName"/>
-                                    </g:FlowPanel>
-                                </b3:FormGroup>
-
-                                <b3:FormGroup>
-                                    <b3:FormLabel for="formCountry" addStyleNames="col-lg-2">Country</b3:FormLabel>
-                                    <g:FlowPanel addStyleNames="col-lg-10">
-                                        <b3:ListBox b3:id="formCountry">
-                                            <g:item>USA</g:item>
-                                            <g:item>Germany</g:item>
-                                            <g:item>Other</g:item>
-                                        </b3:ListBox>
-                                    </g:FlowPanel>
-                                </b3:FormGroup>
-
-                                <b3:FormGroup>
-                                    <g:FlowPanel addStyleNames="col-lg-offset-2 col-lg-10">
-                                        <b3:CheckBox text="Remember me"/>
-                                    </g:FlowPanel>
-                                </b3:FormGroup>
-
-                                <b3:FormGroup>
-                                    <g:FlowPanel addStyleNames="col-lg-offset-2 col-lg-10">
-                                        <b3:InlineRadio name="radio1" formValue="value1" text="Radio 1"/>
-                                        <b3:InlineRadio name="radio1" formValue="value2" text="Radio 2"/>
-                                        <b3:InlineRadio name="radio1" formValue="value3" text="Radio 3"/>
-                                    </g:FlowPanel>
-                                </b3:FormGroup>
-
-                                <b3:FormGroup>
-                                    <g:FlowPanel addStyleNames="col-lg-offset-2 col-lg-10">
-                                        <b3:Button>Send</b3:Button>
-                                    </g:FlowPanel>
-                                </b3:FormGroup>
-                            </b3:FieldSet>
-                        </b3:Form>
-                                                
+                        <g:VerticalPanel addStyleNames="{style.wrapper-panel-editor}">
+                            <g:FlexTable ui:field="flexEditorPersonal"/>
+                        </g:VerticalPanel>
                     </b3:TabPane>
                     <b3:TabPane b3:id="tabEditorLaboral">
-    
+                        <g:VerticalPanel addStyleNames="{style.wrapper-panel-editor}">
+                            <g:FlexTable ui:field="flexEditorLaboral"/>
+                        </g:VerticalPanel>
                     </b3:TabPane>
                     <b3:TabPane b3:id="tabEditorHistorico">
     
@@ -81,9 +33,9 @@ Uncomment this for XHTML entities
                 </b3:TabContent>
             </g:FlowPanel>
         </g:center>
-        <g:south size="48">
+        <g:south size="40">
             <g:HTMLPanel addStyleNames="{style.personal-editor-buttons-bar}">
-                <table cellspacing='0' cellpadding='0'  width="100%" style="margin-top: 10px;">
+                <table cellspacing='0' cellpadding='0'  width="100%" > <!-- style="margin-top: 10px;" */  -->
                     <tr>
                         <td style="align:left; text-align: left !important;">
                             <b3:Tooltip title="Agregar empleado nuevo" placement="RIGHT">
@@ -93,7 +45,7 @@ Uncomment this for XHTML entities
                         <td align="right">
                             <g:HorizontalPanel >
                                 <b3:Tooltip title="Guardar" placement="LEFT">
-                                    <b3:Button icon="CHECK" />
+                                    <b3:Button ui:field="saveBtn" icon="CHECK" />
                                 </b3:Tooltip>
                                 <b3:Tooltip title="Cancelar" placement="LEFT">
                                     <b3:Button icon="PLUS" iconRotate="ROTATE_90"/>

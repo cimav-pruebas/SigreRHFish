@@ -5,6 +5,8 @@
  */
 package org.cimav.client.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  *
  * @author juan.calderon
@@ -16,6 +18,11 @@ public class Empleado extends BaseDomain<Empleado> {
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
+    
+    @JsonIgnore
+    private EClinica clinica;
+    @JsonIgnore
+    private EBanco banco;
     
     private Grupo grupo;
     private Tabulador nivel;
@@ -83,6 +90,22 @@ public class Empleado extends BaseDomain<Empleado> {
 
     public void setApellidoMaterno(String apellidoMaterno) {
         this.apellidoMaterno = apellidoMaterno;
+    }
+
+    public EClinica getClinica() {
+        return clinica;
+    }
+
+    public void setClinica(EClinica clinica) {
+        this.clinica = clinica;
+    }
+
+    public EBanco getBanco() {
+        return banco;
+    }
+
+    public void setBanco(EBanco banco) {
+        this.banco = banco;
     }
     
 }

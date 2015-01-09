@@ -9,7 +9,7 @@ package org.cimav.client.tools;
  *
  * @author juan.calderon
  */
-public class DBEvent {
+public class ProviderEvent {
     
     private ProviderMethod dbMethod;
     private TypeResult dbTypeResult;
@@ -17,7 +17,7 @@ public class DBEvent {
     
     private Object result;
 
-    public DBEvent(ProviderMethod dbMethod, TypeResult dBTypeResult, String reason) {
+    public ProviderEvent(ProviderMethod dbMethod, TypeResult dBTypeResult, String reason) {
         this.dbMethod = dbMethod;
         this.dbTypeResult = dBTypeResult;
         this.reason = reason;
@@ -54,5 +54,5 @@ public class DBEvent {
     public void setResult(Object result) {
         this.result = result;
     }
-    
+
 }

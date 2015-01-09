@@ -48,3 +48,6 @@ div.gwt-StackLayoutPanel .gwt-StackLayoutPanelContent >li>a, a:visited, a:hover 
 div.gwt-StackLayoutPanel .gwt-StackLayoutPanelContent >li>a:hover, div.gwt-StackLayoutPanel .gwt-StackLayoutPanelContent >li>a:focus {
     background-color: #505050;
 }
+div.tab-content {
+    height: 100%;
+}

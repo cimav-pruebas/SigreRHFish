@@ -14,7 +14,7 @@ Uncomment this for XHTML entities
     
     <g:DockLayoutPanel unit='PX' addStyleNames="{style.work-panel}">
 
-        <g:west size='340' styleName="{style.el-west}">
+        <g:west size='340' >
             <g:FlowPanel styleName="{style.west-search-panel}">
                 <g:DockLayoutPanel unit='PX' addStyleNames="{style.west-search-panel-wrapper}">
                     <g:north size='60'>

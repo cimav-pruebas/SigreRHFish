@@ -9,7 +9,7 @@ package org.cimav.client.tools;
  *
  * @author juan.calderon
  */
-public class DBEvent {
+public class RESTEvent {
     
     private ProviderMethod dbMethod;
     private TypeResult dbTypeResult;
@@ -17,10 +17,11 @@ public class DBEvent {
     
     private Object result;
 
-    public DBEvent(ProviderMethod dbMethod, TypeResult dBTypeResult, String reason) {
+    public RESTEvent(ProviderMethod dbMethod, TypeResult dBTypeResult, String reason) {
         this.dbMethod = dbMethod;
         this.dbTypeResult = dBTypeResult;
         this.reason = reason;
+        this.result = null;
     }
 
     public ProviderMethod getDbMethod() {

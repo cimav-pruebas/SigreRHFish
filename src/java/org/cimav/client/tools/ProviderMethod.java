@@ -9,7 +9,8 @@ package org.cimav.client.tools;
  *
  * @author juan.calderon
  */
-public enum DBTypeResult {
-    FAILURE,
-    SUCCESS;
+public enum ProviderMethod {
+    FIND_ALL,
+    DELETE,
+    CREATE;
 }

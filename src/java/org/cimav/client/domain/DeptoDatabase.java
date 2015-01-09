@@ -13,9 +13,14 @@ import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import org.cimav.client.tools.Ajax;
+import org.cimav.client.tools.DBEvent;
+import org.cimav.client.tools.ProviderMethod;
+import org.cimav.client.tools.TypeResult;
 import org.cimav.client.tools.InfoView;
 import org.fusesource.restygwt.client.JsonCallback;
 import org.fusesource.restygwt.client.JsonEncoderDecoder;
@@ -273,4 +278,71 @@ public class DeptoDatabase {
          */
     }
 
+    // <editor-fold defaultstate="collapsed" desc="métodos CRUD-REST"> 
+    
+    public interface DepartamentoJsonCodec extends JsonEncoderDecoder<Departamento> {}
+    public DepartamentoJsonCodec departamentoListJsonCodec = GWT.create(DepartamentoJsonCodec.class);
+    
+    public void findAll() {
+                
+        //dataProvider.getList().clear();
+
+        HashMap<String, String> headers = new HashMap<String, String>();
+        headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
+
+        Resource rb = new Resource(URL_REST, headers);
+        rb.get().send(Ajax.jsonCall(new JsonCallback() {
+
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                Window.alert(exception.getLocalizedMessage());
+                
+                DBEvent dbEvent = new DBEvent(ProviderMethod.FIND_ALL, TypeResult.FAILURE, exception.getMessage());
+                onMethodExecuted(dbEvent);
+            }
+
+            @Override
+            public void onSuccess(Method method, JSONValue response) {
+                // TODO debería poderse con List<Empleado>
+                // Pasar la lista completa. Probablemente si se soluciona el XmlRootElement name="empleados"
+                
+                List<Departamento> deptos = new ArrayList<>();
+                
+                JSONArray array = response.isArray();
+                for (int i=0;i<array.size();i++) {
+                    JSONValue val = array.get(i);
+                    Departamento depto = departamentoListJsonCodec.decode(val);
+                    deptos.add(depto);
+                }
+                
+                DBEvent dbEvent = new DBEvent(ProviderMethod.FIND_ALL, TypeResult.SUCCESS, "");
+                dbEvent.setResult(deptos);
+                onMethodExecuted(dbEvent); //TODO onMethodExecuted(dbEvent) hacerlo con fire.
+            }
+            
+        }));
+
+    }
+    
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="interface MethodExecutedListener"> 
+    public interface MethodExecutedListener extends java.util.EventListener {
+        void onMethodExecuted(DBEvent dbEvent);
+    }
+    private final ArrayList listeners = new ArrayList();
+    public void addMethodExecutedListener(MethodExecutedListener listener) {
+        listeners.add(listener);
+    }
+    public void removeMethodExecutedListener(MethodExecutedListener listener) {
+        listeners.remove(listener);
+    }
+    public void onMethodExecuted(DBEvent dbEvent) {
+        for(Iterator it = listeners.iterator(); it.hasNext();) {
+            MethodExecutedListener listener = (MethodExecutedListener) it.next();
+            listener.onMethodExecuted(dbEvent);
+        }
+    }
+    // </editor-fold>
+    
 }

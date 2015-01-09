@@ -26,9 +26,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import org.cimav.client.domain.Empleado;
-import org.cimav.client.tools.DBEvent;
-import org.cimav.client.tools.DBMethod;
-import org.cimav.client.tools.DBTypeResult;
+import org.cimav.client.tools.ProviderEvent;
+import org.cimav.client.tools.ProviderMethod;
+import org.cimav.client.tools.TypeResult;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.constants.IconFlip;
@@ -43,7 +43,9 @@ import org.gwtbootstrap3.extras.growl.client.ui.GrowlOptions;
  */
 public class PersonalUI extends Composite {
     
-    private static PersonalUIUiBinder uiBinder = GWT.create(PersonalUIUiBinder.class);
+    //private PersonalProvider personalProvider;
+    
+    private static final PersonalUIUiBinder uiBinder = GWT.create(PersonalUIUiBinder.class);
     
     interface PersonalUIUiBinder extends UiBinder<Widget, PersonalUI> {
     }
@@ -54,9 +56,9 @@ public class PersonalUI extends Composite {
     @UiField TextBox searchTxt;
     @UiField Button reloadBtn;
     
-    @UiField PersonalEditorUI personalEditorUI;
+    //@UiField PersonalEditorUI personalEditorUI;
     
-    private SingleSelectionModel<Empleado> selectionModel;
+    private final SingleSelectionModel<Empleado> selectionModel;
     
     public PersonalUI() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -64,7 +66,7 @@ public class PersonalUI extends Composite {
         //CellList.Resources cellListResources = GWT.create(CellList.Resources.class);
         CellList.Resources cellListResources = GWT.create(ICellListResources.class);
         selectionModel = new SingleSelectionModel<>();
-        cellList = new CellList<>(new EmpleadoCell(selectionModel), cellListResources, PersonalDB.get().getDataProvider());
+        cellList = new CellList<>(new EmpleadoCell(selectionModel), cellListResources, PersonalProvider.get().getDataProvider());
         cellList.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
         cellList.setSelectionModel(selectionModel);
         selectionModel.addSelectionChangeHandler(new SelectionHandler());
@@ -85,9 +87,9 @@ public class PersonalUI extends Composite {
         divAbue.getStyle().setRight(0, Style.Unit.PX);
         
         // Add the CellList to the adapter in the database.
-        PersonalDB.get().addDataDisplay(cellList);
+        PersonalProvider.get().addDataDisplay(cellList);
         
-        PersonalDB.get().addMethodExecutedListener(new RestMethodExecutedListener());
+       PersonalProvider.get().addMethodExecutedListener(new ProviderMethodExecutedListener());
         
         reloadBtn.setIconFlip(IconFlip.HORIZONTAL);
         reloadBtn.addClickHandler(new ClickHandler() {
@@ -101,17 +103,17 @@ public class PersonalUI extends Composite {
             @Override
             public void onKeyUp(KeyUpEvent event) {
                 final String txtToSearch = searchTxt.getText();
-                PersonalDB.get().getDataProvider().setFilter(txtToSearch);
-                String rows = PersonalDB.get().getRowCountPropotional();
+                PersonalProvider.get().getDataProvider().setFilter(txtToSearch);
+                String rows =PersonalProvider.get().getRowCountPropotional();
                 reloadBtn.setText(rows);
             }
         });
         
         // orden inicial
-        orderBy = PersonalDB.ORDER_BY_NAME;
+        orderBy = PersonalProvider.ORDER_BY_NAME;
         
         /* Al arrancar, cargar a todos los empleados */
-        reloadAll();
+       // reloadAll();
     }
 
     private int orderBy;
@@ -119,38 +121,46 @@ public class PersonalUI extends Composite {
     void handleClick(ClickEvent e) {
         orderBy = -1;
         if (e.getSource().toString().contains("Nombre")) {
-            orderBy = PersonalDB.ORDER_BY_NAME;
+            orderBy = PersonalProvider.ORDER_BY_NAME;
         } else if (e.getSource().toString().contains("Num")) {
-            orderBy = PersonalDB.ORDER_BY_CODE;
+            orderBy = PersonalProvider.ORDER_BY_CODE;
         } else if (e.getSource().toString().contains("Grp")) {
-            orderBy = PersonalDB.ORDER_BY_GRUPO;
+            orderBy = PersonalProvider.ORDER_BY_GRUPO;
         } else if (e.getSource().toString().contains("Niv")) {
-            orderBy = PersonalDB.ORDER_BY_NIVEL;
+            orderBy = PersonalProvider.ORDER_BY_NIVEL;
             
             //selectionModel.setSelected(new Empleado(), true);
         }
         this.orderBy();
     }
     
+//    private PersonalProvider getProvider() {
+//        if (personalProvider == null) {
+//            personalProvider = new PersonalProvider();
+//            personalProvider.addMethodExecutedListener(new ProviderMethodExecutedListener());
+//        }
+//        return personalProvider;
+//    }
+    
     private void orderBy() {
-        PersonalDB.get().order(this.orderBy);
+        PersonalProvider.get().order(this.orderBy);
     }
     
     private void reloadAll() {
-        PersonalDB.get().findAll();
+        PersonalProvider.get().findAll();
         this.orderBy();
     }
     
-    private class RestMethodExecutedListener implements PersonalDB.MethodExecutedListener {
+    private class ProviderMethodExecutedListener implements PersonalProvider.MethodExecutedListener {
 
         @Override
-        public void onMethodExecuted(DBEvent dbEvent) {
-            if (DBMethod.FIND_ALL.equals(dbEvent.getDbMethod())) {
-                String m = "" + PersonalDB.get().getDataProvider().getDataDisplays().size() + "/" + PersonalDB.get().getDataProvider().getList().size();
+        public void onMethodExecuted(ProviderEvent dbEvent) {
+            if (ProviderMethod.FIND_ALL.equals(dbEvent.getDbMethod())) {
+                String m = "" + PersonalProvider.get().getDataProvider().getDataDisplays().size() + "/" + PersonalProvider.get().getDataProvider().getList().size();
                 reloadBtn.setText(m);
 
-                if (DBTypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
-                    String msg = "Registros: " + PersonalDB.get().getDataProvider().getList().size();
+                if (TypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
+                    String msg = "Registros: " + PersonalProvider.get().getDataProvider().getList().size();
                     GrowlOptions go = GrowlHelper.getNewOptions();
                     go.setSuccessType();
                     go.setAllowDismiss(false);
@@ -196,24 +206,26 @@ public class PersonalUI extends Composite {
                     "    <td colspan='3' style='height:3px;'></td>\n" +
                     "  </tr>\n" +
                     "  <tr>\n" +
-                    "    <td width='78px' rowspan='3' style='text-align: center;'><img src='URL_FOTO_REEMPLAZO' style='border:1px solid lightgray; margin-top: 3px;'></td>\n" +
-                    "    <td colspan='2'><h4 style='margin-top: 0px; margin-bottom: 0px;'>APELLIDOS_REEMPLAZO</h4></td>\n" +
+                    "    <td width='78px' rowspan='3' style='text-align: center;'><img src='URL_FOTO_REEMPLAZO' style='border:1px solid lightgray; margin-top: 3px; border-radius:50%; padding:2px;'></td>\n" +
+                    "    <td colspan='2' style='vertical-align: bottom;'><h4 style='margin-top: 0px; margin-bottom: 0px;'>APELLIDOS_REEMPLAZO,</h4></td>\n" +
                     "  </tr>\n" +
                     "  <tr>\n" +
-                    "    <td colspan='2'><h5 style='margin-top: 0px; margin-bottom: 0px;'>NOMBRE_REEMPLAZO</h5></td>\n" +
+                    "    <td colspan='2' style='vertical-align: top;'><h5 style='margin-top: 0px; margin-bottom: 0px;'>NOMBRE_REEMPLAZO</h5></td>\n" +
                     "  </tr>\n" +
                     "  <tr>\n" +
-                    "    <td>RFC_REEMPLAZO</td>\n" +
-                    "    <td></td>\n" +
-                    "  </tr>\n" +
-                    "  <tr>\n" +
-                    "    <td style='text-align:center;' ><code class='label-cyt-grp-niv'><span style='font-size: medium;' >CODE_REEMPLAZO</span></code></td>\n" +
-                    "    <td> " + 
+                    "    <td  colspan='1'> " + 
+                                " <code class='label-cyt-grp-niv'><span style='font-size: medium;' >CODE_REEMPLAZO</span></code> " +
                                 " <code class=\"label-cyt-grp-niv\"><span >GRUPO_REEMPLAZO</span></code> " + 
                                 " <code class=\"label-cyt-grp-niv\"><span >NIVEL_REEMPLAZO</span></code> " + 
                                 " <code class=\"label-cyt-grp-niv\"><span >DEPTO_REEMPLAZO</span></code> " + 
                     "    </td>\n" +
-                    "    <td style='text-align: right;'><i class=\"fa fa-info-circle fa-lg\" style='opacity: 0.5; padding-right: 5px;'></i></td>\n" +
+                    "    <td style='text-align: right;'><i class='fa fa-info-circle fa-lg' style='opacity: 0.5; padding-right: 5px;'></i></td>\n" +
+                    "  </tr>\n" +
+                    "  <tr>\n" +
+                    "    <td style='text-align:center;' ></td>\n" +
+                    "    <td> " + 
+                    "    </td>\n" +
+                    "    <td></td>\n" + 
                     "  </tr>\n" +
                     "  <tr>\n" +
                     "    <td colspan='3' style='height:3px;'></td>\n" +
@@ -226,10 +238,9 @@ public class PersonalUI extends Composite {
                 html = html.replace("SELECTED_COLOR_REEMPLAZO", "background-color: #F8F8F8;");
             }
             
-            
             html = html.replace("CODE_REEMPLAZO", value.getCode());
             html = html.replace("URL_FOTO_REEMPLAZO", value.getUrlPhoto());
-            html = html.replace("APELLIDOS_REEMPLAZO", value.getApellidoPaterno() + " " + value.getApellidoMaterno());
+            html = html.replace("APELLIDOS_REEMPLAZO", PersonalUI.ellipse(value.getApellidoPaterno(), 18) + " " + PersonalUI.ellipse(value.getApellidoMaterno(), 18));
             html = html.replace("NOMBRE_REEMPLAZO", value.getNombre());
             html = html.replaceAll("RFC_REEMPLAZO", value.getRfc());
             html = html.replace("GRUPO_REEMPLAZO", grupoStr);
@@ -248,20 +259,20 @@ public class PersonalUI extends Composite {
 //    return value == null ? value : value.substring(0, 1).toUpperCase() + value.substring(1).toLowerCase();
 //  }
 //
-//  /**
-//   * Truncate a string and add an ellipsis ('...') to the end if it exceeds the
-//   * specified length.
-//   * 
-//   * @param value the string to truncate
-//   * @param len the maximum length to allow before truncating
-//   * @return the converted text
-//   */
-//  public static String ellipse(String value, int len) {
-//    if (value != null && value.length() > len) {
-//      return value.substring(0, len - 3) + "...";
-//    }
-//    return value;
-//  }
+  /**
+   * Truncate a string and add an ellipsis ('...') to the end if it exceeds the
+   * specified length.
+   * 
+   * @param value the string to truncate
+   * @param len the maximum length to allow before truncating
+   * @return the converted text
+   */
+  public static String ellipse(String value, int len) {
+    if (value != null && value.length() > len) {
+      return value.substring(0, len - 3) + "...";
+    }
+    return value;
+  }
 
     private class SelectionHandler implements SelectionChangeEvent.Handler {
         @Override

@@ -9,8 +9,7 @@ package org.cimav.client.tools;
  *
  * @author juan.calderon
  */
-public enum DBMethod {
-    FIND_ALL,
-    DELETE,
-    CREATE;
+public enum TypeResult {
+    FAILURE,
+    SUCCESS;
 }
