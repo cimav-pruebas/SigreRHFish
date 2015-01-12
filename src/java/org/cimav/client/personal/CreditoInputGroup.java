@@ -7,8 +7,11 @@ package org.cimav.client.personal;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import org.gwtbootstrap3.client.ui.CheckBoxButton;
+import org.gwtbootstrap3.client.ui.TextBox;
 
 /**
  *
@@ -21,7 +24,20 @@ public class CreditoInputGroup extends Composite {
     interface CreditoInputGroupUiBinder extends UiBinder<Widget, CreditoInputGroup> {
     }
     
+    
+   @UiField CheckBoxButton hasCreditoChkBox; 
+   @UiField TextBox creditoTxtBox;
+   
     public CreditoInputGroup() {
         initWidget(uiBinder.createAndBindUi(this));
     }
+
+    public Boolean hasCredito() {
+        return hasCreditoChkBox.getValue();
+    }
+    
+    public String getNumCredito() {
+        return creditoTxtBox.getText();
+    }
+    
 }

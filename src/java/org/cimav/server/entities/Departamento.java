@@ -36,20 +36,26 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Departamento.findByNombre", query = "SELECT d FROM Departamento d WHERE d.nombre = :nombre"),
     @NamedQuery(name = "Departamento.findByStatus", query = "SELECT d FROM Departamento d WHERE d.status = :status")})
 public class Departamento implements Serializable {
-    @OneToMany(mappedBy = "departamento")
-    private Collection<Empleado> empleadoCollection;
+    
+//    @OneToMany(mappedBy = "departamento")
+//    private Collection<Empleado> empleadoCollection;
+    
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Size(max = 10)
     @Column(name = "codigo")
     private String codigo;
+    
     @Size(max = 150)
     @Column(name = "nombre")
     private String nombre;
+    
     @Column(name = "status")
     private BigInteger status;
 
@@ -117,13 +123,13 @@ public class Departamento implements Serializable {
         return "org.cimav.server.entities.Departamento[ id=" + id + " ]";
     }
 
-    @XmlTransient
-    public Collection<Empleado> getEmpleadoCollection() {
-        return empleadoCollection;
-    }
-
-    public void setEmpleadoCollection(Collection<Empleado> empleadoCollection) {
-        this.empleadoCollection = empleadoCollection;
-    }
+//    @XmlTransient
+//    public Collection<Empleado> getEmpleadoCollection() {
+//        return empleadoCollection;
+//    }
+//
+//    public void setEmpleadoCollection(Collection<Empleado> empleadoCollection) {
+//        this.empleadoCollection = empleadoCollection;
+//    }
     
 }

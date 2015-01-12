@@ -14,6 +14,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Empleado extends BaseDomain<Empleado> { 
 
     private String rfc;
+    private String curp;
+    private String numCredito;
+    private String cuentaCimav;
+    private String cuentaBanco;
+    private String imss;
     private String urlPhoto;
     private String nombre;
     private String apellidoPaterno;
@@ -21,8 +26,13 @@ public class Empleado extends BaseDomain<Empleado> {
     
     @JsonIgnore
     private EClinica clinica;
+    private Integer idClinica;
+
     @JsonIgnore
     private EBanco banco;
+    private Integer idBanco;
+    
+    private Boolean hasCredito;
     
     private Grupo grupo;
     private Tabulador nivel;
@@ -98,6 +108,7 @@ public class Empleado extends BaseDomain<Empleado> {
 
     public void setClinica(EClinica clinica) {
         this.clinica = clinica;
+        this.idClinica = clinica != null ? clinica.getId() : 0;
     }
 
     public EBanco getBanco() {
@@ -106,6 +117,73 @@ public class Empleado extends BaseDomain<Empleado> {
 
     public void setBanco(EBanco banco) {
         this.banco = banco;
+        this.idBanco = banco != null ? banco.getId() : 0;
+    }
+
+    public Integer getIdClinica() {
+        return idClinica;
+    }
+
+    public void setIdClinica(Integer idClinica) {
+        this.clinica = EClinica.get(idClinica);
+        this.idClinica = idClinica;
+    }
+
+    public Integer getIdBanco() {
+        return idBanco;
+    }
+
+    public void setIdBanco(Integer idBanco) {
+        this.banco = EBanco.get(idBanco);
+        this.idBanco = idBanco;
+    }
+
+    public Boolean getHasCredito() {
+        return hasCredito;
+    }
+
+    public void setHasCredito(Boolean hasCredito) {
+        this.hasCredito = hasCredito;
+    }
+
+    public String getCurp() {
+        return curp;
+    }
+
+    public void setCurp(String curp) {
+        this.curp = curp;
+    }
+
+    public String getNumCredito() {
+        return numCredito;
+    }
+
+    public void setNumCredito(String numCredito) {
+        this.numCredito = numCredito;
+    }
+
+    public String getCuentaCimav() {
+        return cuentaCimav;
+    }
+
+    public void setCuentaCimav(String cuentaCimav) {
+        this.cuentaCimav = cuentaCimav;
+    }
+
+    public String getCuentaBanco() {
+        return cuentaBanco;
+    }
+
+    public void setCuentaBanco(String cuentaBanco) {
+        this.cuentaBanco = cuentaBanco;
+    }
+
+    public String getImss() {
+        return imss;
+    }
+
+    public void setImss(String imss) {
+        this.imss = imss;
     }
     
 }

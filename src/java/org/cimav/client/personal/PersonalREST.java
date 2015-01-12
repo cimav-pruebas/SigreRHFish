@@ -102,6 +102,59 @@ public class PersonalREST extends BaseREST {
         }));
 
     }    
+    
+    public void update(Empleado empleado) {
+
+        //Create a PersonJsonizer instance
+        //Departamento.DepartamentoJsonizer dj = (Departamento.DepartamentoJsonizer)GWT.create(Departamento.DepartamentoJsonizer.class);
+        JSONValue empleadoJSONValue = empleadoListJsonCodec.encode(empleado);
+
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
+
+        Resource rb = new Resource(URL_REST, headers);
+        
+        rb.put().json(empleadoJSONValue).send(Ajax.jsonCall(new JsonCallback() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                Window.alert("Error: " + exception);
+            }
+
+            @Override
+            public void onSuccess(Method method, JSONValue response) {
+                RESTEvent dbEvent = new RESTEvent(ProviderMethod.UPDATE, TypeResult.SUCCESS, "listo");
+                onRESTExecuted(dbEvent); 
+
+                System.out.println(">>> " + response);
+            }
+        }));
+
+    }    
+    
+    public void delete(Integer id) {
+        
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
+
+        Resource rb = new Resource(URL_REST + "/id", headers);
+        
+        rb.delete().send(Ajax.jsonCall(new JsonCallback() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                Window.alert("Error: " + exception);
+            }
+
+            @Override
+            public void onSuccess(Method method, JSONValue response) {
+                RESTEvent dbEvent = new RESTEvent(ProviderMethod.DELETE, TypeResult.SUCCESS, "listo");
+                onRESTExecuted(dbEvent); 
+
+                System.out.println(">>> " + response);
+            }
+        }));
+
+    }    
+    
     // </editor-fold>
     
 }

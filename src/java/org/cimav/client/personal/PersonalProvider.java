@@ -17,6 +17,7 @@ import org.cimav.client.tools.ProviderEvent;
 import org.cimav.client.tools.ProviderMethod;
 import org.cimav.client.tools.RESTEvent;
 import org.cimav.client.tools.TypeResult;
+import org.gwtbootstrap3.extras.growl.client.ui.Growl;
 
 /**
  *
@@ -59,9 +60,12 @@ public class PersonalProvider extends BaseProvider<Empleado> {
         }
         pattern = pattern + ".+";
         
-        String grupoStr = value.getGrupo() != null ? value.getGrupo().getCode() + " " + value.getGrupo().getName() : "";
-        String nivelStr = value.getNivel() != null ? value.getNivel().getCode() + " " + value.getNivel().getName() : "";
-        String string = (value.getCode() + " " + value.getUrlPhoto() + " " + grupoStr.toLowerCase() + " " + nivelStr.toLowerCase());
+        String grupoStr = value.getGrupo() != null ? value.getGrupo().getCode() + " " + value.getGrupo().getName() : " ";
+        String nivelStr = value.getNivel() != null ? value.getNivel().getCode() + " " + value.getNivel().getName() : " ";
+        
+        String string = 
+                value.getName() + " " + value.getRfc() + " " + value.getCode() + " " + value.getUrlPhoto() + " " + grupoStr + " " + nivelStr;
+        string = string.toLowerCase();
         
         RegExp regExp = RegExp.compile(pattern);
         MatchResult matcher = regExp.exec(string);
@@ -177,4 +181,17 @@ public class PersonalProvider extends BaseProvider<Empleado> {
     public void add(Empleado empleado) {
         this.getREST().add(empleado);
     }
+       
+    public void update(Empleado empleado) {
+        this.getREST().update(empleado);
+    }
+
+    public void delete(Empleado empleado) {
+        if (empleado == null || empleado.getId() <= 0) {
+            Growl.growl("Empleado nulo");
+        } else {
+            this.getREST().delete(empleado.getId());
+        }
+    }
+
 }

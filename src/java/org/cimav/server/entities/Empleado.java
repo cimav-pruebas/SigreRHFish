@@ -6,6 +6,7 @@
 package org.cimav.server.entities;
 
 import java.io.Serializable;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -23,21 +24,13 @@ import org.apache.commons.lang3.text.WordUtils;
  * @author juan.calderon
  */
 @Entity
+@Cacheable(false) 
 @Table(name = "empleados")
 @XmlRootElement(name = "employees")
 //@XmlType(propOrder = { "id", "clave", "consecutivo", "email", "telephone" })
 @NamedQueries({
     @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e"),
-    @NamedQuery(name = "Empleado.findById", query = "SELECT e FROM Empleado e WHERE e.id = :id"),
-    @NamedQuery(name = "Empleado.findByCode", query = "SELECT e FROM Empleado e WHERE e.code = :code"),
-    @NamedQuery(name = "Empleado.findByName", query = "SELECT e FROM Empleado e WHERE e.name = :name"),
-    @NamedQuery(name = "Empleado.findByConsecutivo", query = "SELECT e FROM Empleado e WHERE e.consecutivo = :consecutivo"),
-    @NamedQuery(name = "Empleado.findByStatus", query = "SELECT e FROM Empleado e WHERE e.status = :status"),
-    @NamedQuery(name = "Empleado.findByCurp", query = "SELECT e FROM Empleado e WHERE e.curp = :curp"),
-    @NamedQuery(name = "Empleado.findByRfc", query = "SELECT e FROM Empleado e WHERE e.rfc = :rfc"),
-    @NamedQuery(name = "Empleado.findByImss", query = "SELECT e FROM Empleado e WHERE e.imss = :imss"),
-    @NamedQuery(name = "Empleado.findByIdproyecto", query = "SELECT e FROM Empleado e WHERE e.idproyecto = :idproyecto"),
-    @NamedQuery(name = "Empleado.findByNumcuentabanco", query = "SELECT e FROM Empleado e WHERE e.numcuentabanco = :numcuentabanco")})
+    @NamedQuery(name = "Empleado.findById", query = "SELECT e FROM Empleado e WHERE e.id = :id")})
 public class Empleado extends BaseEntity implements Serializable {
 
     @Column(name = "consecutivo")
@@ -58,18 +51,21 @@ public class Empleado extends BaseEntity implements Serializable {
     @Column(name = "imss")
     private String imss;
 
-    @Column(name = "idproyecto")
-    private Short idproyecto;
+    @Column(name = "id_clinica")
+    private Short idClinica;
+
+    @Column(name = "id_proyecto")
+    private Short idProyecto;
 
     @Size(max = 40)
-    @Column(name = "numcuentabanco")
-    private String numcuentabanco;
+    @Column(name = "cuenta_banco")
+    private String cuentaBanco;
 
-    @Column(name = "urlPhoto")
+    @Column(name = "url_photo")
     private String urlPhoto;
 
     @XmlElement(name = "departamento")
-    @JoinColumn(name = "iddepartamento", referencedColumnName = "id")
+    @JoinColumn(name = "id_departamento", referencedColumnName = "id")
     @ManyToOne
     private Departamento departamento;
 
@@ -92,7 +88,19 @@ public class Empleado extends BaseEntity implements Serializable {
     @Size(max = 40)
     @Column(name = "apellido_materno")
     private String apellidoMaterno;
+    
+    @Column(name = "id_banco")
+    private Short idBanco;
+    
+    @Column(name = "has_credito")
+    private Boolean hasCredito;
+    
+    @Column(name = "num_credito")
+    private String numCredito;
 
+    @Column(name = "cuenta_cimav")
+    private String cuentaCimav;
+    
     public Integer getConsecutivo() {
         return consecutivo;
     }
@@ -133,20 +141,20 @@ public class Empleado extends BaseEntity implements Serializable {
         this.imss = imss;
     }
 
-    public Short getIdproyecto() {
-        return idproyecto;
+    public Short getIdProyecto() {
+        return idProyecto;
     }
 
-    public void setIdproyecto(Short idproyecto) {
-        this.idproyecto = idproyecto;
+    public void setIdProyecto(Short idProyecto) {
+        this.idProyecto = idProyecto;
     }
 
-    public String getNumcuentabanco() {
-        return numcuentabanco;
+    public String getCuentaBanco() {
+        return cuentaBanco;
     }
 
-    public void setNumcuentabanco(String numcuentabanco) {
-        this.numcuentabanco = numcuentabanco;
+    public void setCuentaBanco(String cuentaBanco) {
+        this.cuentaBanco = cuentaBanco;
     }
 
     public Departamento getDepartamento() {
@@ -214,4 +222,44 @@ public class Empleado extends BaseEntity implements Serializable {
         this.apellidoPaterno = apellidoPaterno.toUpperCase();
     }
 
+    public Short getIdBanco() {
+        return idBanco;
+    }
+
+    public void setIdBanco(Short idBanco) {
+        this.idBanco = idBanco;
+    }
+
+    public Boolean getHasCredito() {
+        return hasCredito;
+    }
+
+    public void setHasCredito(Boolean hasCredito) {
+        this.hasCredito = hasCredito;
+    }
+
+    public Short getIdClinica() {
+        return idClinica;
+    }
+
+    public void setIdClinica(Short idClinica) {
+        this.idClinica = idClinica;
+    }
+
+    public String getNumCredito() {
+        return numCredito;
+    }
+
+    public void setNumCredito(String numCredito) {
+        this.numCredito = numCredito;
+    }
+
+    public String getCuentaCimav() {
+        return cuentaCimav;
+    }
+
+    public void setCuentaCimav(String cuentaCimav) {
+        this.cuentaCimav = cuentaCimav;
+    }
+    
 }

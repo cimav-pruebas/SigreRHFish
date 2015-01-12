@@ -12,5 +12,6 @@ package org.cimav.client.tools;
 public enum ProviderMethod {
     FIND_ALL,
     DELETE,
-    CREATE;
+    CREATE,
+    UPDATE;
 }

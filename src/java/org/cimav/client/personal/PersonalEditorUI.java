@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.Widget;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import org.cimav.client.domain.BaseProvider;
 import org.cimav.client.domain.Departamento;
 import org.cimav.client.domain.DeptoDatabase;
 import org.cimav.client.domain.EBanco;
@@ -213,15 +212,22 @@ public class PersonalEditorUI extends Composite {
             public void onClick(ClickEvent event) {
                 
                 Empleado empleado = new Empleado();
+                
                 empleado.setNombre(nombreTxtBox.getText());
                 empleado.setApellidoPaterno(paternoTxtBox.getText());
                 empleado.setApellidoMaterno(maternoTxtBox.getText());
                 empleado.setRfc(rfcTxtBox.getText());
-                empleado.setUrlPhoto("http://cimav.edu.mx/foto/isai.arenas");
-                
+                empleado.setCuentaCimav(cuentaCimavTxtBox.getText());
+                String urlPhoto = "http://cimav.edu.mx/foto/" + empleado.getCuentaCimav();
+                empleado.setUrlPhoto(urlPhoto);
                 empleado.setDepartamento(deptoChosen.getValue());
-               // empleado.setClinica(imssClinicaListBox.getValue());
-
+                empleado.setClinica(imssClinicaListBox.getValue());
+                empleado.setBanco(bancoListBox.getValue());
+                empleado.setHasCredito(creditoInputGroup.hasCredito());
+                empleado.setCurp(curpTxtBox.getText());
+                empleado.setImss(imssTxtBox.getText());
+                empleado.setNumCredito(creditoInputGroup.getNumCredito());
+                empleado.setCuentaBanco(cuentaBancoTxtBox.getText());
                 
                PersonalProvider.get().add(empleado);
             }

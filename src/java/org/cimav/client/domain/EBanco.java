@@ -38,7 +38,7 @@ public enum EBanco {
         this.nombre = nombre;
     }
     
-    public EBanco get(int id) {
+    public static EBanco get(int id) {
         EBanco result = EBanco.BANORTE; // default
         for (EBanco value : EBanco.values()) {
             if (value.getId() == id) {
