@@ -3,6 +3,7 @@
   <persistence-unit name="SigreRHFishPU" transaction-type="JTA">
     <jta-data-source>JNDI_RH_DEV</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode> <!-- DISABLE_SELECTIVE Enable caching for all entities except those that have been explicitly set with the @Cacheable(false) annotation. -->
     <properties/>
   </persistence-unit>
 </persistence>
