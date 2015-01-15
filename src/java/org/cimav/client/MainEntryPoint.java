@@ -23,11 +23,21 @@ import org.fusesource.restygwt.client.Defaults;
  */
 public class MainEntryPoint implements EntryPoint {
 
+    static {
+        
+        /* Default initialize */
+        Defaults.setServiceRoot(GWT.getHostPageBaseURL());
+        String DATEFORMAT="yyyy-mm-dd'T'HH:mm:ss.SSSZ";
+        //2015-01-14T00:00:00-07:00
+        Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        
+    }    
+    
     // Vistas UI
     private final MainUI mainUi;
     private PersonalUI personalUI;
     private DepartamentosUI departamentosUI;
-
+    
     /**
      * Creates a new instance of MainEntryPoint
      */
@@ -42,7 +52,9 @@ public class MainEntryPoint implements EntryPoint {
     @Override
     public void onModuleLoad() {
 
-        Defaults.setServiceRoot(GWT.getHostPageBaseURL());
+//        /* Default initialize */
+//        Defaults.setServiceRoot(GWT.getHostPageBaseURL());
+//        Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
         GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
             @Override
