@@ -59,12 +59,15 @@ public class PersonalREST extends BaseREST {
                 // Pasar la lista completa. Probablemente si se soluciona el XmlRootElement name="empleados"
                 
                 List<Empleado> empleados = new ArrayList<>();
-                
+                try {
                 JSONArray array = response.isArray();
                 for (int i=0;i<array.size();i++) {
                     JSONValue val = array.get(i);
                     Empleado empleado = empleadoListJsonCodec.decode(val);
                     empleados.add(empleado);
+                }
+                } catch (Exception e) {
+                    System.out.println(">>> " + e.getMessage());
                 }
                 RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_ALL, TypeResult.SUCCESS, "");
                 dbEvent.setResult(empleados);

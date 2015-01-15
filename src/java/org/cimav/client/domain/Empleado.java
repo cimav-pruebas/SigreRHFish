@@ -6,6 +6,7 @@
 package org.cimav.client.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Date;
 
 /**
  *
@@ -24,12 +25,10 @@ public class Empleado extends BaseDomain<Empleado> {
     private String apellidoPaterno;
     private String apellidoMaterno;
     
-    @JsonIgnore
-    private EClinica clinica;
+    @JsonIgnore private EClinica clinica;
     private Integer idClinica;
 
-    @JsonIgnore
-    private EBanco banco;
+    @JsonIgnore private EBanco banco;
     private Integer idBanco;
     
     private Boolean hasCredito;
@@ -37,6 +36,35 @@ public class Empleado extends BaseDomain<Empleado> {
     private Grupo grupo;
     private Tabulador nivel;
     private Departamento departamento;
+    
+    @JsonIgnore private ESede sede;
+    private Integer idSede;
+    
+    @JsonIgnore private EStatusEmpleado status;
+    private Integer idStatus;
+    
+    @JsonIgnore private ETipoEmpleado tipoEmpleado;
+    private Integer idTipoEmpleado;
+    
+    @JsonIgnore private ETipoContrato tipoContrato;
+    private Integer idTipoContrato;
+    
+    @JsonIgnore private ETipoAntiguedad tipoAntiguedad;
+    private Integer idTipoAntiguedad;
+    
+    @JsonIgnore private ETipoSNI tipoSNI;
+    private Integer idTipoSni;
+    
+    private Empleado jefe;
+    
+    private Date fechaIngreso;
+    private Date fechaInicioContrato;
+    private Date fechaFinContrato;
+    private Date fechaBaja;
+    private Date fechaAntiguedad;
+    private Date fechaSni;
+    
+    private String numSni;
 
     public String getUrlPhoto() {
         return urlPhoto;
@@ -185,5 +213,178 @@ public class Empleado extends BaseDomain<Empleado> {
     public void setImss(String imss) {
         this.imss = imss;
     }
+
+    public ESede getSede() {
+        return sede;
+    }
+
+    public void setSede(ESede sede) {
+        this.sede = sede;
+        this.idSede = sede != null ? sede.getId() : 0;
+    }
+
+    public Integer getIdSede() {
+        return idSede;
+    }
+
+    public void setIdSede(Integer idSede) {
+        this.sede = ESede.get(idSede);
+        this.idSede = idSede;
+    }
+
+    public EStatusEmpleado getStatus() {
+        return status;
+    }
+
+    public void setStatus(EStatusEmpleado status) {
+        this.status = status;
+        this.idStatus = status != null ? status.getId() : 0;
+    }
+
+    public Integer getIdStatus() {
+        return idStatus;
+    }
+
+    public void setIdStatus(Integer idStatus) {
+        this.status = EStatusEmpleado.get(idStatus);
+        this.idStatus = idStatus;
+    }
+
+    public ETipoEmpleado getTipoEmpleado() {
+        return tipoEmpleado;
+    }
+
+    public void setTipoEmpleado(ETipoEmpleado tipoEmpleado) {
+        this.tipoEmpleado = tipoEmpleado;
+        this.idTipoEmpleado = tipoEmpleado != null ? tipoEmpleado.getId() : 0;
+    }
+
+    public Integer getIdTipoEmpleado() {
+        return idTipoEmpleado;
+    }
+
+    public void setIdTipoEmpleado(Integer idTipoEmpleado) {
+        this.tipoEmpleado = ETipoEmpleado.get(idTipoEmpleado);
+        this.idTipoEmpleado = idTipoEmpleado;
+    }
+
+    public ETipoContrato getTipoContrato() {
+        return tipoContrato;
+    }
+
+    public void setTipoContrato(ETipoContrato tipoContrato) {
+        this.tipoContrato = tipoContrato;
+        this.idTipoContrato = tipoContrato != null ? tipoContrato.getId() : 0;
+    }
+
+    public Integer getIdTipoContrato() {
+        return idTipoContrato;
+    }
+
+    public void setIdTipoContrato(Integer idTipoContrato) {
+        this.tipoContrato = ETipoContrato.get(idTipoContrato);
+       this.idTipoContrato = idTipoContrato;
+    }
+
+    public ETipoAntiguedad getTipoAntiguedad() {
+        return tipoAntiguedad;
+    }
+
+    public void setTipoAntiguedad(ETipoAntiguedad tipoAntiguedad) {
+        this.tipoAntiguedad = tipoAntiguedad;
+        this.idTipoAntiguedad = tipoAntiguedad != null ? tipoAntiguedad.getId() : 0;
+    }
+
+    public Integer getIdTipoAntiguedad() {
+        return idTipoAntiguedad;
+    }
+
+    public void setIdTipoAntiguedad(Integer idTipoAntiguedad) {
+        this.tipoAntiguedad = ETipoAntiguedad.get(idTipoAntiguedad);
+        this.idTipoAntiguedad = idTipoAntiguedad;
+    }
+
+    public ETipoSNI getTipoSNI() {
+        return tipoSNI;
+    }
+
+    public void setTipoSNI(ETipoSNI tipoSNI) {
+        this.tipoSNI = tipoSNI;
+        this.idTipoSni = tipoSNI != null ? tipoSNI.getId() : 0;
+    }
+
+    public Integer getIdTipoSni() {
+        return idTipoSni;
+    }
+
+    public void setIdTipoSni(Integer idTipoSni) {
+        this.tipoSNI = ETipoSNI.get(idTipoSni);
+        this.idTipoSni = idTipoSni;
+    }
+
+    public Empleado getJefe() {
+        return jefe;
+    }
+
+    public void setJefe(Empleado jefe) {
+        this.jefe = jefe;
+    }
+
+    public Date getFechaIngreso() {
+        return fechaIngreso;
+    }
+
+    public void setFechaIngreso(Date fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
+    }
+
+    public Date getFechaInicioContrato() {
+        return fechaInicioContrato;
+    }
+
+    public void setFechaInicioContrato(Date fechaInicioContrato) {
+        this.fechaInicioContrato = fechaInicioContrato;
+    }
+
+    public Date getFechaFinContrato() {
+        return fechaFinContrato;
+    }
+
+    public void setFechaFinContrato(Date fechaFinContrato) {
+        this.fechaFinContrato = fechaFinContrato;
+    }
+
+    public Date getFechaBaja() {
+        return fechaBaja;
+    }
+
+    public void setFechaBaja(Date fechaBaja) {
+        this.fechaBaja = fechaBaja;
+    }
+
+    public Date getFechaAntiguedad() {
+        return fechaAntiguedad;
+    }
+
+    public void setFechaAntiguedad(Date fechaAntiguedad) {
+        this.fechaAntiguedad = fechaAntiguedad;
+    }
+
+    public Date getFechaSni() {
+        return fechaSni;
+    }
+
+    public void setFechaSni(Date fechaSni) {
+        this.fechaSni = fechaSni;
+    }
+
+    public String getNumSni() {
+        return numSni;
+    }
+
+    public void setNumSni(String numSni) {
+        this.numSni = numSni;
+    }
+    
     
 }

@@ -194,13 +194,13 @@ public class PersonalUI extends Composite {
             
             boolean isSelected = this.selectionModel != null && this.selectionModel.getSelectedObject() != null
                     && this.selectionModel.getSelectedObject().equals(value);
+
+            // TODO reemplazar código a pie por PersonalItem
             
             String grupoStr = value.getGrupo() != null ? value.getGrupo().getCode() : "SIN_GRP";
             String deptoStr = value.getDepartamento() != null ? value.getDepartamento().getCodigo() : "SIN_DEPTO";
             String nivelStr = value.getNivel()!= null ? value.getNivel().getCode() : "SIN_NIVEL";
-            // <div class="tooltip fade top in" style="display: block; top: 646px; left: 84px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">I am a Tooltip!</div></div>
-            // <div class="tooltip fade left in" style="display: block; top: 249px; left: 101px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">I am a Tooltip!</div></div>
-            // data-original-title='Show a XXXXXXXXXon mouse over button. :)'
+
             String html =
                     "<table width='100%' cellspacing='0' cellpadding='0' style='cursor: pointer; text-align: left; vertical-align: middle; border-bottom:1px solid lightgray;'>\n" +
                     "  <tr>\n" +
@@ -220,6 +220,7 @@ public class PersonalUI extends Composite {
                                 " <code class=\"label-cyt-grp-niv\"><span >GRUPO_REEMPLAZO</span></code> " + 
                                 " <code class=\"label-cyt-grp-niv\"><span >NIVEL_REEMPLAZO</span></code> " + 
                                 " <code class=\"label-cyt-grp-niv\"><span >DEPTO_REEMPLAZO</span></code> " + 
+                                " <code class=\"label-cyt-grp-niv\"><span >ID_REEMPLAZO</span></code> " + 
                     "    </td>\n" +
                     "    <td style='text-align: right;'><i class='fa fa-info-circle fa-lg' style='opacity: 0.5; padding-right: 5px;'></i></td>\n" +
                     "  </tr>\n" +
@@ -248,14 +249,8 @@ public class PersonalUI extends Composite {
             html = html.replace("GRUPO_REEMPLAZO", grupoStr);
             html = html.replace("NIVEL_REEMPLAZO", nivelStr);
             html = html.replace("DEPTO_REEMPLAZO", deptoStr);
+            html = html.replace("ID_REEMPLAZO", value.getId().toString());
             
-            PersonalItem personalItem = new PersonalItem();
-//            personalItem.setSelected(isSelected);
-//            personalItem.setPhoto(value.getUrlPhoto());
-//            personalItem.setApellidos(value.getApellidoPaterno());
-            
-            html =personalItem.getElement().getInnerHTML();
-            //sb.appendHtmlConstant(personalItem.getElement().getInnerHTML());  //html);
             sb.appendHtmlConstant(html);
         }
     }
