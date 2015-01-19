@@ -15,7 +15,7 @@ import javax.validation.Validator;
  *
  * @author juan.calderon
  */
-public final class DepartamentoValidatorFactory extends AbstractGwtValidatorFactory  {
+public final class DepartamentoValidatorFactory extends AbstractGwtValidatorFactory {
 
     /**
      * Validator marker for the Validation Sample project. Only the classes and groups listed in the {@link GwtValidation} annotation can be validated.

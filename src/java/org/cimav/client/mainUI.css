@@ -30,7 +30,7 @@ h2 {
 }
 
 .center-panel-header {
-    
+
     /* border-bottom: 1px solid gray; */
     color: #F0F0F0;
     background: #3399FF;
@@ -39,19 +39,19 @@ h2 {
     display: block;
     /* usa gwt-css3-pie para soportar el CSS3 */
     -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 .center-panel-header-titulo {
-/*    color: #4B4A4A;*/
+    /*    color: #4B4A4A;*/
     font-size: 17pt;
     font-weight: bold;
-/*    margin: 10px 10px 0px;*/
+    /*    margin: 10px 10px 0px;*/
 }
 .center-panel-header-sub-titulo {
-/*    color: #4B4A4A;*/
-//    padding: 10px 0px;
-//    margin: 0px 10px 12px; 
+    /*    color: #4B4A4A;*/
+    //    padding: 10px 0px;
+    //    margin: 0px 10px 12px; 
 }
 .work-panel {
     position: absolute;

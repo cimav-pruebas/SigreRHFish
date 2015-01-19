@@ -30,27 +30,27 @@ import org.cimav.client.tools.TypeResult;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.ValueListBox;
-import org.gwtbootstrap3.client.ui.constants.Styles;
 import org.gwtbootstrap3.extras.growl.client.ui.Growl;
-import org.gwtbootstrap3.extras.growl.client.ui.GrowlHelper;
-import org.gwtbootstrap3.extras.growl.client.ui.GrowlOptions;
 
 /**
  *
  * @author juan.calderon
  */
 public class PersonalEditorUI extends Composite {
-    
+
     private static PersonalEditorUIUiBinder uiBinder = GWT.create(PersonalEditorUIUiBinder.class);
-    
+
     interface PersonalEditorUIUiBinder extends UiBinder<Widget, PersonalEditorUI> {
     }
-    
-    @UiField FlexTable flexEditorPersonal;
-    @UiField FlexTable flexEditorLaboral;
-    
-    @UiField Button saveBtn;
-    
+
+    @UiField
+    FlexTable flexEditorPersonal;
+    @UiField
+    FlexTable flexEditorLaboral;
+
+    @UiField
+    Button saveBtn;
+
     // personal
     private final TextBox nombreTxtBox;
     private final TextBox paternoTxtBox;
@@ -64,15 +64,14 @@ public class PersonalEditorUI extends Composite {
     private final TextBox cuentaBancoTxtBox;
     private final TextBox cuentaCimavTxtBox;
     // laboral
-    // xmlns:chzn="urn:import:com.watopi.chosen.client.gwt"
-    
+    // TODO xmlns:chzn="urn:import:com.watopi.chosen.client.gwt"
     private final ValueListBox<Departamento> deptoChosen;
-    
+
     public PersonalEditorUI() {
         initWidget(uiBinder.createAndBindUi(this));
 
         FlexTable.FlexCellFormatter cellFormatter = flexEditorPersonal.getFlexCellFormatter();
-        
+
         flexEditorPersonal.setCellSpacing(0);
         flexEditorPersonal.setCellPadding(0);
 //        flexEditorPersonal.getColumnFormatter().setWidth(0, "50px;");
@@ -83,7 +82,7 @@ public class PersonalEditorUI extends Composite {
         paternoTxtBox.setWidth("244px");
         maternoTxtBox = new TextBox();
         maternoTxtBox.setWidth("244px");
-        
+
         rfcTxtBox = new TextBox();
         rfcTxtBox.setWidth("244px");
         curpTxtBox = new TextBox();
@@ -91,7 +90,7 @@ public class PersonalEditorUI extends Composite {
 
         imssTxtBox = new TextBox();
         imssTxtBox.setWidth("244px");
-        imssClinicaListBox = new ValueListBox<>(new Renderer<EClinica>(){
+        imssClinicaListBox = new ValueListBox<>(new Renderer<EClinica>() {
             @Override
             public String render(EClinica object) {
                 if (object == null) {
@@ -99,6 +98,7 @@ public class PersonalEditorUI extends Composite {
                 }
                 return object.getNombre();
             }
+
             @Override
             public void render(EClinica object, Appendable appendable) throws IOException {
                 String s = render(object);
@@ -109,7 +109,7 @@ public class PersonalEditorUI extends Composite {
         imssClinicaListBox.setValue(EClinica.MORELOS); //default
         imssClinicaListBox.setAcceptableValues(clinicas);
         imssClinicaListBox.setWidth("244px");
-        
+
         creditoInputGroup = new CreditoInputGroup();
         creditoInputGroup.setWidth("244px");
         bancoListBox = new ValueListBox<>(new Renderer<EBanco>() {
@@ -120,6 +120,7 @@ public class PersonalEditorUI extends Composite {
                 }
                 return object.getNombre();
             }
+
             @Override
             public void render(EBanco object, Appendable appendable) throws IOException {
                 String s = render(object);
@@ -132,7 +133,7 @@ public class PersonalEditorUI extends Composite {
         bancoListBox.setWidth("244px");
         cuentaBancoTxtBox = new TextBox();
         cuentaBancoTxtBox.setWidth("244px");
-        
+
         cuentaCimavTxtBox = new TextBox();
         cuentaCimavTxtBox.setWidth("244px");
 
@@ -144,6 +145,7 @@ public class PersonalEditorUI extends Composite {
                 }
                 return object.getNombre();
             }
+
             @Override
             public void render(Departamento object, Appendable appendable) throws IOException {
                 String s = render(object);
@@ -156,10 +158,10 @@ public class PersonalEditorUI extends Composite {
         deptoChosen.setWidth("244px");
         DeptoDatabase.get().addMethodExecutedListener(new RestMethodExecutedListener());
         DeptoDatabase.get().findAll();
-        
+
         String htmlColSpc = "<span style='margin-right: 10px;'></span>";
         String htmlRowSpc = "<span style='margin-bottom: 10px; display: block;'></span>";
-                
+
         // Add some standard form options
         // r, c, obj
         flexEditorPersonal.setWidget(0, 0, new HTML("<strong>Nombre(s)</strong>"));
@@ -170,106 +172,156 @@ public class PersonalEditorUI extends Composite {
         flexEditorPersonal.setWidget(1, 2, paternoTxtBox);
         flexEditorPersonal.setHTML(0, 4, "A. Materno");
         flexEditorPersonal.setWidget(1, 4, maternoTxtBox);
-        
+
         flexEditorPersonal.setWidget(2, 0, new HTML(htmlRowSpc));
         flexEditorPersonal.setHTML(3, 0, "RFC");
         flexEditorPersonal.setWidget(4, 0, rfcTxtBox);
         flexEditorPersonal.setHTML(3, 2, "CURP");
         flexEditorPersonal.setWidget(4, 2, curpTxtBox);
-        
+
         flexEditorPersonal.setWidget(5, 0, new HTML(htmlRowSpc));
         flexEditorPersonal.setHTML(6, 0, "IMSS");
         flexEditorPersonal.setWidget(7, 0, imssTxtBox);
         flexEditorPersonal.setHTML(6, 2, "Clinica");
         flexEditorPersonal.setWidget(7, 2, imssClinicaListBox);
-        
+
         flexEditorPersonal.setWidget(8, 0, new HTML(htmlRowSpc));
         flexEditorPersonal.setHTML(9, 0, "Crédito");
         flexEditorPersonal.setWidget(10, 0, creditoInputGroup);
-        
+
         flexEditorPersonal.setWidget(11, 0, new HTML(htmlRowSpc));
         flexEditorPersonal.setHTML(12, 0, "Banco");
         flexEditorPersonal.setWidget(13, 0, bancoListBox);
         flexEditorPersonal.setHTML(12, 2, "Cuenta");
         flexEditorPersonal.setWidget(13, 2, cuentaBancoTxtBox);
-        
+
         flexEditorPersonal.setWidget(14, 0, new HTML(htmlRowSpc));
         flexEditorPersonal.setHTML(15, 0, "Cuenta CIMAV");
         flexEditorPersonal.setWidget(16, 0, cuentaCimavTxtBox);
-        
+
         flexEditorPersonal.setWidget(17, 0, new HTML(htmlRowSpc));
         flexEditorPersonal.setHTML(18, 0, "Departamento");
         flexEditorPersonal.setWidget(19, 0, deptoChosen);
-        
+
 //        editor.setHTML(2, 0, "Descripción");
 //        cellFormatter.setColSpan(2, 0, 2);
 //        cellFormatter.setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_LEFT);
 //        editor.setWidget(3, 0, txt3);
 //        cellFormatter.setColSpan(3, 0, 2);
-
         saveBtn.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                
-                Empleado empleado = new Empleado();
-                
-                empleado.setNombre(nombreTxtBox.getText());
-                empleado.setApellidoPaterno(paternoTxtBox.getText());
-                empleado.setApellidoMaterno(maternoTxtBox.getText());
-                empleado.setRfc(rfcTxtBox.getText());
-                empleado.setCuentaCimav(cuentaCimavTxtBox.getText());
-                String urlPhoto = "http://cimav.edu.mx/foto/" + empleado.getCuentaCimav();
-                empleado.setUrlPhoto(urlPhoto);
-                empleado.setDepartamento(deptoChosen.getValue());
-                empleado.setClinica(imssClinicaListBox.getValue());
-                empleado.setBanco(bancoListBox.getValue());
-                empleado.setHasCredito(creditoInputGroup.hasCredito());
-                empleado.setCurp(curpTxtBox.getText());
-                empleado.setImss(imssTxtBox.getText());
-                empleado.setNumCredito(creditoInputGroup.getNumCredito());
-                empleado.setCuentaBanco(cuentaBancoTxtBox.getText());
-                
-               PersonalProvider.get().add(empleado);
+
+                if (empleadoBean == null) {
+                    empleadoBean = new Empleado();
+                }
+
+                empleadoBean.setNombre(nombreTxtBox.getText());
+                empleadoBean.setApellidoPaterno(paternoTxtBox.getText());
+                empleadoBean.setApellidoMaterno(maternoTxtBox.getText());
+                empleadoBean.setRfc(rfcTxtBox.getText());
+                empleadoBean.setCuentaCimav(cuentaCimavTxtBox.getText());
+                String urlPhoto = "http://cimav.edu.mx/foto/" + empleadoBean.getCuentaCimav();
+                empleadoBean.setUrlPhoto(urlPhoto);
+                empleadoBean.setDepartamento(deptoChosen.getValue());
+                empleadoBean.setClinica(imssClinicaListBox.getValue());
+                empleadoBean.setBanco(bancoListBox.getValue());
+                empleadoBean.setHasCredito(creditoInputGroup.hasCredito());
+                empleadoBean.setCurp(curpTxtBox.getText());
+                empleadoBean.setImss(imssTxtBox.getText());
+                empleadoBean.setNumCredito(creditoInputGroup.getNumCredito());
+                empleadoBean.setCuentaBanco(cuentaBancoTxtBox.getText());
+
+                if (empleadoBean.getId() == null || empleadoBean.getId() <= 0) {
+                    // nuevo
+                    PersonalProvider.get().add(empleadoBean);
+                } else {
+                    // update
+                    PersonalProvider.get().update(empleadoBean);
+                }
+
             }
         });
-        
+
         PersonalProvider.get().addMethodExecutedListener(new ProviderMethodExecutedListener());
     }
-    
+
     private class RestMethodExecutedListener implements DeptoDatabase.MethodExecutedListener {
 
         @Override
         public void onMethodExecuted(DBEvent dbEvent) {
-            
+
             List<Departamento> deptos = (List<Departamento>) dbEvent.getResult();
             deptoChosen.setAcceptableValues(deptos);
-            
+
         }
-        
+
     }
-    
+
     private class ProviderMethodExecutedListener implements PersonalProvider.MethodExecutedListener {
 
         @Override
         public void onMethodExecuted(ProviderEvent dbEvent) {
-            if (ProviderMethod.CREATE.equals(dbEvent.getDbMethod())) {
+            if (ProviderMethod.FIND_ALL.equals(dbEvent.getDbMethod())) {
                 if (TypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
-                    String msg = "Regisro Nuevo";
-                    GrowlOptions go = GrowlHelper.getNewOptions();
-                    go.setSuccessType();
-                    go.setAllowDismiss(false);
-                    Growl.growl("", msg, Styles.FADE + " " + Styles.FONT_AWESOME_BASE /*+ " " + IconType.SMILE_O.getCssName()*/, go);
-
+                    Growl.growl("Carga de registros");
                 } else {
-                    String msg = "Falló el regisgro nuevo";
-                    GrowlOptions go = GrowlHelper.getNewOptions();
-                    go.setDangerType();
-                    go.setDelay(15000); // 15 segs
-                    //go.setAllowDismiss(false);
-                    Growl.growl("", msg, Styles.FONT_AWESOME_BASE /*+ " " + IconType.SMILE_O.getCssName()*/, go);
+                    Growl.growl("Falló carga de registros");
+                }
+            } else if (ProviderMethod.CREATE.equals(dbEvent.getDbMethod())) {
+                if (TypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
+                    Growl.growl("Registro agregado");
+                } else {
+                    Growl.growl("Falló creación de registro");
+                }
+            } else if (ProviderMethod.UPDATE.equals(dbEvent.getDbMethod())) {
+                if (TypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
+                    Growl.growl("Registro actualizado");
+                } else {
+                    Growl.growl("Falló acctualización");
                 }
             }
         }
     }
-    
+
+    private Empleado empleadoBean;
+
+    public void setBean(Empleado empleadoSelected) {
+
+        empleadoBean = empleadoSelected;
+
+        if (empleadoBean != null) {
+            // personal
+            nombreTxtBox.setText(empleadoBean.getNombre());
+            paternoTxtBox.setText(empleadoBean.getApellidoMaterno());
+            maternoTxtBox.setText(empleadoBean.getApellidoPaterno());
+            rfcTxtBox.setText(empleadoBean.getRfc());
+            curpTxtBox.setText(empleadoBean.getCurp());
+            imssTxtBox.setText(empleadoBean.getImss());
+            imssClinicaListBox.setValue(empleadoBean.getClinica());
+            creditoInputGroup.setHasCredito(empleadoBean.getHasCredito());
+            creditoInputGroup.setNumCredito(empleadoBean.getNumCredito());
+            bancoListBox.setValue(empleadoBean.getBanco());
+            cuentaBancoTxtBox.setText(empleadoBean.getCuentaBanco());
+            cuentaCimavTxtBox.setText(empleadoBean.getCuentaCimav());
+            // laboral
+            deptoChosen.setValue(empleadoBean.getDepartamento());
+        } else {
+            // personal
+            nombreTxtBox.setText("");
+            paternoTxtBox.setText("");
+            maternoTxtBox.setText("");
+            rfcTxtBox.setText("");
+            curpTxtBox.setText("");
+            imssTxtBox.setText("");
+            imssClinicaListBox.setValue(EClinica.MORELOS);
+            creditoInputGroup.setHasCredito(false);
+            creditoInputGroup.setNumCredito("");
+            bancoListBox.setValue(EBanco.BANORTE);
+            cuentaBancoTxtBox.setText("");
+            cuentaCimavTxtBox.setText("");
+            // laboral
+            deptoChosen.setValue(null);
+        }
+    }
 }

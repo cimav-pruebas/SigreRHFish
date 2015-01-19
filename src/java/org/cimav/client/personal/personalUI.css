@@ -22,7 +22,7 @@ html, body {
     position: initial !important; // de no ponerlo, no aparece
 }
 .west-search-panel {
-   /* border-right: 1px solid gray; */
+    /* border-right: 1px solid gray; */
 }
 .west-search-panel-wrapper {
     position: absolute !important;
@@ -83,7 +83,7 @@ code {
     -moz-border-radius: 4px;
     border-radius: 4px;
     background:  #F5F5F5; /* #F0F0F0;   */
-    
+
     /* del ScrollPanel  */
     overflow: auto;
     /* position: relative; */

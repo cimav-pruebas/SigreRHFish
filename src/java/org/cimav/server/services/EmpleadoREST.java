@@ -26,7 +26,7 @@ import org.cimav.server.entities.Empleado;
 @Stateless
 @Path("empleado")
 public class EmpleadoREST extends AbstractREST<Empleado> {
-    
+
     @PersistenceContext(unitName = "SigreRHFishPU")
     private EntityManager em;
 
@@ -34,12 +34,21 @@ public class EmpleadoREST extends AbstractREST<Empleado> {
         super(Empleado.class);
     }
 
+//    @POST
+//    @Override
+//    @Consumes("application/json")
+//    public void create(Empleado entity) {
+//        this.setName(entity);
+//        super.create(entity);
+//    }
+
     @POST
-    @Override
     @Consumes("application/json")
-    public void create(Empleado entity) {
+    @Produces("application/json")
+    public Empleado insert(Empleado entity) {
         this.setName(entity);
-        super.create(entity);
+        super.insert(entity); // <-- regresa con el Id nuevo
+        return entity; 
     }
 
     private void setName(Empleado entity) {
@@ -47,11 +56,12 @@ public class EmpleadoREST extends AbstractREST<Empleado> {
         String name = entity.getApellidoPaterno() + " " + entity.getApellidoMaterno() + " " + entity.getNombre();
         entity.setName(name);
     }
-    
+
     @PUT
-    @Path("{id}")
+    //@Path("{id}")
     @Consumes("application/json")
-    public void edit(@PathParam("id") Integer id, Empleado entity) {
+    @Override
+    public void edit(/*@PathParam("id") Integer id,*/Empleado entity) {
         this.setName(entity);
         super.edit(entity);
     }
@@ -94,5 +104,5 @@ public class EmpleadoREST extends AbstractREST<Empleado> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

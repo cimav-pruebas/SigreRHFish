@@ -41,13 +41,18 @@ public final class DepartamentoEditorUI extends Composite {
     interface DepartamentoEditorUIUiBinder extends UiBinder<Widget, DepartamentoEditorUI> {
     }
 
-    @UiField HTMLPanel mainPanel;
-    @UiField FlexTable editor;
-    @UiField Button btnGuardar;
-    @UiField Button btnCancelar;
+    @UiField
+    HTMLPanel mainPanel;
+    @UiField
+    FlexTable editor;
+    @UiField
+    Button btnGuardar;
+    @UiField
+    Button btnCancelar;
 
-    @UiField Alert alertEditor;
-    
+    @UiField
+    Alert alertEditor;
+
     com.google.gwt.user.client.ui.TextBox txtCodigo;
     com.github.gwtbootstrap.client.ui.TextBox txtNombre;
 //    com.github.gwtbootstrap.client.ui.TextArea txt3;
@@ -57,8 +62,6 @@ public final class DepartamentoEditorUI extends Composite {
 //        //set dirty flag ...
 //        System.out.println(">> " + e.getSource());
 //    }
-    
-
     public DepartamentoEditorUI() {
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -96,7 +99,7 @@ public final class DepartamentoEditorUI extends Composite {
 
         // De inicio, poner en nulo
         this.setDepartamento(null);
-        
+
         btnGuardar.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -106,17 +109,17 @@ public final class DepartamentoEditorUI extends Composite {
                 inputDepto.setId(originDepto.getId());
                 inputDepto.setCodigo(txtCodigo.getValue());
                 inputDepto.setNombre(txtNombre.getValue());
-                
+
                 boolean isValid = validate(inputDepto);
-                
+
                 if (isValid) {
                     boolean isNew = inputDepto.getId() == null || inputDepto.getId() <= 0;
                     if (isNew) {
                         DeptoDatabase.get().addDepto(inputDepto);
                         InfoView.show("Insertado");
-                        
+
                         setDepartamento(null); // Al no tener ID, tenemos que ponerlo en Nulo para evitar errores
-                        
+
                     } else {
                         DeptoDatabase.get().updateDepto(inputDepto);
                         InfoView.show("Actualizado");
@@ -131,24 +134,24 @@ public final class DepartamentoEditorUI extends Composite {
             public void onClick(ClickEvent event) {
                 // simplemente copiar/recuperar el originar
                 setDepartamento(originDepto);
-                
+
                 InfoView.show("Cancelado");
-                
+
             }
         });
-        
+
         TextChange textChange = new TextChange();
         txtCodigo.addValueChangeHandler(textChange);
         txtNombre.addValueChangeHandler(textChange);
-        
+
     }
-    
+
     public final native Element getElementById(String elementId) /*-{
-        return this.getElementById(elementId);
-    }-*/;
-    
+     return this.getElementById(elementId);
+     }-*/;
+
     private Boolean validate(Departamento deptoToValidate) {
-        
+
         //validation des données
         ValidatorFactory factory = Validation.byDefaultProvider().configure().buildValidatorFactory();
         Validator validator = factory.getValidator();
@@ -157,7 +160,7 @@ public final class DepartamentoEditorUI extends Composite {
             violations = validator.validate(deptoToValidate);
         }
         // es valido si no hay constraints
-        Boolean isValid = violations.isEmpty(); 
+        Boolean isValid = violations.isEmpty();
         // mostrar o no la alerta
         alertEditor.setVisible(!isValid);
         // poner msgs de constraints (si los hay)
@@ -171,11 +174,12 @@ public final class DepartamentoEditorUI extends Composite {
         alertEditor.setHTML(builder.toString());
         return isValid;
     }
-    
+
     private boolean isDirty;
     private boolean isNotNull;
-    
-    private class TextChange implements  ValueChangeHandler<String> {
+
+    private class TextChange implements ValueChangeHandler<String> {
+
         @Override
         public void onValueChange(ValueChangeEvent<String> event) {
             // al cambiar pasa a Dirty
@@ -184,44 +188,42 @@ public final class DepartamentoEditorUI extends Composite {
             updateWidgets();
         }
     }
-    
+
     //TODO Falta notificar con etiqueta si es nuevo o edición
-    
     //TODO Arquitectura: Que los catálogos se creen una sola vez; no cada vez que se accesan.
-    
     // keep el depto original
     private Departamento originDepto;
-    
+
     public void setDepartamento(Departamento departamento) {
 
         isDirty = false;
         isNotNull = departamento != null;
-        
+
         originDepto = new Departamento();
-        
+
         if (isNotNull) {
             originDepto.setId(departamento.getId());
             originDepto.setCodigo(departamento.getCodigo());
             originDepto.setNombre(departamento.getNombre());
-            
+
             txtCodigo.setText(departamento.getCodigo());
             txtNombre.setText(departamento.getNombre());
-            
+
         } else {
             txtCodigo.setText("");
             txtNombre.setText("");
         }
 
         validate(originDepto);
-        
+
         updateWidgets();
     }
-    
+
     private void updateWidgets() {
         txtCodigo.setEnabled(isNotNull);
         txtNombre.setEnabled(isNotNull);
         btnGuardar.setEnabled(isNotNull && isDirty);
-        btnCancelar.setEnabled(isNotNull  && isDirty);
+        btnCancelar.setEnabled(isNotNull && isDirty);
     }
-    
+
 }

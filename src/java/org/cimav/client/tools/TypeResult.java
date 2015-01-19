@@ -10,6 +10,7 @@ package org.cimav.client.tools;
  * @author juan.calderon
  */
 public enum TypeResult {
+
     FAILURE,
     SUCCESS;
 }

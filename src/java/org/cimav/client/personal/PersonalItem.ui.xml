@@ -12,13 +12,13 @@ Uncomment this for XHTML entities
     <g:HTMLPanel>
         
         <table width='100%' cellspacing='0' > <!-- cellpadding='0' style='cursor: pointer; text-align: left; vertical-align: middle; border-bottom:1px solid lightgray;'> -->
-<!--            <tr>
+            <!--            <tr>
                 <td  width='4px' rowspan='6' style='height:auto; width: 5px;'> 
                     <g:HTML ui:field='barraSeleccion'/>
                 </td>
                 <td colspan='3' style='height:3px;'></td>
             </tr>-->
-<!--            <tr>
+            <!--            <tr>
                 <td width='78px' rowspan='3' style='text-align: center;'>
                                         <img src='URL_FOTO_REEMPLAZO' style='border:1px solid lightgray; margin-top: 3px; border-radius:50%; padding:2px;'>
                     <b3:Image ui:field='urlPhoto' />
@@ -28,7 +28,7 @@ Uncomment this for XHTML entities
                     <g:HTML ui:field='apellidos'/>
                 </td>
             </tr>-->
-<!--            <tr>
+            <!--            <tr>
                 <td colspan='2' style='vertical-align: top;'>
                                         <h5 style='margin-top: 0px; margin-bottom: 0px;'>NOMBRE_REEMPLAZO</h5>
                     <g:HTML ui:field='nombre'/>
@@ -36,7 +36,7 @@ Uncomment this for XHTML entities
             </tr>-->
             <tr>
                 <td  colspan='1'>
-<!--                    <code class='label-cyt-grp-niv'>
+                    <!--                    <code class='label-cyt-grp-niv'>
                                                 <span style='font-size: medium;' >CODE_REEMPLAZO</span>
                         <g:HTML ui:field='code'/>
                     </code> 
@@ -54,12 +54,12 @@ Uncomment this for XHTML entities
                     </code> -->
                 </td>
                 <td style='text-align: right;'>
-<!--                    <b3:Tooltip ui:field='toolTipInfo' title="XXXXXX">
+                    <!--                    <b3:Tooltip ui:field='toolTipInfo' title="XXXXXX">
                         <b3:Icon type="INFO"/>
                     </b3:Tooltip>-->
                 </td>
             </tr>
-<!--            <tr>
+            <!--            <tr>
                 <td style='text-align:center;' ></td>
                 <td> 
                 </td>

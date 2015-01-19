@@ -27,11 +27,12 @@ import org.fusesource.restygwt.client.Method;
  * @author juan.calderon
  */
 public class Ajax {
+
     private static final AppLoadingView loadingIndicator = new AppLoadingView();
     private static final List<AsyncCallback<?>> callstack = new ArrayList<AsyncCallback<?>>();
 
     public static <T> AsyncCallback<T> call(final AsyncCallback<T> callback) {
-        if(!loadingIndicator.isShowing()){
+        if (!loadingIndicator.isShowing()) {
             loadingIndicator.center();
         }
         callstack.add(callback);
@@ -48,18 +49,19 @@ public class Ajax {
                 callback.onSuccess(result);
             }
 
-            private void handleReturn(){
+            private void handleReturn() {
                 callstack.remove(callback);
-                if(callstack.size() < 1) {
+                if (callstack.size() < 1) {
                     loadingIndicator.hide();
                 }
             }
         };
     }
-    
+
     private static final List<JsonCallback> jsonCallStack = new ArrayList<JsonCallback>();
+
     public static JsonCallback jsonCall(final JsonCallback back) {
-        if(!loadingIndicator.isShowing()){
+        if (!loadingIndicator.isShowing()) {
             loadingIndicator.center();
         }
         jsonCallStack.add(back);
@@ -76,13 +78,14 @@ public class Ajax {
                 handleReturn();
                 back.onSuccess(method, response);
             }
-            private void handleReturn(){
+
+            private void handleReturn() {
                 jsonCallStack.remove(back);
-                if(jsonCallStack.size() < 1) {
+                if (jsonCallStack.size() < 1) {
                     loadingIndicator.hide();
                 }
             }
         };
     }
-    
+
 }

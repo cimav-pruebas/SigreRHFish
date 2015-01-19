@@ -25,11 +25,11 @@ import org.fusesource.restygwt.client.Resource;
  * @author juan.calderon
  */
 public class TabuladorDatabase {
-    
-    private static final String  URL_REST = "http://localhost:8080/SigreRHFish/api/tabulador";
-    
+
+    private static final String URL_REST = "http://localhost:8080/SigreRHFish/api/tabulador";
+
     public static Departamento currentDepto;
-    
+
     /**
      * The singleton instance of the database.
      */
@@ -60,30 +60,32 @@ public class TabuladorDatabase {
         //generateContacts(250);
 
         dataProvider = new ListDataProvider<>();
-        
-        dpartamentoCodec = GWT.create( TabuladorCodec.class );
+
+        dpartamentoCodec = GWT.create(TabuladorCodec.class);
     }
 
-    public interface TabuladorCodec extends JsonEncoderDecoder<Tabulador> {}
+    public interface TabuladorCodec extends JsonEncoderDecoder<Tabulador> {
+    }
     public TabuladorCodec dpartamentoCodec;
-    
+
     public void updateDepto(Tabulador tabulador) {
-        
-        JSONValue tabuladorJSONValue = dpartamentoCodec.encode(tabulador); 
-        
+
+        JSONValue tabuladorJSONValue = dpartamentoCodec.encode(tabulador);
+
         HashMap<String, String> headers = new HashMap<>();
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
-        
+
         Resource rb = new Resource(URL_REST + "/" + tabulador.getId(), headers);
-        
+
         rb.put().json(tabuladorJSONValue).send(new JsonCallback() {
             @Override
             public void onFailure(Method method, Throwable exception) {
-                Window.alert("Error: "+exception);
+                Window.alert("Error: " + exception);
             }
+
             @Override
             public void onSuccess(Method method, JSONValue response) {
-                
+
                 Tabulador tabuladorUpdated = dpartamentoCodec.decode(response);
 
                 List<Tabulador> tabuladors = dataProvider.getList();
@@ -95,10 +97,9 @@ public class TabuladorDatabase {
                 }
             }
         });
-        
-        
+
     }
-    
+
     /**
      * Add a new contact.
      *
@@ -108,30 +109,30 @@ public class TabuladorDatabase {
 
         //Create a PersonJsonizer instance
         //Tabulador.TabuladorJsonizer dj = (Tabulador.TabuladorJsonizer)GWT.create(Tabulador.TabuladorJsonizer.class);
-        
-        JSONValue tabuladorJSONValue = dpartamentoCodec.encode(tabulador); 
-        
+        JSONValue tabuladorJSONValue = dpartamentoCodec.encode(tabulador);
+
         HashMap<String, String> headers = new HashMap<>();
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
-        
+
         Resource rb = new Resource(URL_REST, headers);
-        
+
         rb.post().json(tabuladorJSONValue).send(new JsonCallback() {
             @Override
             public void onFailure(Method method, Throwable exception) {
-                Window.alert("Error: "+exception);
+                Window.alert("Error: " + exception);
             }
+
             @Override
             public void onSuccess(Method method, JSONValue response) {
-                
+
                 Tabulador newDepto = dpartamentoCodec.decode(response);
-                
+
                 List<Tabulador> tabuladors = dataProvider.getList();
                 tabuladors.remove(newDepto); // en caso de que existiera, lo elimina
                 tabuladors.add(newDepto); // lo agrega
             }
         });
-        
+
     }
 
     public void removeDepto(final Tabulador tabulador) {
@@ -140,20 +141,20 @@ public class TabuladorDatabase {
         r.delete().send(new JsonCallback() {
             @Override
             public void onFailure(Method method, Throwable exception) {
-                Window.alert("Error: "+exception);
+                Window.alert("Error: " + exception);
             }
+
             @Override
             public void onSuccess(Method method, JSONValue response) {
                 List<Tabulador> tabuladors = dataProvider.getList();
                 tabuladors.remove(tabulador);
             }
         });
-        
+
     }
 
     /**
-     * Add a display to the database. The current range of interest of the
-     * display will be populated with data.
+     * Add a display to the database. The current range of interest of the display will be populated with data.
      *
      * @param display a {@Link HasData}.
      */
@@ -173,12 +174,12 @@ public class TabuladorDatabase {
     }
 
     public void load() {
-        
+
         dataProvider.getList().clear();
 
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
-        
+
         Resource rb = new Resource(URL_REST, headers);
         rb.get().send(new JsonCallback() {
             @Override
@@ -189,7 +190,7 @@ public class TabuladorDatabase {
 
             @Override
             public void onSuccess(Method method, JSONValue response) {
-                                
+
                 List<Tabulador> tabuladorsProvider = dataProvider.getList();
 
                 JSONArray array = null;
@@ -201,28 +202,28 @@ public class TabuladorDatabase {
                 } else {
                     throw new NullPointerException("EL arreglo de Tabuladors es Nulo en: " + URL_REST);
                 }
-                
+
                 for (int i = 0; i < array.size(); i++) {
                     JSONObject item = array.get(i).isObject();
-                    
+
                     Integer id = (int) item.get("id").isNumber().doubleValue();
-                    
-                    String nivel = item.get("nivel") != null ? item.get("nivel").isString().stringValue() : "NO_NIV_" +  Random.nextInt(100000);
-                    String nombre = item.get("nombre") != null ? item.get("nombre").isString().stringValue() : "NO_NOM_"  + Random.nextInt(100000);
+
+                    String nivel = item.get("nivel") != null ? item.get("nivel").isString().stringValue() : "NO_NIV_" + Random.nextInt(100000);
+                    String nombre = item.get("nombre") != null ? item.get("nombre").isString().stringValue() : "NO_NOM_" + Random.nextInt(100000);
 
                     Tabulador tabulador = new Tabulador();
                     tabulador.setId(id);
                     tabulador.setCode(nivel);
                     tabulador.setName(nombre);
-                    
+
                     // Remove the contact first so we don't add a duplicate.
                     tabuladorsProvider.remove(tabulador);
                     tabuladorsProvider.add(tabulador);
                 }
-                
+
             }
         });
 
     }
-    
+
 }

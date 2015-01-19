@@ -45,44 +45,51 @@ public class DepartamentosUI extends Composite {
     interface DepartamentosUIUiBinder extends UiBinder<Widget, DepartamentosUI> {
     }
 
-    @UiField TabLayoutPanel tabLayout;
-    @UiField DepartamentoEditorUI departamentoEditorUI;
-    
+    @UiField
+    TabLayoutPanel tabLayout;
+    @UiField
+    DepartamentoEditorUI departamentoEditorUI;
+
     /**
      * The main DataGrid.
      */
-    @UiField(provided = true) DataGrid<Departamento> dataGrid;
-    
+    @UiField(provided = true)
+    DataGrid<Departamento> dataGrid;
+
     /**
-    * The pager used to change the range of data.
-    */
-    @UiField(provided = true) SimplePager pager;    
-    
-    @UiField Button btnReload;
-    @UiField Button btnAdd;
-    @UiField Button btnEditar;
-    @UiField Button btnEliminar;
-    
+     * The pager used to change the range of data.
+     */
+    @UiField(provided = true)
+    SimplePager pager;
+
+    @UiField
+    Button btnReload;
+    @UiField
+    Button btnAdd;
+    @UiField
+    Button btnEditar;
+    @UiField
+    Button btnEliminar;
+
     //private Departamento currentDepto;
-    
     public DepartamentosUI() {
 
         buildGrid();
 
         initWidget(uiBinder.createAndBindUi(this));
-        
+
         // 1era carga de Datos
         DeptoDatabase.get().load();
         // de inicio, poner en Nulo
         this.clearSelection();
         this.updateWidgets();
-        
+
         tabLayout.addSelectionHandler(new SelectionHandler<Integer>() {
             @Override
             public void onSelection(SelectionEvent<Integer> event) {
                 if (event.getSelectedItem() == 0) {
                     // Tab del Grid
-                    
+
                     // DataGrid es un Widget tipo RequireSize; por lo tanto debe ser hijo de un widget tipo ProvidesResize. 
                     // De lo contrario se "desaparece" al no poder ajustar a los cambios de tamaño.
                     dataGrid.setWidth("100%");
@@ -94,7 +101,7 @@ public class DepartamentosUI extends Composite {
                 }
             }
         });
-        
+
         btnReload.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -105,23 +112,23 @@ public class DepartamentosUI extends Composite {
         btnAdd.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                
+
                 // el nuevo debe ser id < 0 y garantizar que si el anterior tambien es nuevo, lo sustituya
-                int idNegativo = DeptoDatabase.currentDepto != null && DeptoDatabase.currentDepto.getId() != null && DeptoDatabase.currentDepto.getId() <= 0 
+                int idNegativo = DeptoDatabase.currentDepto != null && DeptoDatabase.currentDepto.getId() != null && DeptoDatabase.currentDepto.getId() <= 0
                         ? DeptoDatabase.currentDepto.getId() - 1 : -1;
-                
+
                 // crear nuevo Departamento
                 Departamento nuevoDepto = new Departamento();
                 // con -1 para indicar que es nuevo
                 nuevoDepto.setId(idNegativo);
                 nuevoDepto.setCodigo("");
                 DeptoDatabase.currentDepto = nuevoDepto;
-                
+
                 // en vez del clearSelection
-                dataGrid.getSelectionModel().setSelected(DeptoDatabase.currentDepto, true); 
+                dataGrid.getSelectionModel().setSelected(DeptoDatabase.currentDepto, true);
                 // dispara el OnSelect (si cambia dado que )
                 //clearSelection();
-                
+
                 tabLayout.selectTab(1);
             }
         });
@@ -135,9 +142,8 @@ public class DepartamentosUI extends Composite {
         btnEliminar.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                
-                // TODO Falta msg de autorización de remove
 
+                // TODO Falta msg de autorización de remove
                 // keep el depto a remove
                 Departamento deptoToRemove = DeptoDatabase.currentDepto;
                 // limpia la selección
@@ -145,11 +151,11 @@ public class DepartamentosUI extends Composite {
                 updateWidgets();
                 // elimina el depto a remove
                 DeptoDatabase.get().removeDepto(deptoToRemove);
-                
-                InfoView.show("Registro " + deptoToRemove.getCodigo() + " eliminado" );
+
+                InfoView.show("Registro " + deptoToRemove.getCodigo() + " eliminado");
             }
         });
-        
+
     }
 
     private void buildGrid() {
@@ -175,16 +181,16 @@ public class DepartamentosUI extends Composite {
         dataGrid.setEmptyTableWidget(new Label("No hay departamentos"));
 
         // Attach a column sort handler to the ListDataProvider to sort the list.
-         ListHandler<Departamento> sortHandler = new ListHandler<>(DeptoDatabase.get().getDataProvider().getList());
+        ListHandler<Departamento> sortHandler = new ListHandler<>(DeptoDatabase.get().getDataProvider().getList());
         dataGrid.addColumnSortHandler(sortHandler);
-        
+
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
-        
+
         dataGrid.setPageSize(30);
-        
+
         // Add a selection model so we can select cells.
         final SelectionModel<Departamento> selectionModel = new SingleSelectionModel<>(Departamento.KEY_PROVIDER);
         selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -192,19 +198,19 @@ public class DepartamentosUI extends Composite {
             public void onSelectionChange(SelectionChangeEvent event) {
                 //System.out.println("123> " + event.getSource() + " - " + event.getAssociatedType());
                 if (event.getSource() instanceof SingleSelectionModel) {
-                    
+
                     SingleSelectionModel selecter = (SingleSelectionModel) event.getSource();
                     Departamento sel = (Departamento) selecter.getSelectedObject();
 
                     // Seleccion actual
                     DeptoDatabase.currentDepto = sel;
-                    
+
                     System.out.println("Depto.Id --> " + DeptoDatabase.currentDepto);
-                    
+
                     departamentoEditorUI.setDepartamento(DeptoDatabase.currentDepto);
-                    
+
                     // Actualizar botones
-                    updateWidgets();                    
+                    updateWidgets();
                 }
             }
         });
@@ -217,17 +223,17 @@ public class DepartamentosUI extends Composite {
 //                DataGrid<Departamento> grid = (DataGrid<Departamento>) event.getSource();
 //                int row = grid.getKeyboardSelectedRow();
 //                Departamento item = grid.getVisibleItem(row);
-                
+
                 // simple selecciona el tab del Editor
                 tabLayout.selectTab(1);
             }
         }, DoubleClickEvent.getType());
-        
+
         initTableColumns(sortHandler);
 
         // Add the CellList to the adapter in the database.
         DeptoDatabase.get().addDataDisplay(dataGrid);
-        
+
     }
 
     /**
@@ -262,7 +268,7 @@ public class DepartamentosUI extends Composite {
         });
         dataGrid.addColumn(codigoCol, "Código");
         dataGrid.setColumnWidth(codigoCol, 70, Unit.PX);
-        
+
         // Nombre
         Column<Departamento, String> nombreCol
                 = new Column<Departamento, String>(new TextCell()) {
@@ -280,15 +286,16 @@ public class DepartamentosUI extends Composite {
         });
         dataGrid.addColumn(nombreCol, "Nombre");
         dataGrid.setColumnWidth(nombreCol, 60, Unit.PCT);
-        
+
     }
 
     private void clearSelection() {
         if (DeptoDatabase.currentDepto != null && dataGrid.getSelectionModel().isSelected(DeptoDatabase.currentDepto)) {
-            dataGrid.getSelectionModel().setSelected(DeptoDatabase.currentDepto, false); 
+            dataGrid.getSelectionModel().setSelected(DeptoDatabase.currentDepto, false);
         }
-        DeptoDatabase.currentDepto = null; 
+        DeptoDatabase.currentDepto = null;
     }
+
     private void updateWidgets() {
         boolean isNotNull = DeptoDatabase.currentDepto != null;
         btnEditar.setEnabled(isNotNull);

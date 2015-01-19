@@ -10,9 +10,10 @@ package org.cimav.client.domain;
  * @author juan.calderon
  */
 public enum EClinica {
+
     MORELOS(0, "Morelos"),
     SAN_FELIPE(1, "San Felipe");
-    
+
     private int id;
     private String nombre;
 
@@ -36,7 +37,7 @@ public enum EClinica {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
     public static EClinica get(int id) {
         EClinica result = EClinica.MORELOS; // default
         for (EClinica value : EClinica.values()) {
@@ -47,5 +48,5 @@ public enum EClinica {
         }
         return result;
     }
-    
+
 }

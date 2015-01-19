@@ -23,10 +23,8 @@ public class ApplicationConfig extends Application {
     }
 
     /**
-     * Do not modify addRestResourceClasses() method.
-     * It is automatically populated with
-     * all resources defined in the project.
-     * If required, comment out calling this method in getClasses().
+     * Do not modify addRestResourceClasses() method. It is automatically populated with all resources defined in the project. If required, comment out calling this method in
+     * getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(org.cimav.server.services.DepartamentoREST.class);
@@ -34,5 +32,5 @@ public class ApplicationConfig extends Application {
         resources.add(org.cimav.server.services.GrupoREST.class);
         resources.add(org.cimav.server.services.TabuladorREST.class);
     }
-    
+
 }

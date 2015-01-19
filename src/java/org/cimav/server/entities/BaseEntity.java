@@ -21,25 +21,25 @@ import javax.validation.constraints.Size;
  */
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    
+
     @Size(max = 8)
     @Column(name = "code")
     private String code;
-    
+
     @Size(max = 140)
     @Column(name = "name")
     private String name;
 
     public BaseEntity() {
     }
-    
+
     public Integer getId() {
         return id;
     }
@@ -96,5 +96,5 @@ public abstract class BaseEntity implements Serializable {
     public String toString() {
         return "BaseEntity{" + "id=" + id + ", code=" + code + '}';
     }
-    
+
 }

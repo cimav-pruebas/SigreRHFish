@@ -7,8 +7,8 @@
 */
 
 .cellListWidget {
-/* color: #021650;
- background-color: #021650;*/
+    /* color: #021650;
+     background-color: #021650;*/
 }
 
 .cellListEvenItem {
@@ -20,18 +20,18 @@
 }
 /*background-color: #628cd5;*/
 .cellListKeyboardSelectedItem {
-/*background: #ffc;*/
-  background-color: #F0F0F0;  /* griseson */
-  overflow: hidden;
+    /*background: #ffc;*/
+    background-color: #F0F0F0;  /* griseson */
+    overflow: hidden;
 }
 
 .cellListSelectedItem {
-/*background-color: #628cd5;
-color: white;
-height: auto;
-overflow: visible;*/
-  background-color: #F0F0F0;
-/*  color: #555555; */
-  height: auto;
-  overflow: auto;
+    /*background-color: #628cd5;
+    color: white;
+    height: auto;
+    overflow: visible;*/
+    background-color: #F0F0F0;
+    /*  color: #555555; */
+    height: auto;
+    overflow: auto;
 }

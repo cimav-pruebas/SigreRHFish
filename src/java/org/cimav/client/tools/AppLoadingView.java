@@ -27,24 +27,24 @@ import com.google.gwt.user.client.ui.PopupPanel;
  * @author juan.calderon
  */
 public class AppLoadingView extends PopupPanel {
-    
+
     private final FlowPanel container = new FlowPanel();
-    
-    public AppLoadingView() {  
+
+    public AppLoadingView() {
         this.setGlassEnabled(true);
         final Image ajaxImage = new Image("images/ajax_loader_large.gif");
-        final Grid grid = new Grid(2, 1);  
+        final Grid grid = new Grid(2, 1);
         grid.setWidget(0, 0, ajaxImage);
-        
+
         HTMLTable.CellFormatter formatter = grid.getCellFormatter();
         formatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
-        
+
         this.container.add(grid);
-        add(this.container);    
-        
+        add(this.container);
+
         this.container.setStyleName("transparente");
         this.setStyleName("transparente");
         ajaxImage.setStyleName("transparente");
-    } 
-    
+    }
+
 }

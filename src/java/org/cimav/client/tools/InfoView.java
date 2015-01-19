@@ -19,21 +19,22 @@ import com.google.gwt.user.client.ui.Widget;
  * @author juan.calderon
  */
 public class InfoView extends Composite {
-    
+
     private static InfoViewUiBinder uiBinder = GWT.create(InfoViewUiBinder.class);
-    
+
     interface InfoViewUiBinder extends UiBinder<Widget, InfoView> {
     }
-    
-    @UiField static Alert alertInfoView;
-    
+
+    @UiField
+    static Alert alertInfoView;
+
     public InfoView() {
         initWidget(uiBinder.createAndBindUi(this));
-        
+
         alertInfoView.setVisible(false);
         alertInfoView.setAnimation(true);
     }
-    
+
     public static void show(final String mshHtml) {
         alertInfoView.setHTML(mshHtml);
         alertInfoView.setVisible(true);

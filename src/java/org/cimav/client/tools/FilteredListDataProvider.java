@@ -17,9 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
-* http://www.artiom.pro/2012/09/gwt-celltable-filtering.html#comment-form/
-*/
-
+ * http://www.artiom.pro/2012/09/gwt-celltable-filtering.html#comment-form/
+ */
 public class FilteredListDataProvider<T> extends ListDataProvider<T> {
 
     private String filterString;
@@ -45,7 +44,7 @@ public class FilteredListDataProvider<T> extends ListDataProvider<T> {
     }
 
     public boolean hasFilter() {
-        return  (filterString != null) && !filterString.trim().isEmpty(); // !ClientStringUtils.isEmpty(filterString);
+        return (filterString != null) && !filterString.trim().isEmpty(); // !ClientStringUtils.isEmpty(filterString);
     }
 
     @Override
@@ -73,5 +72,5 @@ public class FilteredListDataProvider<T> extends ListDataProvider<T> {
             }
         }
     }
-    
+
 }

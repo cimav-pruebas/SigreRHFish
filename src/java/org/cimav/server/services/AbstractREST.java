@@ -14,7 +14,7 @@ import javax.persistence.EntityManager;
  * @param <T>
  */
 public abstract class AbstractREST<T> {
-    
+
     private final Class<T> entityClass;
 
     public AbstractREST(Class<T> entityClass) {
@@ -25,6 +25,13 @@ public abstract class AbstractREST<T> {
 
     public void create(T entity) {
         getEntityManager().persist(entity);
+    }
+
+    public T insert(T entity) {
+        getEntityManager().persist(entity);
+        getEntityManager().flush(); // The ID is only guaranteed to be generated at flush time. 
+        // con el Flus se le inyecta el Id y cualquier otro campo
+        return entity;
     }
 
     public void edit(T entity) {
@@ -61,5 +68,5 @@ public abstract class AbstractREST<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-    
+
 }

@@ -10,6 +10,7 @@ package org.cimav.client.tools;
  * @author juan.calderon
  * @param <T>
  */
-public interface IFilter<T> {  
-    boolean matchFilter(T value, String filter);  
+public interface IFilter<T> {
+
+    boolean matchFilter(T value, String filter);
 }

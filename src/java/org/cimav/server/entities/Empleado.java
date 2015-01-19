@@ -27,7 +27,7 @@ import org.apache.commons.lang3.text.WordUtils;
  * @author juan.calderon
  */
 @Entity
-@Cacheable(false) 
+@Cacheable(false)
 @Table(name = "empleados")
 @XmlRootElement(name = "employees")
 //@XmlType(propOrder = { "id", "clave", "consecutivo", "email", "telephone" })
@@ -88,89 +88,89 @@ public class Empleado extends BaseEntity implements Serializable {
     @Size(max = 40)
     @Column(name = "apellido_materno")
     private String apellidoMaterno;
-    
+
     @Column(name = "id_banco")
     private Short idBanco;
-    
+
     @Column(name = "has_credito")
     private Boolean hasCredito;
-    
+
     @Column(name = "num_credito")
     private String numCredito;
 
     @Column(name = "cuenta_cimav")
     private String cuentaCimav;
-    
+
     @Column(name = "id_sede")
     private Integer idSede;
-    
+
     @Column(name = "status")
     private Integer idStatus;
-    
-    @XmlElement(name = "jefe" )
+
+    @XmlElement(name = "jefe")
     @JoinColumn(name = "id_jefe", referencedColumnName = "id")
     @ManyToOne
     private Empleado jefe;
-    
+
     @Column(name = "id_tipo_empleado")
     private Integer idTipoEmpleado;
-    
+
     @Column(name = "id_tipo_contrato")
     private Integer idTipoContrato;
-    
+
     @Column(name = "fecha_ingreso")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaIngreso;
-    
+
     @Column(name = "fecha_inicio_contrato")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaInicioContrato;
-    
+
     @Column(name = "fecha_fin_contrato")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaFinContrato;
-    
+
     @Column(name = "fecha_baja")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaBaja;
-    
+
     @Column(name = "id_tipo_antiguedad")
     private Integer idTipoAntiguedad;
-    
+
     @Column(name = "fecha_antiguedad")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaAntiguedad;
-    
+
     @Column(name = "id_tipo_sni")
     private Integer idTipoSni;
-    
+
     @Column(name = "num_sni")
     private String numSni;
-    
+
     @Column(name = "fecha_sni")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaSni;
-    
+
     @PostLoad
     public void reduceJefe() {
         // TODO Buscar best approach de reducción profundidad de Entidad en Empleado.Jefe
-        if( this.getJefe() != null) {
+        if (this.getJefe() != null) {
             Empleado miniJefe = new Empleado();
             miniJefe.setId(this.getJefe().getId());
             miniJefe.setCode(this.getJefe().getCode());
             miniJefe.setName(this.getJefe().getName());
             miniJefe.setUrlPhoto(this.getJefe().getUrlPhoto());
-            
+
             this.setJefe(miniJefe);
         }
     }
-    
+
     public Integer getConsecutivo() {
         return consecutivo;
     }
 
     public void setConsecutivo(Integer consecutivo) {
-        this.consecutivo = consecutivo;
+        this.consecutivo = consecutivo; 
     }
 
     public String getCurp() {
@@ -429,6 +429,5 @@ public class Empleado extends BaseEntity implements Serializable {
     public void setFechaSni(Date fechaSni) {
         this.fechaSni = fechaSni;
     }
-    
-    
+
 }

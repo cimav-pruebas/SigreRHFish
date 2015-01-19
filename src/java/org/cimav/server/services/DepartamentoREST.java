@@ -27,6 +27,7 @@ import org.cimav.server.entities.Departamento;
 @Stateless
 @Path("departamento")
 public class DepartamentoREST extends AbstractREST<Departamento> {
+
     @PersistenceContext(unitName = "SigreRHFishPU")
     private EntityManager em;
 
@@ -47,7 +48,7 @@ public class DepartamentoREST extends AbstractREST<Departamento> {
     @Produces("application/json")
     public Departamento editWithReturn(@PathParam("id") Integer id, Departamento entity) {
         super.edit(entity);
-        
+
         // TODO Eliminar el AbstractFacade y hacerlo todo en directo o dejarlo solo para instanciar el EntityManager
         Query q = getEntityManager().createNamedQuery("Departamento.findByCodigo");
         q.setParameter("codigo", entity.getCodigo());
@@ -100,5 +101,5 @@ public class DepartamentoREST extends AbstractREST<Departamento> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

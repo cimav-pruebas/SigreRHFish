@@ -7,6 +7,7 @@ package org.cimav.client.personal;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import java.util.ArrayList;
@@ -28,16 +29,17 @@ import org.fusesource.restygwt.client.Resource;
  * @author juan.calderon
  */
 public class PersonalREST extends BaseREST {
-    
+
     private static final String URL_REST = "http://localhost:8080/SigreRHFish/api/empleado";
 
-    public interface EmpleadoJsonCodec extends JsonEncoderDecoder<Empleado> {}
+    public interface EmpleadoJsonCodec extends JsonEncoderDecoder<Empleado> {
+        
+    }
     public EmpleadoJsonCodec empleadoListJsonCodec = GWT.create(EmpleadoJsonCodec.class);
-    
+
     // <editor-fold defaultstate="collapsed" desc="métodos CRUD-REST"> 
+
     public void findAll() {
-                
-        //dataProvider.getList().clear();
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
@@ -48,64 +50,66 @@ public class PersonalREST extends BaseREST {
             @Override
             public void onFailure(Method method, Throwable exception) {
                 Window.alert(exception.getLocalizedMessage());
-                
+
                 RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_ALL, TypeResult.FAILURE, exception.getMessage());
                 onRESTExecuted(dbEvent);
             }
 
             @Override
             public void onSuccess(Method method, JSONValue response) {
+                
                 // TODO debería poderse con List<Empleado>
                 // Pasar la lista completa. Probablemente si se soluciona el XmlRootElement name="empleados"
-                
+
                 List<Empleado> empleados = new ArrayList<>();
                 try {
-                JSONArray array = response.isArray();
-                for (int i=0;i<array.size();i++) {
-                    JSONValue val = array.get(i);
-                    Empleado empleado = empleadoListJsonCodec.decode(val);
-                    empleados.add(empleado);
-                }
+                    JSONArray array = response.isArray();
+                    for (int i = 0; i < array.size(); i++) {
+                        JSONValue val = array.get(i);
+                        
+                        Empleado empleado = empleadoListJsonCodec.decode(val);
+                        empleados.add(empleado);
+                    }
+                    RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_ALL, TypeResult.SUCCESS, "");
+                    dbEvent.setResult(empleados);
+                    onRESTExecuted(dbEvent);
                 } catch (Exception e) {
-                    System.out.println(">>> " + e.getMessage());
+                    RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_ALL, TypeResult.FAILURE, e.getMessage());
+                    onRESTExecuted(dbEvent);
                 }
-                RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_ALL, TypeResult.SUCCESS, "");
-                dbEvent.setResult(empleados);
-                onRESTExecuted(dbEvent); 
             }
-            
+
         }));
 
     }
-    
+
     public void add(Empleado empleado) {
 
-        //Create a PersonJsonizer instance
-        //Departamento.DepartamentoJsonizer dj = (Departamento.DepartamentoJsonizer)GWT.create(Departamento.DepartamentoJsonizer.class);
         JSONValue empleadoJSONValue = empleadoListJsonCodec.encode(empleado);
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
 
         Resource rb = new Resource(URL_REST, headers);
-        
+
         rb.post().json(empleadoJSONValue).send(Ajax.jsonCall(new JsonCallback() {
             @Override
             public void onFailure(Method method, Throwable exception) {
-                Window.alert("Error: " + exception);
+                RESTEvent dbEvent = new RESTEvent(ProviderMethod.CREATE, TypeResult.SUCCESS, exception.getMessage());
+                onRESTExecuted(dbEvent);
             }
 
             @Override
             public void onSuccess(Method method, JSONValue response) {
                 RESTEvent dbEvent = new RESTEvent(ProviderMethod.CREATE, TypeResult.SUCCESS, "listo");
-                onRESTExecuted(dbEvent); 
-
-                System.out.println(">>> " + response);
+                Empleado nuevoEmpleado = empleadoListJsonCodec.decode(response);
+                dbEvent.setResult(nuevoEmpleado); 
+                onRESTExecuted(dbEvent);
             }
         }));
 
-    }    
-    
+    }
+
     public void update(Empleado empleado) {
 
         //Create a PersonJsonizer instance
@@ -116,31 +120,34 @@ public class PersonalREST extends BaseREST {
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
 
         Resource rb = new Resource(URL_REST, headers);
-        
+
         rb.put().json(empleadoJSONValue).send(Ajax.jsonCall(new JsonCallback() {
             @Override
             public void onFailure(Method method, Throwable exception) {
+                RESTEvent dbEvent = new RESTEvent(ProviderMethod.UPDATE, TypeResult.FAILURE, exception.getMessage());
+                onRESTExecuted(dbEvent);
+
                 Window.alert("Error: " + exception);
             }
 
             @Override
             public void onSuccess(Method method, JSONValue response) {
                 RESTEvent dbEvent = new RESTEvent(ProviderMethod.UPDATE, TypeResult.SUCCESS, "listo");
-                onRESTExecuted(dbEvent); 
+                onRESTExecuted(dbEvent);
 
                 System.out.println(">>> " + response);
             }
         }));
 
-    }    
-    
+    }
+
     public void delete(Integer id) {
-        
+
         HashMap<String, String> headers = new HashMap<>();
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
 
         Resource rb = new Resource(URL_REST + "/id", headers);
-        
+
         rb.delete().send(Ajax.jsonCall(new JsonCallback() {
             @Override
             public void onFailure(Method method, Throwable exception) {
@@ -150,14 +157,13 @@ public class PersonalREST extends BaseREST {
             @Override
             public void onSuccess(Method method, JSONValue response) {
                 RESTEvent dbEvent = new RESTEvent(ProviderMethod.DELETE, TypeResult.SUCCESS, "listo");
-                onRESTExecuted(dbEvent); 
+                onRESTExecuted(dbEvent);
 
                 System.out.println(">>> " + response);
             }
         }));
 
-    }    
-    
+    }
+
     // </editor-fold>
-    
 }

@@ -18,16 +18,17 @@ import org.gwtbootstrap3.client.ui.TextBox;
  * @author juan.calderon
  */
 public class CreditoInputGroup extends Composite {
-    
+
     private static CreditoInputGroupUiBinder uiBinder = GWT.create(CreditoInputGroupUiBinder.class);
-    
+
     interface CreditoInputGroupUiBinder extends UiBinder<Widget, CreditoInputGroup> {
     }
-    
-    
-   @UiField CheckBoxButton hasCreditoChkBox; 
-   @UiField TextBox creditoTxtBox;
-   
+
+    @UiField
+    CheckBoxButton hasCreditoChkBox;
+    @UiField
+    TextBox creditoTxtBox;
+
     public CreditoInputGroup() {
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -35,9 +36,16 @@ public class CreditoInputGroup extends Composite {
     public Boolean hasCredito() {
         return hasCreditoChkBox.getValue();
     }
-    
+
     public String getNumCredito() {
         return creditoTxtBox.getText();
     }
-    
+
+    public void setHasCredito(boolean hasCredito) {
+        hasCreditoChkBox.setValue(hasCredito, true);
+    }
+
+    public void setNumCredito(String numCredito) {
+        creditoTxtBox.setValue(numCredito);
+    }
 }

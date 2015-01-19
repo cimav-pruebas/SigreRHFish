@@ -48,7 +48,7 @@ Uncomment this for XHTML entities
                                     <b3:Button ui:field="saveBtn" icon="CHECK" />
                                 </b3:Tooltip>
                                 <b3:Tooltip title="Cancelar" placement="LEFT">
-                                    <b3:Button icon="PLUS" iconRotate="ROTATE_90"/>
+                                    <b3:Button icon="TIMES"/>
                                 </b3:Tooltip>
                             </g:HorizontalPanel>        
                         </td>

@@ -26,7 +26,7 @@ import org.cimav.server.entities.Grupo;
 @Stateless
 @Path("grupo")
 public class GrupoREST extends AbstractREST<Grupo> {
-    
+
     @PersistenceContext(unitName = "SigreRHFishPU")
     private EntityManager em;
 
@@ -86,5 +86,5 @@ public class GrupoREST extends AbstractREST<Grupo> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

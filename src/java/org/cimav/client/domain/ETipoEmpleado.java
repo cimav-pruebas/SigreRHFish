@@ -10,9 +10,10 @@ package org.cimav.client.domain;
  * @author juan.calderon
  */
 public enum ETipoEmpleado {
+
     NORMAL(0, "Normal"),
     CATEDRA(1, "Cátedra/Repatriación");
-    
+
     private int id;
     private String nombre;
 
@@ -36,7 +37,7 @@ public enum ETipoEmpleado {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
     public static ETipoEmpleado get(int id) {
         ETipoEmpleado result = ETipoEmpleado.NORMAL; // default
         for (ETipoEmpleado value : ETipoEmpleado.values()) {
@@ -47,6 +48,5 @@ public enum ETipoEmpleado {
         }
         return result;
     }
-    
-}
 
+}

@@ -10,11 +10,11 @@ package org.cimav.client.tools;
  * @author juan.calderon
  */
 public class RESTEvent {
-    
+
     private ProviderMethod dbMethod;
     private TypeResult dbTypeResult;
     private String reason;
-    
+
     private Object result;
 
     public RESTEvent(ProviderMethod dbMethod, TypeResult dBTypeResult, String reason) {
@@ -55,5 +55,5 @@ public class RESTEvent {
     public void setResult(Object result) {
         this.result = result;
     }
-    
+
 }

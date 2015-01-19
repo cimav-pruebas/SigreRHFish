@@ -18,10 +18,10 @@ import javax.validation.constraints.Size;
 public class BaseDomain<T> implements Comparable<BaseDomain> {
 
     private Integer id;
-    
-    @Pattern(regexp="^[A-Z][a-zA-Z]{1,7}$", message = "Código debe ser de 2 a 8 letras empezando con mayúscula.")
+
+    @Pattern(regexp = "^[A-Z][a-zA-Z]{1,7}$", message = "Código debe ser de 2 a 8 letras empezando con mayúscula.")
     private String code;
-    
+
     @Size(min = 10, message = "Nombre deber tener al menos 10 caracteres")
     private String name;
 
@@ -39,7 +39,7 @@ public class BaseDomain<T> implements Comparable<BaseDomain> {
             return r;
         }
     };
-    
+
     @Override
     public int compareTo(BaseDomain obj) {
         // TODO REvisar el Comparable del BaseDomain
@@ -107,7 +107,5 @@ public class BaseDomain<T> implements Comparable<BaseDomain> {
         }
         return true;
     }
-    
-    
-    
+
 }

@@ -10,11 +10,11 @@ package org.cimav.client.tools;
  * @author juan.calderon
  */
 public class ProviderEvent {
-    
+
     private ProviderMethod dbMethod;
     private TypeResult dbTypeResult;
     private String reason;
-    
+
     private Object result;
 
     public ProviderEvent(ProviderMethod dbMethod, TypeResult dBTypeResult, String reason) {

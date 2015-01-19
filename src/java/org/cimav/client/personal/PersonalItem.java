@@ -15,20 +15,19 @@ import com.google.gwt.user.client.ui.Widget;
  * @author juan.calderon
  */
 public class PersonalItem extends Composite {
-    
+
     private static PersonalItemUiBinder uiBinder = GWT.create(PersonalItemUiBinder.class);
-    
+
     interface PersonalItemUiBinder extends UiBinder<Widget, PersonalItem> {
     }
-    
+
 //    @UiField HTML barraSeleccion;
 //    @UiField Image urlPhoto;
 //    @UiField HTML apellidos;
-    
     public PersonalItem() {
         initWidget(uiBinder.createAndBindUi(this));
     }
-    
+
 //    public void setSelected(boolean isSelected) {
 //        if (isSelected) {
 //            this.barraSeleccion.setHTML("<span  style=background-color: #628cd5;' />");

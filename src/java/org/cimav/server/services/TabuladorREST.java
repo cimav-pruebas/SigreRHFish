@@ -34,19 +34,19 @@ public class TabuladorREST extends AbstractREST<Tabulador> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
     @GET
     @Path("{id}")
     @Produces("application/json")
     public Tabulador find(@PathParam("id") Integer id) {
         return super.find(id);
     }
-    
+
     @GET
     @Override
     @Produces("application/json")
     public List<Tabulador> findAll() {
         return super.findAll();
     }
-    
+
 }

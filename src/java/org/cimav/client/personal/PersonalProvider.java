@@ -24,18 +24,18 @@ import org.gwtbootstrap3.extras.growl.client.ui.Growl;
  * @author juan.calderon
  */
 public class PersonalProvider extends BaseProvider<Empleado> {
-    
+
     private static PersonalProvider instance;
-    
+
     private PersonalREST personalREST;
-    
+
     public static PersonalProvider get() {
         if (instance == null) {
             instance = new PersonalProvider();
         }
         return instance;
     }
-    
+
     @Override
     public boolean matchFilter(Empleado value, String filter) {
         if (value == null) {
@@ -44,14 +44,11 @@ public class PersonalProvider extends BaseProvider<Empleado> {
         if (filter == null || filter.trim().isEmpty()) {
             return true;
         }
-        
+
         // ^.*\b(one|two|three)\b.*$    one, tow or three
         // ^(?=.*?\bone\b)(?=.*?\btwo\b)(?=.*?\bthree\b).*$ one, two AND three
-        
         // ^(?=.*?one)(?=.*?two)(?=.*?three).*$ las palabras no tiene boundiry
-        
         // la frase completa debe tener todos los terminos
-        
         String pattern = "^";
         filter = filter.toLowerCase();
         String[] array = filter.split("\\s+");
@@ -59,33 +56,33 @@ public class PersonalProvider extends BaseProvider<Empleado> {
             pattern = pattern + "(?=.*?" + term.trim() + ")";
         }
         pattern = pattern + ".+";
-        
+
         String grupoStr = value.getGrupo() != null ? value.getGrupo().getCode() + " " + value.getGrupo().getName() : " ";
         String nivelStr = value.getNivel() != null ? value.getNivel().getCode() + " " + value.getNivel().getName() : " ";
-        
-        String string = 
-                value.getName() + " " + value.getRfc() + " " + value.getCode() + " " + value.getUrlPhoto() + " " + grupoStr + " " + nivelStr;
+
+        String string
+                = value.getName() + " " + value.getRfc() + " " + value.getCode() + " " + value.getUrlPhoto() + " " + grupoStr + " " + nivelStr;
         string = string.toLowerCase();
-        
+
         RegExp regExp = RegExp.compile(pattern);
         MatchResult matcher = regExp.exec(string);
-        
+
         return matcher != null;
     }
-    
+
     public static final int ORDER_BY_NAME = 0;
     public static final int ORDER_BY_CODE = 1;
     public static final int ORDER_BY_GRUPO = 2;
     public static final int ORDER_BY_NIVEL = 3;
-    
+
     @Override
     public void order(int orderBy) {
-        switch(orderBy) {
+        switch (orderBy) {
             case ORDER_BY_NAME: {
                 Collections.sort(dataProvider.getList(), new Comparator<Empleado>() {
                     @Override
                     public int compare(Empleado emp1, Empleado emp2) {
-                         return  emp1.getName().compareTo(emp2.getName());
+                        return emp1.getName().compareTo(emp2.getName());
                     }
                 });
                 break;
@@ -94,7 +91,7 @@ public class PersonalProvider extends BaseProvider<Empleado> {
                 Collections.sort(dataProvider.getList(), new Comparator<Empleado>() {
                     @Override
                     public int compare(Empleado emp1, Empleado emp2) {
-                         return  emp1.getCode().compareTo(emp2.getCode());
+                        return emp1.getCode().compareTo(emp2.getCode());
                     }
                 });
                 break;
@@ -123,11 +120,11 @@ public class PersonalProvider extends BaseProvider<Empleado> {
             }
         }
     }
-    
+
     public PersonalREST getREST() {
         if (personalREST == null) {
             personalREST = new PersonalREST();
-            
+
             personalREST.addRESTExecutedListener(new RestMethodExecutedListener());
         }
         return personalREST;
@@ -137,51 +134,41 @@ public class PersonalProvider extends BaseProvider<Empleado> {
 
         @Override
         public void onRESTExecuted(RESTEvent dbEvent) {
+
             if (ProviderMethod.FIND_ALL.equals(dbEvent.getDbMethod())) {
-                String m = "" + dataProvider.getDataDisplays().size() + "/" + dataProvider.getList().size();
-                //reloadBtn.setText(m);
-
                 dataProvider.getList().clear();
-                
-                ProviderEvent providerEvent = new ProviderEvent(ProviderMethod.FIND_ALL, TypeResult.SUCCESS, "");
-                //providerEvent.setResult(dbEvent.getResult());
-                onMethodExecuted(providerEvent);
 
+                ProviderEvent providerEvent = new ProviderEvent(ProviderMethod.FIND_ALL, dbEvent.getDbTypeResult(), dbEvent.getReason());
                 if (TypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
-                    
                     List<Empleado> empleados = (List<Empleado>) dbEvent.getResult();
                     dataProvider.getList().addAll(empleados);
-                    
-//                    String msg = "Registros: " + PersonalDB.get().getDataProvider().getList().size();
-//                    GrowlOptions go = GrowlHelper.getNewOptions();
-//                    go.setSuccessType();
-//                    go.setAllowDismiss(false);
-//                    Growl.growl("", msg, Styles.FADE + " " + Styles.FONT_AWESOME_BASE /*+ " " + IconType.SMILE_O.getCssName()*/, go);
-
-                } else {
-//                    String msg = "Falló la carga de registros";
-//                    GrowlOptions go = GrowlHelper.getNewOptions();
-//                    go.setDangerType();
-//                    go.setDelay(15000); // 15 segs
-//                    //go.setAllowDismiss(false);
-//                    Growl.growl("", msg, Styles.FONT_AWESOME_BASE /*+ " " + IconType.SMILE_O.getCssName()*/, go);
                 }
+                onMethodExecuted(providerEvent);
+
             } else if (ProviderMethod.CREATE.equals(dbEvent.getDbMethod())) {
-                ProviderEvent providerEvent = new ProviderEvent(ProviderMethod.CREATE, TypeResult.SUCCESS, dbEvent.getReason());
+                ProviderEvent providerEvent = new ProviderEvent(ProviderMethod.CREATE, dbEvent.getDbTypeResult(), dbEvent.getReason());
+                if (TypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
+                   Empleado nuevoEmpleado = (Empleado) dbEvent.getResult();
+                   dataProvider.getList().add(nuevoEmpleado);
+                   providerEvent.setResult(dbEvent.getResult());
+                }
+                onMethodExecuted(providerEvent);
+            } else if (ProviderMethod.UPDATE.equals(dbEvent.getDbMethod())) {
+                ProviderEvent providerEvent = new ProviderEvent(ProviderMethod.UPDATE, dbEvent.getDbTypeResult(), dbEvent.getReason());
                 //providerEvent.setResult(dbEvent.getResult());
                 onMethodExecuted(providerEvent);
             }
         }
     }
-    
+
     public void findAll() {
         this.getREST().findAll();
     }
-    
+
     public void add(Empleado empleado) {
         this.getREST().add(empleado);
     }
-       
+
     public void update(Empleado empleado) {
         this.getREST().update(empleado);
     }

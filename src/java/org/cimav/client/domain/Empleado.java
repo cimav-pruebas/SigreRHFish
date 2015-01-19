@@ -6,13 +6,14 @@
 package org.cimav.client.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gwt.core.client.JsDate;
 import java.util.Date;
 
 /**
  *
  * @author juan.calderon
  */
-public class Empleado extends BaseDomain<Empleado> { 
+public final class Empleado extends BaseDomain<Empleado> { 
 
     private String rfc;
     private String curp;
@@ -57,15 +58,53 @@ public class Empleado extends BaseDomain<Empleado> {
     
     private Empleado jefe;
     
-    private Date fechaIngreso;
-    private Date fechaInicioContrato;
-    private Date fechaFinContrato;
-    private Date fechaBaja;
-    private Date fechaAntiguedad;
-    private Date fechaSni;
+//    private JsDate fechaIngreso;
+//    private JsDate fechaInicioContrato;
+//    private JsDate fechaFinContrato;
+//    private JsDate fechaBaja;
+//    private JsDate fechaAntiguedad;
+//    private JsDate fechaSni;
+    
+    private Date fechaIngresoDate;
+    @JsonIgnore private JsDate fechaIngreso;
+
+    public final Date getFechaIngresoDate() {
+        fechaIngresoDate = new Date((long) this.getFechaIngreso().getTime());
+        return fechaIngresoDate;
+    }
+
+    public void setFechaIngresoDate(Date fechaIngresoDate) {
+        this.fechaIngresoDate = fechaIngresoDate;
+    }
+
+    public native JsDate getFechaIngreso() /*-{
+        return this["fechaIngreso"];
+    }-*/;
+
+    public void setFechaIngreso(JsDate fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
+    }
     
     private String numSni;
 
+    public Empleado() {
+
+        this.setStatus(EStatusEmpleado.ACTIVO);
+        this.setTipoEmpleado(ETipoEmpleado.NORMAL);
+        this.setTipoContrato(ETipoContrato.DETERMINADO);
+        
+//        Date today = new Date();
+//        this.setFechaIngreso(today);
+//        this.setFechaInicioContrato(today);
+//        
+//        Date oneYear = new Date();
+//        CalendarUtil.addMonthsToDate(oneYear, 12);
+//        this.setFechaFinContrato(oneYear);
+        
+        this.setTipoAntiguedad(ETipoAntiguedad.ADMINISTRATIVA);
+        this.setTipoSNI(ETipoSNI.NO_APLICA);
+    }
+    
     public String getUrlPhoto() {
         return urlPhoto;
     }
@@ -330,53 +369,53 @@ public class Empleado extends BaseDomain<Empleado> {
         this.jefe = jefe;
     }
 
-    public Date getFechaIngreso() {
-        return fechaIngreso;
-    }
+//    public JsDate getFechaIngreso() {
+//        return fechaIngreso;
+//    }
+//
+//    public void setFechaIngreso(JsDate fechaIngreso) {
+//        this.fechaIngreso = fechaIngreso;
+//    }
 
-    public void setFechaIngreso(Date fechaIngreso) {
-        this.fechaIngreso = fechaIngreso;
-    }
-
-    public Date getFechaInicioContrato() {
-        return fechaInicioContrato;
-    }
-
-    public void setFechaInicioContrato(Date fechaInicioContrato) {
-        this.fechaInicioContrato = fechaInicioContrato;
-    }
-
-    public Date getFechaFinContrato() {
-        return fechaFinContrato;
-    }
-
-    public void setFechaFinContrato(Date fechaFinContrato) {
-        this.fechaFinContrato = fechaFinContrato;
-    }
-
-    public Date getFechaBaja() {
-        return fechaBaja;
-    }
-
-    public void setFechaBaja(Date fechaBaja) {
-        this.fechaBaja = fechaBaja;
-    }
-
-    public Date getFechaAntiguedad() {
-        return fechaAntiguedad;
-    }
-
-    public void setFechaAntiguedad(Date fechaAntiguedad) {
-        this.fechaAntiguedad = fechaAntiguedad;
-    }
-
-    public Date getFechaSni() {
-        return fechaSni;
-    }
-
-    public void setFechaSni(Date fechaSni) {
-        this.fechaSni = fechaSni;
-    }
+//    public JsDate getFechaInicioContrato() {
+//        return fechaInicioContrato;
+//    }
+//
+//    public void setFechaInicioContrato(JsDate fechaInicioContrato) {
+//        this.fechaInicioContrato = fechaInicioContrato;
+//    }
+//
+//    public JsDate getFechaFinContrato() {
+//        return fechaFinContrato;
+//    }
+//
+//    public void setFechaFinContrato(JsDate fechaFinContrato) {
+//        this.fechaFinContrato = fechaFinContrato;
+//    }
+//
+//    public JsDate getFechaBaja() {
+//        return fechaBaja;
+//    }
+//
+//    public void setFechaBaja(JsDate fechaBaja) {
+//        this.fechaBaja = fechaBaja;
+//    }
+//
+//    public JsDate getFechaAntiguedad() {
+//        return fechaAntiguedad;
+//    }
+//
+//    public void setFechaAntiguedad(JsDate fechaAntiguedad) {
+//        this.fechaAntiguedad = fechaAntiguedad;
+//    }
+//
+//    public JsDate getFechaSni() {
+//        return fechaSni;
+//    }
+//
+//    public void setFechaSni(JsDate fechaSni) {
+//        this.fechaSni = fechaSni;
+//    }
 
     public String getNumSni() {
         return numSni;
