@@ -32,10 +32,6 @@ import org.cimav.client.tools.TypeResult;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.constants.IconFlip;
-import org.gwtbootstrap3.client.ui.constants.Styles;
-import org.gwtbootstrap3.extras.growl.client.ui.Growl;
-import org.gwtbootstrap3.extras.growl.client.ui.GrowlHelper;
-import org.gwtbootstrap3.extras.growl.client.ui.GrowlOptions;
 
 /**
  *

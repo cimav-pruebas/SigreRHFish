@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import org.cimav.client.domain.Departamento;
 import org.cimav.client.domain.DeptoDatabase;
@@ -30,6 +31,8 @@ import org.cimav.client.tools.TypeResult;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.ValueListBox;
+import org.gwtbootstrap3.extras.datetimepicker.client.ui.DateTimePicker;
+import org.gwtbootstrap3.extras.datetimepicker.client.ui.base.constants.DateTimePickerView;
 import org.gwtbootstrap3.extras.growl.client.ui.Growl;
 
 /**
@@ -66,6 +69,7 @@ public class PersonalEditorUI extends Composite {
     // laboral
     // TODO xmlns:chzn="urn:import:com.watopi.chosen.client.gwt"
     private final ValueListBox<Departamento> deptoChosen;
+    private final DateTimePicker fechaIngresoDatePicker;
 
     public PersonalEditorUI() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -203,6 +207,14 @@ public class PersonalEditorUI extends Composite {
         flexEditorPersonal.setHTML(18, 0, "Departamento");
         flexEditorPersonal.setWidget(19, 0, deptoChosen);
 
+        flexEditorPersonal.setWidget(20, 0, new HTML(htmlRowSpc));
+        flexEditorPersonal.setHTML(21, 0, "Fecha ingreso");
+        fechaIngresoDatePicker = new DateTimePicker();
+        fechaIngresoDatePicker.setMinView(DateTimePickerView.MONTH);
+        fechaIngresoDatePicker.setFormat("dd/mm/yyyy");
+        fechaIngresoDatePicker.setShowTodayButton(true);
+        flexEditorPersonal.setWidget(22, 0, fechaIngresoDatePicker);
+
 //        editor.setHTML(2, 0, "Descripción");
 //        cellFormatter.setColSpan(2, 0, 2);
 //        cellFormatter.setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_LEFT);
@@ -231,6 +243,7 @@ public class PersonalEditorUI extends Composite {
                 empleadoBean.setImss(imssTxtBox.getText());
                 empleadoBean.setNumCredito(creditoInputGroup.getNumCredito());
                 empleadoBean.setCuentaBanco(cuentaBancoTxtBox.getText());
+                empleadoBean.setFechaIngreso(fechaIngresoDatePicker.getValue());
 
                 if (empleadoBean.getId() == null || empleadoBean.getId() <= 0) {
                     // nuevo
@@ -306,6 +319,7 @@ public class PersonalEditorUI extends Composite {
             cuentaCimavTxtBox.setText(empleadoBean.getCuentaCimav());
             // laboral
             deptoChosen.setValue(empleadoBean.getDepartamento());
+            fechaIngresoDatePicker.setValue(empleadoBean.getFechaIngreso());
         } else {
             // personal
             nombreTxtBox.setText("");
@@ -322,6 +336,7 @@ public class PersonalEditorUI extends Composite {
             cuentaCimavTxtBox.setText("");
             // laboral
             deptoChosen.setValue(null);
+            fechaIngresoDatePicker.setValue(new Date());
         }
     }
 }

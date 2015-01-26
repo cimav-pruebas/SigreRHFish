@@ -5,7 +5,7 @@
 <module>
     <inherits name="com.google.gwt.user.User"/>
 
-    <inherits name='com.google.gwt.json.JSON'/>
+<!--    <inherits name='com.google.gwt.json.JSON'/>-->
     
     <!-- Inherit the default GWT style sheet. You can change -->
     <!-- the theme of your GWT application by uncommenting -->
@@ -20,6 +20,7 @@
     <!--    <inherits name="org.gwtbootstrap3.GwtBootstrap3Theme"/>   para estilo Boostrap 2 -->
     <inherits name="org.gwtbootstrap3.extras.growl.Growl"/>
     <!--    <inherits name="org.gwtbootstrap3.extras.respond.Respond"/>  para IE8 -->
+    <inherits name="org.gwtbootstrap3.extras.datetimepicker.DateTimePicker"/>
     
     <inherits name="org.fusesource.restygwt.RestyGWT"/>
     

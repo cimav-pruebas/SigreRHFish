@@ -26,22 +26,8 @@ public class MainEntryPoint implements EntryPoint {
 
         /* Default initialize */
         Defaults.setServiceRoot(GWT.getHostPageBaseURL());
-        String DATEFORMAT = "yyyy-mm-dd'T'HH:mm:ss.SSSZ";
-        //2015-01-14T00:00:00-07:00
-        //Defaults.setDateFormat("yyyy-mm-dd'T'HH:mm:ss.SSSZ"); //
-        Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ"); //2015-01-14T00:00:00-0700
-        //Defaults.setDateFormat(null);   // // // "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
-//        Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssX"); // "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        //ISO8601DateFormat df = new ISO8601DateFormat();
-//        Defaults.setDateFormat(  "yyyy-MM-dd'T'HH:mm:ssXXX");
-//        Defaults.setDateFormat(  "yyyy-MM-dd");
-//
-//        Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-        //2015-01-16T00:00:00-07:00
-        
-        //Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"); 
-
-
+        String DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
+        Defaults.setDateFormat(DATEFORMAT); //2015-01-14T00:00:00-0700
     }
 
     // Vistas UI
@@ -62,9 +48,6 @@ public class MainEntryPoint implements EntryPoint {
     @Override
     public void onModuleLoad() {
 
-//        /* Default initialize */
-//        Defaults.setServiceRoot(GWT.getHostPageBaseURL());
-//        Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
         GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
             @Override
             public void onUncaughtException(@NotNull Throwable e) {
@@ -72,7 +55,6 @@ public class MainEntryPoint implements EntryPoint {
             }
         });
 
-        //RootPanel.get("gwtContainer").add(mainUiBinder);
         RootLayoutPanel.get().add(mainUi);
 
         mainUi.addOptionMenuChangeListener(new MainUI.OptionMenuChangeListener() {
