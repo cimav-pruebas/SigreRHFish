@@ -33,11 +33,45 @@ public class PersonalREST extends BaseREST {
     private static final String URL_REST = "http://localhost:8080/SigreRHFish/api/empleado";
 
     public interface EmpleadoJsonCodec extends JsonEncoderDecoder<Empleado> {
-        
     }
+    
     public EmpleadoJsonCodec empleadoListJsonCodec = GWT.create(EmpleadoJsonCodec.class);
 
     // <editor-fold defaultstate="collapsed" desc="métodos CRUD-REST"> 
+    
+    public void findById(Integer id) {
+
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
+
+        Resource rb = new Resource(URL_REST + "/" + id, headers);
+        rb.get().send(Ajax.jsonCall(new JsonCallback() {
+
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                Window.alert(exception.getLocalizedMessage());
+
+                RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_BY_ID, TypeResult.FAILURE, exception.getMessage());
+                onRESTExecuted(dbEvent);
+            }
+
+            @Override
+            public void onSuccess(Method method, JSONValue response) {
+                
+                try {
+                    Empleado empleado = empleadoListJsonCodec.decode(response);
+                    RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_BY_ID, TypeResult.SUCCESS, "");
+                    dbEvent.setResult(empleado);
+                    onRESTExecuted(dbEvent);
+                } catch (Exception e) {
+                    RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_BY_ID, TypeResult.FAILURE, e.getMessage());
+                    onRESTExecuted(dbEvent);
+                }
+            }
+
+        }));
+
+    }
 
     public void findAll() {
 
@@ -82,6 +116,8 @@ public class PersonalREST extends BaseREST {
         }));
 
     }
+    
+    
 
     public void add(Empleado empleado) {
 
@@ -146,7 +182,7 @@ public class PersonalREST extends BaseREST {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
 
-        Resource rb = new Resource(URL_REST + "/id", headers);
+        Resource rb = new Resource(URL_REST + "/" + id, headers);
 
         rb.delete().send(Ajax.jsonCall(new JsonCallback() {
             @Override

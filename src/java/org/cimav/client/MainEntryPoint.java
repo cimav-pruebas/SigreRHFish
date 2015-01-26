@@ -28,15 +28,19 @@ public class MainEntryPoint implements EntryPoint {
         Defaults.setServiceRoot(GWT.getHostPageBaseURL());
         String DATEFORMAT = "yyyy-mm-dd'T'HH:mm:ss.SSSZ";
         //2015-01-14T00:00:00-07:00
-        //Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ"); //2015-01-14T00:00:00-0700
-     //   Defaults.setDateFormat(null);  / // // // "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
-        Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssX"); // "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        //Defaults.setDateFormat("yyyy-mm-dd'T'HH:mm:ss.SSSZ"); //
+        Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ"); //2015-01-14T00:00:00-0700
+        //Defaults.setDateFormat(null);   // // // "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
+//        Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssX"); // "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         //ISO8601DateFormat df = new ISO8601DateFormat();
 //        Defaults.setDateFormat(  "yyyy-MM-dd'T'HH:mm:ssXXX");
 //        Defaults.setDateFormat(  "yyyy-MM-dd");
 //
 //        Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
         //2015-01-16T00:00:00-07:00
+        
+        //Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"); 
+
 
     }
 

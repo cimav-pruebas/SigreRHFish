@@ -135,7 +135,16 @@ public class PersonalProvider extends BaseProvider<Empleado> {
         @Override
         public void onRESTExecuted(RESTEvent dbEvent) {
 
-            if (ProviderMethod.FIND_ALL.equals(dbEvent.getDbMethod())) {
+            if (ProviderMethod.FIND_BY_ID.equals(dbEvent.getDbMethod())) {
+                dataProvider.getList().clear();
+
+                ProviderEvent providerEvent = new ProviderEvent(ProviderMethod.FIND_BY_ID, dbEvent.getDbTypeResult(), dbEvent.getReason());
+                if (TypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
+                    Empleado empleado = (Empleado) dbEvent.getResult();
+                    //dataProvider.getList().add(empleado);
+                }
+                onMethodExecuted(providerEvent);
+            } else if (ProviderMethod.FIND_ALL.equals(dbEvent.getDbMethod())) {
                 dataProvider.getList().clear();
 
                 ProviderEvent providerEvent = new ProviderEvent(ProviderMethod.FIND_ALL, dbEvent.getDbTypeResult(), dbEvent.getReason());
@@ -144,7 +153,6 @@ public class PersonalProvider extends BaseProvider<Empleado> {
                     dataProvider.getList().addAll(empleados);
                 }
                 onMethodExecuted(providerEvent);
-
             } else if (ProviderMethod.CREATE.equals(dbEvent.getDbMethod())) {
                 ProviderEvent providerEvent = new ProviderEvent(ProviderMethod.CREATE, dbEvent.getDbTypeResult(), dbEvent.getReason());
                 if (TypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
@@ -163,6 +171,10 @@ public class PersonalProvider extends BaseProvider<Empleado> {
 
     public void findAll() {
         this.getREST().findAll();
+    }
+
+    public void findById(Integer id) {
+        this.getREST().findById(id); 
     }
 
     public void add(Empleado empleado) {

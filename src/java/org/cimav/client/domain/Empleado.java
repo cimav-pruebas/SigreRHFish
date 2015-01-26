@@ -6,7 +6,7 @@
 package org.cimav.client.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.gwt.core.client.JsDate;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import java.util.Date;
 
 /**
@@ -14,7 +14,7 @@ import java.util.Date;
  * @author juan.calderon
  */
 public final class Empleado extends BaseDomain<Empleado> { 
-
+    
     private String rfc;
     private String curp;
     private String numCredito;
@@ -65,44 +65,73 @@ public final class Empleado extends BaseDomain<Empleado> {
 //    private JsDate fechaAntiguedad;
 //    private JsDate fechaSni;
     
-    private Date fechaIngresoDate;
-    @JsonIgnore private JsDate fechaIngreso;
+//    @JsonIgnore private Date fechaIngresoExtra;
+    private Date fechaIngreso;
 
-    public final Date getFechaIngresoDate() {
-        fechaIngresoDate = new Date((long) this.getFechaIngreso().getTime());
-        return fechaIngresoDate;
+//    public Date getfechaIngresoExtra() {
+//        //fechaIngresoDate = new Date((long) this.getFechaIngreso().getTime());
+//        return fechaIngresoExtra;
+//    }
+//
+//    public void setfechaIngresoExtra(Date extra) {
+//        this.fechaIngresoExtra = extra;
+//        //this.fechaIngreso = fechaIngresoDate != null ? JsDate.create(fechaIngresoDate.toString()) : null;
+//    }
+
+//    public static final native JsDate getFechaIngreso() /*-{
+//       return this["fechaIngreso"];
+//    }-*/;
+    
+    private static DateTimeFormat df = DateTimeFormat.getFormat("yyyy-MM-dd'T'HH:mm:ssX");
+    public Date getFechaIngreso() {
+        //this.fechaIngreso = JsDate.create(this.fechaIngresoExtra.getTime());
+        //return this.fechaIngreso = JsDate.create(2017,6,13);
+        return this.fechaIngreso;
     }
 
-    public void setFechaIngresoDate(Date fechaIngresoDate) {
-        this.fechaIngresoDate = fechaIngresoDate;
-    }
-
-    public native JsDate getFechaIngreso() /*-{
-        return this["fechaIngreso"];
-    }-*/;
-
-    public void setFechaIngreso(JsDate fechaIngreso) {
+    
+    
+    public final void setFechaIngreso(Date fechaIngreso) {
         this.fechaIngreso = fechaIngreso;
+        //this.fechaIngresoExtra = this.fechaIngreso != null ? new Date((long) this.fechaIngreso.getTime()) : null;
+    }
+
+    public EBanco getBanco() {
+        return banco;
+    }
+
+    public void setBanco(EBanco banco) {
+        this.banco = banco;
+        this.idBanco = banco != null ? banco.getId() : 0;
+    }
+
+    public Integer getIdBanco() {
+        return idBanco;
+    }
+
+    public void setIdBanco(Integer idBanco) {
+        this.banco = EBanco.get(idBanco);
+        this.idBanco = idBanco;
     }
     
     private String numSni;
 
     public Empleado() {
 
-        this.setStatus(EStatusEmpleado.ACTIVO);
-        this.setTipoEmpleado(ETipoEmpleado.NORMAL);
-        this.setTipoContrato(ETipoContrato.DETERMINADO);
-        
-//        Date today = new Date();
-//        this.setFechaIngreso(today);
-//        this.setFechaInicioContrato(today);
+//        this.setStatus(EStatusEmpleado.ACTIVO);
+//        this.setTipoEmpleado(ETipoEmpleado.NORMAL);
+//        this.setTipoContrato(ETipoContrato.DETERMINADO);
 //        
-//        Date oneYear = new Date();
-//        CalendarUtil.addMonthsToDate(oneYear, 12);
-//        this.setFechaFinContrato(oneYear);
-        
-        this.setTipoAntiguedad(ETipoAntiguedad.ADMINISTRATIVA);
-        this.setTipoSNI(ETipoSNI.NO_APLICA);
+////        Date today = new Date();
+////        this.setFechaIngreso(today);
+////        this.setFechaInicioContrato(today);
+////        
+////        Date oneYear = new Date();
+////        CalendarUtil.addMonthsToDate(oneYear, 12);
+////        this.setFechaFinContrato(oneYear);
+//        
+//        this.setTipoAntiguedad(ETipoAntiguedad.ADMINISTRATIVA);
+//        this.setTipoSNI(ETipoSNI.NO_APLICA);
     }
     
     public String getUrlPhoto() {
@@ -178,15 +207,6 @@ public final class Empleado extends BaseDomain<Empleado> {
         this.idClinica = clinica != null ? clinica.getId() : 0;
     }
 
-    public EBanco getBanco() {
-        return banco;
-    }
-
-    public void setBanco(EBanco banco) {
-        this.banco = banco;
-        this.idBanco = banco != null ? banco.getId() : 0;
-    }
-
     public Integer getIdClinica() {
         return idClinica;
     }
@@ -194,15 +214,6 @@ public final class Empleado extends BaseDomain<Empleado> {
     public void setIdClinica(Integer idClinica) {
         this.clinica = EClinica.get(idClinica);
         this.idClinica = idClinica;
-    }
-
-    public Integer getIdBanco() {
-        return idBanco;
-    }
-
-    public void setIdBanco(Integer idBanco) {
-        this.banco = EBanco.get(idBanco);
-        this.idBanco = idBanco;
     }
 
     public Boolean getHasCredito() {
