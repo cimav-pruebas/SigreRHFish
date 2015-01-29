@@ -75,6 +75,8 @@ public class PersonalREST extends BaseREST {
 
     public void findAll() {
 
+        org.fusesource.restygwt.client.Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ"); 
+         
         HashMap<String, String> headers = new HashMap<>();
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
 
@@ -116,11 +118,11 @@ public class PersonalREST extends BaseREST {
         }));
 
     }
-    
-    
 
     public void add(Empleado empleado) {
 
+        org.fusesource.restygwt.client.Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+        
         JSONValue empleadoJSONValue = empleadoListJsonCodec.encode(empleado);
 
         HashMap<String, String> headers = new HashMap<>();
@@ -148,6 +150,9 @@ public class PersonalREST extends BaseREST {
 
     public void update(Empleado empleado) {
 
+        //TODO encode/decode   "yyyy-MM-dd'T'HH:mm:ssXXX"/"yyyy-MM-dd'T'HH:mm:ssZ"
+        org.fusesource.restygwt.client.Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+        
         //Create a PersonJsonizer instance
         //Departamento.DepartamentoJsonizer dj = (Departamento.DepartamentoJsonizer)GWT.create(Departamento.DepartamentoJsonizer.class);
         JSONValue empleadoJSONValue = empleadoListJsonCodec.encode(empleado);
@@ -201,5 +206,47 @@ public class PersonalREST extends BaseREST {
 
     }
 
+    public void findJefes() {
+
+        org.fusesource.restygwt.client.Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ"); 
+         
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
+
+        Resource rb = new Resource(URL_REST + "/jefes", headers);
+        rb.get().send(Ajax.jsonCall(new JsonCallback() {
+
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                Window.alert(exception.getLocalizedMessage());
+
+                RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_JEFES, TypeResult.FAILURE, exception.getMessage());
+                onRESTExecuted(dbEvent);
+            }
+
+            @Override
+            public void onSuccess(Method method, JSONValue response) {
+                List<Empleado> empleados = new ArrayList<>();
+                try {
+                    JSONArray array = response.isArray();
+                    for (int i = 0; i < array.size(); i++) {
+                        JSONValue val = array.get(i);
+                        
+                        Empleado empleado = empleadoListJsonCodec.decode(val);
+                        empleados.add(empleado);
+                    }
+                    RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_JEFES, TypeResult.SUCCESS, "");
+                    dbEvent.setResult(empleados);
+                    onRESTExecuted(dbEvent);
+                } catch (Exception e) {
+                    RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_JEFES, TypeResult.FAILURE, e.getMessage());
+                    onRESTExecuted(dbEvent);
+                }
+            }
+
+        }));
+
+    }
+    
     // </editor-fold>
 }

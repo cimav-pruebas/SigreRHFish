@@ -28,9 +28,13 @@ public abstract class AbstractREST<T> {
     }
 
     public T insert(T entity) {
-        getEntityManager().persist(entity);
-        getEntityManager().flush(); // The ID is only guaranteed to be generated at flush time. 
-        // con el Flus se le inyecta el Id y cualquier otro campo
+        try {
+            getEntityManager().persist(entity);
+            getEntityManager().flush(); // The ID is only guaranteed to be generated at flush time. 
+            // con el Flus se le inyecta el Id y cualquier otro campo
+        } catch (Exception e) {
+            System.out.println(" >>> " + e.getMessage());
+        }
         return entity;
     }
 

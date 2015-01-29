@@ -23,6 +23,7 @@ import javax.validation.constraints.Size;
 public abstract class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)

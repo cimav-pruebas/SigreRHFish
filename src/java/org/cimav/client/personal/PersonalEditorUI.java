@@ -23,12 +23,15 @@ import org.cimav.client.domain.Departamento;
 import org.cimav.client.domain.DeptoDatabase;
 import org.cimav.client.domain.EBanco;
 import org.cimav.client.domain.EClinica;
+import org.cimav.client.domain.ESede;
+import org.cimav.client.domain.EStatusEmpleado;
 import org.cimav.client.domain.Empleado;
 import org.cimav.client.tools.DBEvent;
 import org.cimav.client.tools.ProviderEvent;
 import org.cimav.client.tools.ProviderMethod;
 import org.cimav.client.tools.TypeResult;
 import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Label;
 import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.ValueListBox;
 import org.gwtbootstrap3.extras.datetimepicker.client.ui.DateTimePicker;
@@ -70,11 +73,15 @@ public class PersonalEditorUI extends Composite {
     // TODO xmlns:chzn="urn:import:com.watopi.chosen.client.gwt"
     private final ValueListBox<Departamento> deptoChosen;
     private final DateTimePicker fechaIngresoDatePicker;
+    private final SedeGroup sedeGroup;
+    private final ValueListBox<EStatusEmpleado> statusEmpleadoListBox;
+  //  private final ValueListBox<Empleado> jefeChosen;
+    private final JefeChosen jefeChosen;
 
     public PersonalEditorUI() {
         initWidget(uiBinder.createAndBindUi(this));
 
-        FlexTable.FlexCellFormatter cellFormatter = flexEditorPersonal.getFlexCellFormatter();
+        FlexTable.FlexCellFormatter cellFormatterPersonal = flexEditorPersonal.getFlexCellFormatter();
 
         flexEditorPersonal.setCellSpacing(0);
         flexEditorPersonal.setCellPadding(0);
@@ -203,18 +210,69 @@ public class PersonalEditorUI extends Composite {
         flexEditorPersonal.setHTML(15, 0, "Cuenta CIMAV");
         flexEditorPersonal.setWidget(16, 0, cuentaCimavTxtBox);
 
-        flexEditorPersonal.setWidget(17, 0, new HTML(htmlRowSpc));
-        flexEditorPersonal.setHTML(18, 0, "Departamento");
-        flexEditorPersonal.setWidget(19, 0, deptoChosen);
+        FlexTable.FlexCellFormatter cellFormatterLaboral = flexEditorLaboral.getFlexCellFormatter();
 
-        flexEditorPersonal.setWidget(20, 0, new HTML(htmlRowSpc));
-        flexEditorPersonal.setHTML(21, 0, "Fecha ingreso");
+        flexEditorLaboral.setCellSpacing(0);
+        flexEditorLaboral.setCellPadding(0);
+
+        String width = "262px";
+        sedeGroup = new SedeGroup();
+        sedeGroup.setWidth(width);
         fechaIngresoDatePicker = new DateTimePicker();
         fechaIngresoDatePicker.setMinView(DateTimePickerView.MONTH);
         fechaIngresoDatePicker.setFormat("dd/mm/yyyy");
         fechaIngresoDatePicker.setShowTodayButton(true);
-        flexEditorPersonal.setWidget(22, 0, fechaIngresoDatePicker);
+        fechaIngresoDatePicker.setWidth(width);
+        List<EStatusEmpleado> status = Arrays.asList(EStatusEmpleado.values());
+        statusEmpleadoListBox = new ValueListBox<>(new Renderer<EStatusEmpleado>() {
+            @Override
+            public String render(EStatusEmpleado object) {
+                if (object == null) {
+                    return "Nada";
+                }
+                return object.getNombre();
+            }
 
+            @Override
+            public void render(EStatusEmpleado object, Appendable appendable) throws IOException {
+                String s = render(object);
+                appendable.append(s);
+            }
+        });
+        statusEmpleadoListBox.setValue(EStatusEmpleado.ACTIVO); //default
+        statusEmpleadoListBox.setAcceptableValues(status);
+        statusEmpleadoListBox.setWidth(width);
+        jefeChosen = new JefeChosen();
+        jefeChosen.setWidth("400px");
+        
+        int row = 1;
+        flexEditorLaboral.setHTML(row, 0, "Sede");
+        flexEditorLaboral.setWidget(row, 1, new HTML(htmlColSpc));        
+        flexEditorLaboral.setHTML(row, 2, "Departamento");
+        flexEditorLaboral.setWidget(row, 3, new HTML(htmlColSpc));        
+        flexEditorLaboral.setHTML(row, 4, "Status");
+        row++;
+        flexEditorLaboral.setWidget(row, 0, sedeGroup);
+        flexEditorLaboral.setWidget(row, 2, deptoChosen);
+        flexEditorLaboral.setWidget(row, 4, statusEmpleadoListBox);
+        row++;
+        flexEditorLaboral.setWidget(row, 0, new HTML(htmlRowSpc));
+        row++;
+        flexEditorLaboral.setHTML(row, 0, "Jefe");
+        flexEditorLaboral.setWidget(row, 3, new HTML(htmlColSpc));        
+        flexEditorLaboral.setHTML(row, 4, "Proyecto");
+        row++;
+        flexEditorLaboral.setWidget(row, 0, jefeChosen);
+        cellFormatterLaboral.setColSpan(row, 0, 3);
+        flexEditorLaboral.setWidget(row, 2, new Label("Not Yet..."));
+        row++;
+        flexEditorLaboral.setWidget(row, 0, new HTML(htmlRowSpc));
+        row++;
+        flexEditorLaboral.setHTML(row, 0, "Fecha ingreso");
+        row++;
+        flexEditorLaboral.setWidget(row, 0, fechaIngresoDatePicker);
+
+        
 //        editor.setHTML(2, 0, "Descripción");
 //        cellFormatter.setColSpan(2, 0, 2);
 //        cellFormatter.setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_LEFT);
@@ -244,6 +302,9 @@ public class PersonalEditorUI extends Composite {
                 empleadoBean.setNumCredito(creditoInputGroup.getNumCredito());
                 empleadoBean.setCuentaBanco(cuentaBancoTxtBox.getText());
                 empleadoBean.setFechaIngreso(fechaIngresoDatePicker.getValue());
+                empleadoBean.setStatus(statusEmpleadoListBox.getValue());
+                empleadoBean.setSede(sedeGroup.getValue());
+                empleadoBean.setJefe(jefeChosen.getValue());
 
                 if (empleadoBean.getId() == null || empleadoBean.getId() <= 0) {
                     // nuevo
@@ -270,7 +331,7 @@ public class PersonalEditorUI extends Composite {
         }
 
     }
-
+    
     private class ProviderMethodExecutedListener implements PersonalProvider.MethodExecutedListener {
 
         @Override
@@ -320,6 +381,9 @@ public class PersonalEditorUI extends Composite {
             // laboral
             deptoChosen.setValue(empleadoBean.getDepartamento());
             fechaIngresoDatePicker.setValue(empleadoBean.getFechaIngreso());
+            statusEmpleadoListBox.setValue(empleadoBean.getStatus());
+            sedeGroup.setValue(empleadoBean.getSede());
+            jefeChosen.setValue(empleadoBean.getJefe());
         } else {
             // personal
             nombreTxtBox.setText("");
@@ -337,6 +401,9 @@ public class PersonalEditorUI extends Composite {
             // laboral
             deptoChosen.setValue(null);
             fechaIngresoDatePicker.setValue(new Date());
+            statusEmpleadoListBox.setValue(EStatusEmpleado.ACTIVO);
+            sedeGroup.setValue(ESede.CHIHUAHUA);
+            jefeChosen.setValue(null);
         }
     }
 }

@@ -11,6 +11,7 @@ package org.cimav.client.tools;
  */
 public enum ProviderMethod {
 
+    FIND_JEFES,
     FIND_BY_ID,
     FIND_ALL,
     DELETE,

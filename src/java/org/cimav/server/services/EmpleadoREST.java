@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -23,7 +24,7 @@ import org.cimav.server.entities.Empleado;
  *
  * @author juan.calderon
  */
-@Stateless
+@Stateless // requerido; si no, getEntityManager().persist(entity); lanza TransactionRequiredException
 @Path("empleado")
 public class EmpleadoREST extends AbstractREST<Empleado> {
 
@@ -83,7 +84,8 @@ public class EmpleadoREST extends AbstractREST<Empleado> {
     @Override
     @Produces("application/json")
     public List<Empleado> findAll() {
-        return super.findAll();
+        List<Empleado> result = super.findAll();
+        return result;
     }
 
     @GET
@@ -100,9 +102,22 @@ public class EmpleadoREST extends AbstractREST<Empleado> {
         return String.valueOf(super.count());
     }
 
+    @GET
+    @Path("jefes")
+    // @JsonView(View.Jefes.class) no funciona
+    @Produces("application/json")
+    public List<Empleado> getJefes() {
+        
+        // usa SELECT NEW CONSTRUCTOR en lugar del @JsonView que no funcionó
+        Query query = getEntityManager().createQuery("SELECT NEW org.cimav.server.entities.Empleado(e.id, e.code, e.name, e.urlPhoto) FROM Empleado AS e", Empleado.class);
+        List<Empleado> results = query.getResultList();
+        
+        return results;
+    }
+    
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-
+    
 }

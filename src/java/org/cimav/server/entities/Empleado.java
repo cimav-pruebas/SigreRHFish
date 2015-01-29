@@ -30,7 +30,6 @@ import org.apache.commons.lang3.text.WordUtils;
 @Cacheable(false)
 @Table(name = "empleados")
 @XmlRootElement(name = "employees")
-//@XmlType(propOrder = { "id", "clave", "consecutivo", "email", "telephone" })
 @NamedQueries({
     @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e"),
     @NamedQuery(name = "Empleado.findById", query = "SELECT e FROM Empleado e WHERE e.id = :id")})
@@ -165,6 +164,18 @@ public class Empleado extends BaseEntity implements Serializable {
         }
     }
 
+    public Empleado() {
+        super();
+    }
+    
+    public Empleado(Integer id, String code, String name, String urlPhoto) {
+        super();
+        this.setId(id);
+        this.setCode(code);
+        this.setName(name);
+        this.setUrlPhoto(urlPhoto);
+    }
+    
     public Integer getConsecutivo() {
         return consecutivo;
     }
@@ -225,7 +236,7 @@ public class Empleado extends BaseEntity implements Serializable {
         return urlPhoto;
     }
 
-    public void setUrlPhoto(String urlPhoto) {
+    public final void setUrlPhoto(String urlPhoto) {
         this.urlPhoto = urlPhoto;
     }
 
