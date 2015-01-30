@@ -41,6 +41,12 @@ public abstract class BaseEntity implements Serializable {
     public BaseEntity() {
     }
 
+    public BaseEntity(Integer id, String code, String name) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }

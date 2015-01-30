@@ -31,6 +31,14 @@ public class Grupo extends BaseEntity {
     @Column(name = "descripcion")
     private String descripcion;
 
+    public Grupo() {
+        super();
+    }
+    
+    public Grupo(Integer id, String code, String name) {
+        super(id, code, name);
+    }
+    
     public String getDescripcion() {
         return descripcion;
     }

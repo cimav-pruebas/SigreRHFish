@@ -1,0 +1,21 @@
+<!--
+Uncomment this for XHTML entities
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+-->
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b3="urn:import:org.gwtbootstrap3.client.ui"
+>
+    <ui:style>
+
+    </ui:style>
+    <g:HTMLPanel>
+        
+        <b3:ButtonGroup dataToggle="BUTTONS">
+            <b3:RadioButton  ui:field = "btnChi">Chihuahua</b3:RadioButton>
+            <b3:RadioButton ui:field = "btnMty">Monterrey</b3:RadioButton>
+            <b3:RadioButton ui:field = "btnDgo">Durango</b3:RadioButton>
+        </b3:ButtonGroup>        
+    
+    </g:HTMLPanel>
+</ui:UiBinder>

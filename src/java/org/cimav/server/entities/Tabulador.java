@@ -25,4 +25,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Tabulador.findByName", query = "SELECT t FROM Tabulador t WHERE t.name = :name")})
 public class Tabulador extends BaseEntity {
 
+    public Tabulador() {
+        super();
+    }
+
+    public Tabulador(Integer id, String code, String name) {
+        super(id, code, name);
+    }
+    
 }

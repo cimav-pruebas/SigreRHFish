@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -68,6 +69,18 @@ public class GrupoREST extends AbstractREST<Grupo> {
         return super.findAll();
     }
 
+    @GET
+    @Path("base")
+    @Produces("application/json")
+    public List<Grupo> findAllBase() {
+        
+        // usa SELECT NEW CONSTRUCTOR en lugar del @JsonView que no funcionó
+        Query query = getEntityManager().createQuery("SELECT NEW org.cimav.server.entities.Grupo(e.id, e.code, e.name) FROM Grupo AS e", Grupo.class);
+        List<Grupo> results = query.getResultList();
+        
+        return results;
+    }
+    
     @GET
     @Path("{from}/{to}")
     @Produces("application/json")

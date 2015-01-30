@@ -26,7 +26,7 @@
     
     <inherits name="org.hibernate.validator.HibernateValidator" />
     <replace-with
-        class="org.cimav.client.domain.DepartamentoValidatorFactory">
+        class="org.cimav.client.db.domain.DepartamentoValidatorFactory">
         <when-type-is class="javax.validation.ValidatorFactory" />
     </replace-with>
     

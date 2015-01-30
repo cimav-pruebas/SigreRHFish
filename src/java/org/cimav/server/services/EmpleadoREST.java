@@ -103,10 +103,10 @@ public class EmpleadoREST extends AbstractREST<Empleado> {
     }
 
     @GET
-    @Path("jefes")
-    // @JsonView(View.Jefes.class) no funciona
+    @Path("base")
+    // @JsonView(View.Base.class) no funciona
     @Produces("application/json")
-    public List<Empleado> getJefes() {
+    public List<Empleado> findAllBase() {
         
         // usa SELECT NEW CONSTRUCTOR en lugar del @JsonView que no funcionó
         Query query = getEntityManager().createQuery("SELECT NEW org.cimav.server.entities.Empleado(e.id, e.code, e.name, e.urlPhoto) FROM Empleado AS e", Empleado.class);

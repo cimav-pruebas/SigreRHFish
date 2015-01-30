@@ -5,13 +5,13 @@
  */
 package org.cimav.client;
 
-import org.cimav.client.departamentos.DepartamentosUI;
+import org.cimav.client.ui.departamentos.DepartamentosUI;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.UmbrellaException;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import javax.validation.constraints.NotNull;
-import org.cimav.client.personal.PersonalUI;
+import org.cimav.client.ui.empleados.EmpleadoslUI;
 
 import org.fusesource.restygwt.client.Defaults;
 
@@ -33,7 +33,7 @@ public class MainEntryPoint implements EntryPoint {
 
     // Vistas UI
     private final MainUI mainUi;
-    private PersonalUI personalUI;
+    private EmpleadoslUI empleadosUI;
     private DepartamentosUI departamentosUI;
 
     /**
@@ -64,11 +64,11 @@ public class MainEntryPoint implements EntryPoint {
             public void onOptionMenuChange(String option) {
                 switch (option) {
                     case MainUI.OPT_PERSONAL:
-                        if (personalUI == null) {
+                        if (empleadosUI == null) {
                             // actua como Singleton en el ciclo de vida
-                            personalUI = new PersonalUI();
+                            empleadosUI = new EmpleadoslUI();
                         }
-                        mainUi.setCenterPanel("Personal", "Consultas, altas, bajas y cambios", personalUI);
+                        mainUi.setCenterPanel("Personal", "Consultas, altas, bajas y cambios", empleadosUI);
                         break;
                     case MainUI.OPT_DEPARTAMENTOS:
                         if (departamentosUI == null) {

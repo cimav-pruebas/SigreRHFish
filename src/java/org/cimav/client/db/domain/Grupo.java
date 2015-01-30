@@ -3,18 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.cimav.client.tools;
+package org.cimav.client.db.domain;
 
 /**
  *
  * @author juan.calderon
  */
-public enum ProviderMethod {
-
-    FIND_ALL,
-    FIND_ALL_BASE,
-    FIND_BY_ID,
-    DELETE,
-    CREATE,
-    UPDATE;
+public class Grupo extends BaseDomain {
+    
+    
 }

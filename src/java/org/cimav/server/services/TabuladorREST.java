@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -48,5 +49,18 @@ public class TabuladorREST extends AbstractREST<Tabulador> {
     public List<Tabulador> findAll() {
         return super.findAll();
     }
+    
+    @GET
+    @Path("base")
+    @Produces("application/json")
+    public List<Tabulador> findAllBase() {
+        
+        // usa SELECT NEW CONSTRUCTOR en lugar del @JsonView que no funcionó
+        Query query = getEntityManager().createQuery("SELECT NEW org.cimav.server.entities.Tabulador(e.id, e.code, e.name) FROM Tabulador AS e", Tabulador.class);
+        List<Tabulador> results = query.getResultList();
+        
+        return results;
+    }
+    
 
 }
