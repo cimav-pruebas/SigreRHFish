@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @author juan.calderon
  */
-public final class Empleado extends BaseDomain { 
+public class Empleado extends BaseDomain { 
     
     private String rfc;
     private String curp;

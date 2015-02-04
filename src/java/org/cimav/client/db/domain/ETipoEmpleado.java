@@ -12,7 +12,8 @@ package org.cimav.client.db.domain;
 public enum ETipoEmpleado {
 
     NORMAL(0, "Normal"),
-    CATEDRA(1, "Cátedra/Repatriación");
+    CATEDRA(1, "Cátedra"),
+    REPATRIACION(2, "Repatriación");
 
     private int id;
     private String nombre;

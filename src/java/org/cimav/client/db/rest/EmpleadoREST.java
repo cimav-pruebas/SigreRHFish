@@ -5,17 +5,17 @@
  */
 package org.cimav.client.db.rest;
 
+import com.google.gwt.core.client.Duration;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import org.cimav.client.db.rest.BaseREST;
 import org.cimav.client.db.domain.Empleado;
-import org.cimav.client.db.domain.Empleado;
+import org.cimav.client.db.domain.Empleados;
 import org.cimav.client.tools.Ajax;
 import org.cimav.client.tools.ProviderMethod;
 import org.cimav.client.tools.RESTEvent;
@@ -35,11 +35,13 @@ public class EmpleadoREST extends BaseREST {
 
     public interface EmpleadoJsonCodec extends JsonEncoderDecoder<Empleado> {
     }
-    
-    public EmpleadoJsonCodec empleadoListJsonCodec = GWT.create(EmpleadoJsonCodec.class);
+    public EmpleadoJsonCodec empleadoJsonCodec = GWT.create(EmpleadoJsonCodec.class);
+
+    public interface EmpleadoListJsonCodec extends JsonEncoderDecoder<Empleados> {
+    }
+    public EmpleadoListJsonCodec empleadoListJsonCodec = GWT.create(EmpleadoListJsonCodec.class);
 
     // <editor-fold defaultstate="collapsed" desc="métodos CRUD-REST"> 
-    
     public void findById(Integer id) {
 
         HashMap<String, String> headers = new HashMap<>();
@@ -58,9 +60,9 @@ public class EmpleadoREST extends BaseREST {
 
             @Override
             public void onSuccess(Method method, JSONValue response) {
-                
+
                 try {
-                    Empleado empleado = empleadoListJsonCodec.decode(response);
+                    Empleado empleado = empleadoJsonCodec.decode(response);
                     RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_BY_ID, TypeResult.SUCCESS, "");
                     dbEvent.setResult(empleado);
                     onRESTExecuted(dbEvent);
@@ -74,14 +76,19 @@ public class EmpleadoREST extends BaseREST {
 
     }
 
+    private Duration duration;
+
     public void findAll() {
 
-        org.fusesource.restygwt.client.Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ"); 
-         
+        org.fusesource.restygwt.client.Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+
         HashMap<String, String> headers = new HashMap<>();
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
 
         Resource rb = new Resource(URL_REST, headers);
+
+        duration = new Duration();
+
         rb.get().send(Ajax.jsonCall(new JsonCallback() {
 
             @Override
@@ -94,22 +101,46 @@ public class EmpleadoREST extends BaseREST {
 
             @Override
             public void onSuccess(Method method, JSONValue response) {
-                
+
                 // TODO debería poderse con List<Empleado>
                 // Pasar la lista completa. Probablemente si se soluciona el XmlRootElement name="empleados"
-
-                List<Empleado> empleados = new ArrayList<>();
                 try {
+                    List<Empleado> empleados = new ArrayList<>();
+
+//                    //              JSONArray array2 = null;
+//                    if (response instanceof JSONObject) {
+//                        JSONObject obj = (JSONObject) response;
+//
+                System.out.println("  onSuccess(Method method, JSONValue response) UNO >>> " + duration.elapsedMillis());
+//                        Empleados listaEmpleado = empleadoListJsonCodec.decode(response);
+//                    System.out.println(" JsonCodec.DECODE(JSONValue)) >>> DOS " + duration.elapsedMillis());
+//                        empleados.addAll(listaEmpleado.getEmpleados());
+//
+////                    array2 = obj.get("empleados").isArray(); //TODO que el elemento-root se llame 'Departamento'
+//                    } else if (response instanceof JSONArray) {
+//                        //                 array2 = response.isArray();
+//                    } else {
+//                        throw new NullPointerException("EL arreglo de Departamentos es Nulo en: " + URL_REST);
+//                    }
+     //           System.out.println("arra>>> " + array2);
+
+//                List<Empleado> empleados = new ArrayList<>();                
+//                try {
                     JSONArray array = response.isArray();
                     for (int i = 0; i < array.size(); i++) {
                         JSONValue val = array.get(i);
                         
-                        Empleado empleado = empleadoListJsonCodec.decode(val);
+                        EmpleadoJsonCodec theDecode = GWT.create(EmpleadoJsonCodec.class);
+                        Empleado empleado = theDecode.decode(val);
                         empleados.add(empleado);
                     }
+
                     RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_ALL, TypeResult.SUCCESS, "");
                     dbEvent.setResult(empleados);
                     onRESTExecuted(dbEvent);
+
+                    System.out.println(" New RESTEvent FIND_ALL DOS >>> " + duration.elapsedMillis());
+
                 } catch (Exception e) {
                     RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_ALL, TypeResult.FAILURE, e.getMessage());
                     onRESTExecuted(dbEvent);
@@ -123,8 +154,8 @@ public class EmpleadoREST extends BaseREST {
     public void add(Empleado empleado) {
 
         org.fusesource.restygwt.client.Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-        
-        JSONValue empleadoJSONValue = empleadoListJsonCodec.encode(empleado);
+
+        JSONValue empleadoJSONValue = empleadoJsonCodec.encode(empleado);
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
@@ -141,8 +172,8 @@ public class EmpleadoREST extends BaseREST {
             @Override
             public void onSuccess(Method method, JSONValue response) {
                 RESTEvent dbEvent = new RESTEvent(ProviderMethod.CREATE, TypeResult.SUCCESS, "listo");
-                Empleado nuevoEmpleado = empleadoListJsonCodec.decode(response);
-                dbEvent.setResult(nuevoEmpleado); 
+                Empleado nuevoEmpleado = empleadoJsonCodec.decode(response);
+                dbEvent.setResult(nuevoEmpleado);
                 onRESTExecuted(dbEvent);
             }
         }));
@@ -153,10 +184,10 @@ public class EmpleadoREST extends BaseREST {
 
         //TODO encode/decode   "yyyy-MM-dd'T'HH:mm:ssXXX"/"yyyy-MM-dd'T'HH:mm:ssZ"
         org.fusesource.restygwt.client.Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-        
+
         //Create a PersonJsonizer instance
         //Departamento.DepartamentoJsonizer dj = (Departamento.DepartamentoJsonizer)GWT.create(Departamento.DepartamentoJsonizer.class);
-        JSONValue empleadoJSONValue = empleadoListJsonCodec.encode(empleado);
+        JSONValue empleadoJSONValue = empleadoJsonCodec.encode(empleado);
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
@@ -209,8 +240,8 @@ public class EmpleadoREST extends BaseREST {
 
     public void findAllBase() {
 
-        org.fusesource.restygwt.client.Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ"); 
-         
+        org.fusesource.restygwt.client.Defaults.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+
         HashMap<String, String> headers = new HashMap<>();
         headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
 
@@ -232,8 +263,8 @@ public class EmpleadoREST extends BaseREST {
                     JSONArray array = response.isArray();
                     for (int i = 0; i < array.size(); i++) {
                         JSONValue val = array.get(i);
-                        
-                        Empleado empleado = empleadoListJsonCodec.decode(val);
+
+                        Empleado empleado = empleadoJsonCodec.decode(val);
                         empleados.add(empleado);
                     }
                     RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_ALL_BASE, TypeResult.SUCCESS, "");
@@ -248,6 +279,6 @@ public class EmpleadoREST extends BaseREST {
         }));
 
     }
-    
+
     // </editor-fold>
 }

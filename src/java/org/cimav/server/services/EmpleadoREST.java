@@ -19,6 +19,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import org.cimav.server.entities.Empleado;
+import org.cimav.server.entities.Empleados;
 
 /**
  *
@@ -84,8 +85,32 @@ public class EmpleadoREST extends AbstractREST<Empleado> {
     @Override
     @Produces("application/json")
     public List<Empleado> findAll() {
+        long tStart = System.nanoTime();
+        
         List<Empleado> result = super.findAll();
+        
+        Empleados empleados = new Empleados(result);
+        
+        long tTot = Math.round((System.nanoTime() - tStart) / 1000.0);
+        System.out.println(" Entity.findAll >>> " + tTot);
+        
         return result;
+    }
+    
+    @GET
+    @Produces("application/json")
+    @Path("/test")
+    public Empleados findAllEmpleados() {
+        long tStart = System.nanoTime();
+        
+        List<Empleado> result = super.findAll();
+        
+        Empleados empleados = new Empleados(result);
+        
+        long tTot = Math.round((System.nanoTime() - tStart) / 1000.0);
+        System.out.println(" Entity.findAllEmpleados >>> " + tTot);
+        
+        return empleados;
     }
 
     @GET

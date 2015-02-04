@@ -124,7 +124,7 @@ public class EmpleadosEditorUI extends Composite {
                 if (object == null) {
                     return "Nada";
                 }
-                return object.getNombre();
+                return object.getName();
             }
 
             @Override
@@ -134,7 +134,7 @@ public class EmpleadosEditorUI extends Composite {
             }
         });
         List<EClinica> clinicas = Arrays.asList(EClinica.values());
-        imssClinicaChosen.setValue(EClinica.MORELOS); //default
+        imssClinicaChosen.setValue(EClinica.CLINICA_044); //default
         imssClinicaChosen.setAcceptableValues(clinicas);
         imssClinicaChosen.setWidth("244px");
 
@@ -395,16 +395,16 @@ public class EmpleadosEditorUI extends Composite {
 
                 if (empleadoBean.getId() == null || empleadoBean.getId() <= 0) {
                     // nuevo
-                    EmpleadoslProvider.get().add(empleadoBean);
+                    EmpleadosProvider.get().add(empleadoBean);
                 } else {
                     // update
-                    EmpleadoslProvider.get().update(empleadoBean);
+                    EmpleadosProvider.get().update(empleadoBean);
                 }
 
             }
         });
 
-        EmpleadoslProvider.get().addMethodExecutedListener(new ProviderMethodExecutedListener());
+        EmpleadosProvider.get().addMethodExecutedListener(new ProviderMethodExecutedListener());
     }
 
     private class RestMethodExecutedListener implements DeptoDatabase.MethodExecutedListener {
@@ -419,7 +419,7 @@ public class EmpleadosEditorUI extends Composite {
 
     }
     
-    private class ProviderMethodExecutedListener implements EmpleadoslProvider.MethodExecutedListener {
+    private class ProviderMethodExecutedListener implements EmpleadosProvider.MethodExecutedListener {
 
         @Override
         public void onMethodExecuted(ProviderEvent dbEvent) {
@@ -454,8 +454,8 @@ public class EmpleadosEditorUI extends Composite {
         if (empleadoBean != null) {
             // general
             nombreTxtBox.setText(empleadoBean.getNombre());
-            paternoTxtBox.setText(empleadoBean.getApellidoMaterno());
-            maternoTxtBox.setText(empleadoBean.getApellidoPaterno());
+            paternoTxtBox.setText(empleadoBean.getApellidoPaterno());
+            maternoTxtBox.setText(empleadoBean.getApellidoMaterno());
             rfcTxtBox.setText(empleadoBean.getRfc());
             curpTxtBox.setText(empleadoBean.getCurp());
             imssTxtBox.setText(empleadoBean.getImss());
@@ -491,7 +491,7 @@ public class EmpleadosEditorUI extends Composite {
             rfcTxtBox.setText("");
             curpTxtBox.setText("");
             imssTxtBox.setText("");
-            imssClinicaChosen.setValue(EClinica.MORELOS);
+            imssClinicaChosen.setValue(EClinica.CLINICA_044);
             creditoInputGroup.setHasCredito(false);
             creditoInputGroup.setNumCredito("");
             bancoChosen.setValue(EBanco.BANORTE);

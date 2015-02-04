@@ -29,7 +29,7 @@ import org.apache.commons.lang3.text.WordUtils;
 @Entity
 @Cacheable(false)
 @Table(name = "empleados")
-@XmlRootElement(name = "employees")
+@XmlRootElement(name = "empleado")
 @NamedQueries({
     @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e"),
     @NamedQuery(name = "Empleado.findById", query = "SELECT e FROM Empleado e WHERE e.id = :id")})

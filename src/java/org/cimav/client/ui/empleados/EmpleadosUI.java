@@ -37,11 +37,11 @@ import org.gwtbootstrap3.client.ui.constants.IconFlip;
  *
  * @author juan.calderon
  */
-public class EmpleadoslUI extends Composite {
+public class EmpleadosUI extends Composite {
 
     private static final EmpleadosUIUiBinder uiBinder = GWT.create(EmpleadosUIUiBinder.class);
 
-    interface EmpleadosUIUiBinder extends UiBinder<Widget, EmpleadoslUI> {
+    interface EmpleadosUIUiBinder extends UiBinder<Widget, EmpleadosUI> {
     }
 
     @UiField
@@ -58,13 +58,13 @@ public class EmpleadoslUI extends Composite {
 
     private final SingleSelectionModel<Empleado> selectionModel;
 
-    public EmpleadoslUI() {
+    public EmpleadosUI() {
         initWidget(uiBinder.createAndBindUi(this));
 
         //CellList.Resources cellListResources = GWT.create(CellList.Resources.class);
         CellList.Resources cellListResources = GWT.create(ICellListResources.class);
         selectionModel = new SingleSelectionModel<>();
-        cellList = new CellList<>(new EmpleadoCell(selectionModel), cellListResources, EmpleadoslProvider.get().getDataProvider());
+        cellList = new CellList<>(new EmpleadoCell(selectionModel), cellListResources, EmpleadosProvider.get().getDataProvider());
         cellList.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.ENABLED);
         cellList.setSelectionModel(selectionModel);
         selectionModel.addSelectionChangeHandler(new SelectionHandler());
@@ -83,9 +83,9 @@ public class EmpleadoslUI extends Composite {
         divAbue.getStyle().setRight(0, Style.Unit.PX);
 
         // Add the CellList to the adapter in the database.
-        EmpleadoslProvider.get().addDataDisplay(cellList);
+        EmpleadosProvider.get().addDataDisplay(cellList);
 
-        EmpleadoslProvider.get().addMethodExecutedListener(new ProviderMethodExecutedListener());
+        EmpleadosProvider.get().addMethodExecutedListener(new ProviderMethodExecutedListener());
 
         reloadBtn.setIconFlip(IconFlip.HORIZONTAL);
         reloadBtn.addClickHandler(new ClickHandler() {
@@ -99,14 +99,14 @@ public class EmpleadoslUI extends Composite {
             @Override
             public void onKeyUp(KeyUpEvent event) {
                 final String txtToSearch = searchTxt.getText();
-                EmpleadoslProvider.get().getDataProvider().setFilter(txtToSearch);
-                String rows = EmpleadoslProvider.get().getRowCountPropotional();
+                EmpleadosProvider.get().getDataProvider().setFilter(txtToSearch);
+                String rows = EmpleadosProvider.get().getRowCountPropotional();
                 reloadBtn.setText(rows);
             }
         });
 
         // orden inicial
-        orderBy = EmpleadoslProvider.ORDER_BY_NAME;
+        orderBy = EmpleadosProvider.ORDER_BY_NAME;
 
         /* Al arrancar, cargar a todos los empleados */
         // reloadAll();
@@ -118,13 +118,13 @@ public class EmpleadoslUI extends Composite {
     void handleClick(ClickEvent e) {
         orderBy = -1;
         if (e.getSource().toString().contains("Nombre")) {
-            orderBy = EmpleadoslProvider.ORDER_BY_NAME;
+            orderBy = EmpleadosProvider.ORDER_BY_NAME;
         } else if (e.getSource().toString().contains("Num")) {
-            orderBy = EmpleadoslProvider.ORDER_BY_CODE;
+            orderBy = EmpleadosProvider.ORDER_BY_CODE;
         } else if (e.getSource().toString().contains("Grp")) {
-            orderBy = EmpleadoslProvider.ORDER_BY_GRUPO;
+            orderBy = EmpleadosProvider.ORDER_BY_GRUPO;
         } else if (e.getSource().toString().contains("Niv")) {
-            orderBy = EmpleadoslProvider.ORDER_BY_NIVEL;
+            orderBy = EmpleadosProvider.ORDER_BY_NIVEL;
 
             //selectionModel.setSelected(new Empleado(), true);
         }
@@ -132,22 +132,22 @@ public class EmpleadoslUI extends Composite {
     }
 
     private void orderBy() {
-        EmpleadoslProvider.get().order(this.orderBy);
+        EmpleadosProvider.get().order(this.orderBy);
     }
 
     private void reloadAll() {
-        EmpleadoslProvider.get().findAll();
+        EmpleadosProvider.get().findAll();
         this.orderBy();
 
         selectionModel.setSelected(null, true);
     }
 
-    private class ProviderMethodExecutedListener implements EmpleadoslProvider.MethodExecutedListener {
+    private class ProviderMethodExecutedListener implements EmpleadosProvider.MethodExecutedListener {
 
         @Override
         public void onMethodExecuted(ProviderEvent dbEvent) {
             if (ProviderMethod.FIND_ALL.equals(dbEvent.getDbMethod())) {
-                String m = "" + EmpleadoslProvider.get().getDataProvider().getDataDisplays().size() + "/" + EmpleadoslProvider.get().getDataProvider().getList().size();
+                String m = "" + EmpleadosProvider.get().getDataProvider().getDataDisplays().size() + "/" + EmpleadosProvider.get().getDataProvider().getList().size();
                 reloadBtn.setText(m);
             } else if (ProviderMethod.CREATE.equals(dbEvent.getDbMethod())) {
                 if (TypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
@@ -184,24 +184,25 @@ public class EmpleadoslUI extends Composite {
                     = "<table width='100%' cellspacing='0' cellpadding='0' style='cursor: pointer; text-align: left; vertical-align: middle; border-bottom:1px solid lightgray;'>\n"
                     + "  <tr>\n"
                     + "    <td width='4px' rowspan='6' style='height:auto; width: 5px; SELECTED_COLOR_REEMPLAZO'></td>\n"
-                    + "    <td colspan='3' style='height:3px;'></td>\n"
+                    + "    <td colspan='3' style='height:10px;'><span STYLE_INDICADOR_REEMPLAZO /></td>\n"
                     + "  </tr>\n"
                     + "  <tr>\n"
                     + "    <td width='78px' rowspan='3' style='text-align: center;'><img src='URL_FOTO_REEMPLAZO' style='border:1px solid lightgray; margin-top: 3px; border-radius:50%; padding:2px;'></td>\n"
-                    + "    <td colspan='2' style='vertical-align: bottom;'><h4 style='margin-top: 0px; margin-bottom: 0px;'>APELLIDOS_REEMPLAZO,</h4></td>\n"
+                    + "    <td colspan='2' style='vertical-align: bottom;'><h4 style='margin-top: 0px; margin-bottom: 0px; font-size: 17px;'>APELLIDOS_REEMPLAZO,</h4></td>\n"
                     + "  </tr>\n"
                     + "  <tr>\n"
                     + "    <td colspan='2' style='vertical-align: top;'><h5 style='margin-top: 0px; margin-bottom: 0px;'>NOMBRE_REEMPLAZO</h5></td>\n"
                     + "  </tr>\n"
                     + "  <tr>\n"
                     + "    <td  colspan='1'> "
-                    + " <code class='label-cyt-grp-niv'><span style='font-size: medium;' >CODE_REEMPLAZO</span></code> "
+//                    + " <code class='label-cyt-grp-niv'><span style='font-size: medium;' >CODE_REEMPLAZO</span></code> "
+                    + " <code class='label-cyt-grp-niv'><span >CODE_REEMPLAZO</span></code> "
                     + " <code class=\"label-cyt-grp-niv\"><span >GRUPO_REEMPLAZO</span></code> "
                     + " <code class=\"label-cyt-grp-niv\"><span >NIVEL_REEMPLAZO</span></code> "
                     + " <code class=\"label-cyt-grp-niv\"><span >DEPTO_REEMPLAZO</span></code> "
-                    + " <code class=\"label-cyt-grp-niv\"><span >ID_REEMPLAZO</span></code> "
+//                    + " <code class=\"label-cyt-grp-niv\"><span >ID_REEMPLAZO</span></code> "
                     + "    </td>\n"
-                    + "    <td style='text-align: right;'><i class='fa fa-info-circle fa-lg' style='opacity: 0.5; padding-right: 5px;'></i></td>\n"
+//                    + "    <td style='text-align: right;'><i class='fa fa-info-circle fa-lg' style='opacity: 0.5; padding-right: 5px;'></i></td>\n"
                     + "  </tr>\n"
                     + "  <tr>\n"
                     + "    <td style='text-align:center;' ></td>\n"
@@ -210,19 +211,24 @@ public class EmpleadoslUI extends Composite {
                     + "    <td></td>\n"
                     + "  </tr>\n"
                     + "  <tr>\n"
-                    + "    <td colspan='3' style='height:3px;'></td>\n"
+                    + "    <td colspan='3' style='height:10px;'></td>\n"
                     + "  </tr>\n"
                     + "</table>";
 
             if (isSelected) {
                 html = html.replace("SELECTED_COLOR_REEMPLAZO", "background-color: #628cd5;");
+                html = html.replace("STYLE_INDICADOR_REEMPLAZO", 
+                        "style = 'position: relative; float: right; top: 4px; width: 14px; height: 14px; border-top: 3px solid #628cd5;\n" +
+                                                                 "-moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg);\n" +
+                                                                 "transform: rotate(45deg); overflow: hidden; right: 8px; border-right: 3px solid #628cd5;' ");
             } else {
                 html = html.replace("SELECTED_COLOR_REEMPLAZO", "background-color: #F8F8F8;");
+                html = html.replace("STYLE_INDICADOR_REEMPLAZO", "");
             }
-
+                       
             html = html.replace("CODE_REEMPLAZO", value.getCode());
             html = html.replace("URL_FOTO_REEMPLAZO", value.getUrlPhoto());
-            html = html.replace("APELLIDOS_REEMPLAZO", EmpleadoslUI.ellipse(value.getApellidoPaterno(), 18) + " " + EmpleadoslUI.ellipse(value.getApellidoMaterno(), 18));
+            html = html.replace("APELLIDOS_REEMPLAZO", EmpleadosUI.ellipse(value.getApellidoPaterno(), 18) + " " + EmpleadosUI.ellipse(value.getApellidoMaterno(), 18));
             html = html.replace("NOMBRE_REEMPLAZO", value.getNombre());
             html = html.replaceAll("RFC_REEMPLAZO", value.getRfc());
             html = html.replace("GRUPO_REEMPLAZO", grupoStr);

@@ -24,15 +24,15 @@ import org.gwtbootstrap3.extras.growl.client.ui.Growl;
  *
  * @author juan.calderon
  */
-public class EmpleadoslProvider extends BaseProvider<Empleado> {
+public class EmpleadosProvider extends BaseProvider<Empleado> {
 
-    private static EmpleadoslProvider instance;
+    private static EmpleadosProvider instance;
 
     private EmpleadoREST empleadoREST;
 
-    public static EmpleadoslProvider get() {
+    public static EmpleadosProvider get() {
         if (instance == null) {
-            instance = new EmpleadoslProvider();
+            instance = new EmpleadosProvider();
         }
         return instance;
     }

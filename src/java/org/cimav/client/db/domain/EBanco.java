@@ -12,7 +12,8 @@ package org.cimav.client.db.domain;
 public enum EBanco {
     BANORTE(0, "Banorte"),
     BANCOMER(1, "Bancomer"),
-    BANAMEX(2, "Banamex");
+    BANAMEX(2, "Banamex"),
+    CHEQUE(9, "Cheque");
     
     private int id;
     private String nombre;
