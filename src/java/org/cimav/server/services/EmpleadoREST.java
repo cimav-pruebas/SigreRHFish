@@ -5,6 +5,8 @@
  */
 package org.cimav.server.services;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,7 +21,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import org.cimav.server.entities.Empleado;
-import org.cimav.server.entities.Empleados;
 
 /**
  *
@@ -85,34 +86,10 @@ public class EmpleadoREST extends AbstractREST<Empleado> {
     @Override
     @Produces("application/json")
     public List<Empleado> findAll() {
-        long tStart = System.nanoTime();
-        
         List<Empleado> result = super.findAll();
-        
-        Empleados empleados = new Empleados(result);
-        
-        long tTot = Math.round((System.nanoTime() - tStart) / 1000.0);
-        System.out.println(" Entity.findAll >>> " + tTot);
-        
         return result;
     }
     
-    @GET
-    @Produces("application/json")
-    @Path("/test")
-    public Empleados findAllEmpleados() {
-        long tStart = System.nanoTime();
-        
-        List<Empleado> result = super.findAll();
-        
-        Empleados empleados = new Empleados(result);
-        
-        long tTot = Math.round((System.nanoTime() - tStart) / 1000.0);
-        System.out.println(" Entity.findAllEmpleados >>> " + tTot);
-        
-        return empleados;
-    }
-
     @GET
     @Path("{from}/{to}")
     @Produces("application/json")
@@ -134,9 +111,12 @@ public class EmpleadoREST extends AbstractREST<Empleado> {
     public List<Empleado> findAllBase() {
         
         // usa SELECT NEW CONSTRUCTOR en lugar del @JsonView que no funcionó
-        Query query = getEntityManager().createQuery("SELECT NEW org.cimav.server.entities.Empleado(e.id, e.code, e.name, e.urlPhoto) FROM Empleado AS e", Empleado.class);
+        Query query = getEntityManager().createQuery("SELECT NEW org.cimav.server.entities.Empleado(e.id, e.code, e.name, e.cuentaCimav) FROM Empleado AS e", Empleado.class);
         List<Empleado> results = query.getResultList();
         
+        //Sorting by name
+        Collections.sort(results, new Comparator<Empleado>() { @Override public int compare(Empleado  emp1, Empleado  emp2) { return  emp1.getName().compareTo(emp2.getName()); }
+    });        
         return results;
     }
     

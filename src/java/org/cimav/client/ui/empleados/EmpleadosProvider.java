@@ -60,9 +60,10 @@ public class EmpleadosProvider extends BaseProvider<Empleado> {
 
         String grupoStr = value.getGrupo() != null ? value.getGrupo().getCode() + " " + value.getGrupo().getName() : " ";
         String nivelStr = value.getNivel() != null ? value.getNivel().getCode() + " " + value.getNivel().getName() : " ";
+        String sedeStr = value.getSede() != null ? value.getSede().getAbrev() + " " + value.getSede().getNombre(): " ";
 
         String string
-                = value.getName() + " " + value.getRfc() + " " + value.getCode() + " " + value.getUrlPhoto() + " " + grupoStr + " " + nivelStr;
+                = value.getName() + " " + value.getRfc() + " " + value.getCode() + " " + value.getCuentaCimav() + " " + grupoStr + " " + nivelStr + " " + sedeStr;
         string = string.toLowerCase();
 
         RegExp regExp = RegExp.compile(pattern);

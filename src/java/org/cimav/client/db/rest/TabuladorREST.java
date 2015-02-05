@@ -17,6 +17,7 @@ import org.cimav.client.tools.Ajax;
 import org.cimav.client.tools.ProviderMethod;
 import org.cimav.client.tools.RESTEvent;
 import org.cimav.client.tools.TypeResult;
+import org.fusesource.restygwt.client.Defaults;
 import org.fusesource.restygwt.client.JsonCallback;
 import org.fusesource.restygwt.client.JsonEncoderDecoder;
 import org.fusesource.restygwt.client.Method;
@@ -33,7 +34,7 @@ public class TabuladorREST extends BaseREST {
     
     public JsonEncoderDecoder jsonCodec = GWT.create(JsonCodec.class);
     
-    private static final String URL_REST = "http://localhost:8080/SigreRHFish/api/tabulador";
+    private static final String URL_REST = Defaults.getServiceRoot() + "api/tabulador";//"http://localhost:8080/SigreRHFish/api/tabulador";
     
     public void findAllBase() {
 

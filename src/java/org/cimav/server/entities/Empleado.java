@@ -168,12 +168,12 @@ public class Empleado extends BaseEntity implements Serializable {
         super();
     }
     
-    public Empleado(Integer id, String code, String name, String urlPhoto) {
+    public Empleado(Integer id, String code, String name, String cuentaCimav) {
         super();
         this.setId(id);
         this.setCode(code);
         this.setName(name);
-        this.setUrlPhoto(urlPhoto);
+        this.setCuentaCimav(cuentaCimav);
     }
     
     public Integer getConsecutivo() {

@@ -8,18 +8,17 @@ package org.cimav.client.db.rest;
 import com.google.gwt.core.client.Duration;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.cimav.client.db.domain.Empleado;
-import org.cimav.client.db.domain.Empleados;
 import org.cimav.client.tools.Ajax;
 import org.cimav.client.tools.ProviderMethod;
 import org.cimav.client.tools.RESTEvent;
 import org.cimav.client.tools.TypeResult;
+import org.fusesource.restygwt.client.Defaults;
 import org.fusesource.restygwt.client.JsonCallback;
 import org.fusesource.restygwt.client.JsonEncoderDecoder;
 import org.fusesource.restygwt.client.Method;
@@ -31,15 +30,11 @@ import org.fusesource.restygwt.client.Resource;
  */
 public class EmpleadoREST extends BaseREST {
 
-    private static final String URL_REST = "http://localhost:8080/SigreRHFish/api/empleado";
+    private static final String URL_REST = Defaults.getServiceRoot() + "api/empleado"; //http://localhost:8080/SigreRHFish/api/empleado";
 
     public interface EmpleadoJsonCodec extends JsonEncoderDecoder<Empleado> {
     }
     public EmpleadoJsonCodec empleadoJsonCodec = GWT.create(EmpleadoJsonCodec.class);
-
-    public interface EmpleadoListJsonCodec extends JsonEncoderDecoder<Empleados> {
-    }
-    public EmpleadoListJsonCodec empleadoListJsonCodec = GWT.create(EmpleadoListJsonCodec.class);
 
     // <editor-fold defaultstate="collapsed" desc="métodos CRUD-REST"> 
     public void findById(Integer id) {
@@ -111,7 +106,6 @@ public class EmpleadoREST extends BaseREST {
 //                    if (response instanceof JSONObject) {
 //                        JSONObject obj = (JSONObject) response;
 //
-                System.out.println("  onSuccess(Method method, JSONValue response) UNO >>> " + duration.elapsedMillis());
 //                        Empleados listaEmpleado = empleadoListJsonCodec.decode(response);
 //                    System.out.println(" JsonCodec.DECODE(JSONValue)) >>> DOS " + duration.elapsedMillis());
 //                        empleados.addAll(listaEmpleado.getEmpleados());
@@ -130,16 +124,13 @@ public class EmpleadoREST extends BaseREST {
                     for (int i = 0; i < array.size(); i++) {
                         JSONValue val = array.get(i);
                         
-                        EmpleadoJsonCodec theDecode = GWT.create(EmpleadoJsonCodec.class);
-                        Empleado empleado = theDecode.decode(val);
+                        Empleado empleado = empleadoJsonCodec.decode(val);
                         empleados.add(empleado);
                     }
 
                     RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_ALL, TypeResult.SUCCESS, "");
                     dbEvent.setResult(empleados);
                     onRESTExecuted(dbEvent);
-
-                    System.out.println(" New RESTEvent FIND_ALL DOS >>> " + duration.elapsedMillis());
 
                 } catch (Exception e) {
                     RESTEvent dbEvent = new RESTEvent(ProviderMethod.FIND_ALL, TypeResult.FAILURE, e.getMessage());

@@ -11,10 +11,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import org.cimav.client.db.domain.BaseDomain;
-import org.cimav.client.tools.DBEvent;
-import org.cimav.client.tools.FilteredListDataProvider;
-import org.cimav.client.tools.IFilter;
-import org.cimav.client.tools.ProviderEvent;
 
 /**
  *

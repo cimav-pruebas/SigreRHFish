@@ -22,6 +22,7 @@ import org.cimav.client.tools.DBEvent;
 import org.cimav.client.tools.ProviderMethod;
 import org.cimav.client.tools.TypeResult;
 import org.cimav.client.tools.InfoView;
+import org.fusesource.restygwt.client.Defaults;
 import org.fusesource.restygwt.client.JsonCallback;
 import org.fusesource.restygwt.client.JsonEncoderDecoder;
 import org.fusesource.restygwt.client.Method;
@@ -33,7 +34,7 @@ import org.fusesource.restygwt.client.Resource;
  */
 public class DeptoDatabase {
 
-    private static final String URL_REST = "http://localhost:8080/SigreRHFish/api/departamento";
+    private static final String URL_REST = Defaults.getServiceRoot() + "api/departamento"; //"http://localhost:8080/SigreRHFish/api/departamento";
     private static final String URL_REST_ALL = URL_REST + "";
     private static final String URL_REST_ADD = URL_REST + "/add";
     private static final String URL_REST_UPDATE = URL_REST + "/update";

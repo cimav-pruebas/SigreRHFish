@@ -109,7 +109,7 @@ public class EmpleadosUI extends Composite {
         orderBy = EmpleadosProvider.ORDER_BY_NAME;
 
         /* Al arrancar, cargar a todos los empleados */
-        // reloadAll();
+        reloadAll();
     }
 
     private int orderBy;
@@ -137,9 +137,6 @@ public class EmpleadosUI extends Composite {
 
     private void reloadAll() {
         EmpleadosProvider.get().findAll();
-        this.orderBy();
-
-        selectionModel.setSelected(null, true);
     }
 
     private class ProviderMethodExecutedListener implements EmpleadosProvider.MethodExecutedListener {
@@ -149,6 +146,10 @@ public class EmpleadosUI extends Composite {
             if (ProviderMethod.FIND_ALL.equals(dbEvent.getDbMethod())) {
                 String m = "" + EmpleadosProvider.get().getDataProvider().getDataDisplays().size() + "/" + EmpleadosProvider.get().getDataProvider().getList().size();
                 reloadBtn.setText(m);
+                
+                EmpleadosUI.this.orderBy();
+                EmpleadosUI.this.selectionModel.setSelected(null, true);
+                
             } else if (ProviderMethod.CREATE.equals(dbEvent.getDbMethod())) {
                 if (TypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
                     Empleado nuevoEmpleado = (Empleado) dbEvent.getResult();
@@ -176,15 +177,19 @@ public class EmpleadosUI extends Composite {
                     && this.selectionModel.getSelectedObject().equals(value);
 
             // TODO reemplazar código a pie por EmpleadosItem
-            String grupoStr = value.getGrupo() != null ? value.getGrupo().getCode() : "SIN_GRP";
-            String deptoStr = value.getDepartamento() != null ? value.getDepartamento().getCodigo() : "SIN_DEPTO";
-            String nivelStr = value.getNivel() != null ? value.getNivel().getCode() : "SIN_NIVEL";
+            String es_null = "---";
+            String grupoStr = value.getGrupo() != null ? value.getGrupo().getCode() : es_null;
+            String deptoStr = value.getDepartamento() != null ? value.getDepartamento().getCodigo() : es_null;
+            String nivelStr = value.getNivel() != null ? value.getNivel().getCode() : es_null;
+            String sedeStr = value.getSede() != null ? value.getSede().getAbrev() : es_null;
 
             String html
                     = "<table width='100%' cellspacing='0' cellpadding='0' style='cursor: pointer; text-align: left; vertical-align: middle; border-bottom:1px solid lightgray;'>\n"
                     + "  <tr>\n"
                     + "    <td width='4px' rowspan='6' style='height:auto; width: 5px; SELECTED_COLOR_REEMPLAZO'></td>\n"
-                    + "    <td colspan='3' style='height:10px;'><span STYLE_INDICADOR_REEMPLAZO /></td>\n"
+//                    + "    <td colspan='3' style='height:10px;'><span STYLE_INDICADOR_REEMPLAZO /></td>\n"
+                    + "    <td colspan='3' style='height:10px;'></td>\n"
+                    + "    <td width='4px' rowspan='6' style='height:auto; width: 5px; SELECTED_COLOR_REEMPLAZO'></td>\n"
                     + "  </tr>\n"
                     + "  <tr>\n"
                     + "    <td width='78px' rowspan='3' style='text-align: center;'><img src='URL_FOTO_REEMPLAZO' style='border:1px solid lightgray; margin-top: 3px; border-radius:50%; padding:2px;'></td>\n"
@@ -199,6 +204,7 @@ public class EmpleadosUI extends Composite {
                     + " <code class='label-cyt-grp-niv'><span >CODE_REEMPLAZO</span></code> "
                     + " <code class=\"label-cyt-grp-niv\"><span >GRUPO_REEMPLAZO</span></code> "
                     + " <code class=\"label-cyt-grp-niv\"><span >NIVEL_REEMPLAZO</span></code> "
+                    + " <code class=\"label-cyt-grp-niv\"><span >SEDE_REEMPLAZO</span></code> "
                     + " <code class=\"label-cyt-grp-niv\"><span >DEPTO_REEMPLAZO</span></code> "
 //                    + " <code class=\"label-cyt-grp-niv\"><span >ID_REEMPLAZO</span></code> "
                     + "    </td>\n"
@@ -217,13 +223,13 @@ public class EmpleadosUI extends Composite {
 
             if (isSelected) {
                 html = html.replace("SELECTED_COLOR_REEMPLAZO", "background-color: #628cd5;");
-                html = html.replace("STYLE_INDICADOR_REEMPLAZO", 
-                        "style = 'position: relative; float: right; top: 4px; width: 14px; height: 14px; border-top: 3px solid #628cd5;\n" +
-                                                                 "-moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg);\n" +
-                                                                 "transform: rotate(45deg); overflow: hidden; right: 8px; border-right: 3px solid #628cd5;' ");
+//                html = html.replace("STYLE_INDICADOR_REEMPLAZO", 
+//                        "style = 'position: relative; float: right; top: 4px; width: 14px; height: 14px; border-top: 3px solid #628cd5;\n" +
+//                                                                 "-moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg);\n" +
+//                                                                 "transform: rotate(45deg); overflow: hidden; right: 8px; border-right: 3px solid #628cd5;' ");
             } else {
                 html = html.replace("SELECTED_COLOR_REEMPLAZO", "background-color: #F8F8F8;");
-                html = html.replace("STYLE_INDICADOR_REEMPLAZO", "");
+//                html = html.replace("STYLE_INDICADOR_REEMPLAZO", "");
             }
                        
             html = html.replace("CODE_REEMPLAZO", value.getCode());
@@ -234,6 +240,7 @@ public class EmpleadosUI extends Composite {
             html = html.replace("GRUPO_REEMPLAZO", grupoStr);
             html = html.replace("NIVEL_REEMPLAZO", nivelStr);
             html = html.replace("DEPTO_REEMPLAZO", deptoStr);
+            html = html.replace("SEDE_REEMPLAZO", sedeStr);
             html = html.replace("ID_REEMPLAZO", value.getId().toString());
 
             sb.appendHtmlConstant(html);
