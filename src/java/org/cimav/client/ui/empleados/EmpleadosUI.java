@@ -103,6 +103,9 @@ public class EmpleadosUI extends Composite {
             }
         });
 
+        // de inicio, el Editor no tiene seleccionando y por tanto no es visible
+        this.showEditor(false);
+        
         // orden inicial
         orderBy = EmpleadosProvider.ORDER_BY_NAME;
         // filtro inicial
@@ -159,8 +162,9 @@ public class EmpleadosUI extends Composite {
         public void onMethodExecuted(ProviderEvent dbEvent) {
             if (ProviderMethod.FIND_ALL.equals(dbEvent.getDbMethod())) {
                 EmpleadosUI.this.orderBy();
-                EmpleadosUI.this.selectionModel.setSelected(null, true);
 
+                EmpleadosUI.this.selectionModel.setSelected(null, true);
+                
                 EmpleadosUI.this.filtrar();
                 
             } else if (ProviderMethod.CREATE.equals(dbEvent.getDbMethod())) {
@@ -285,6 +289,9 @@ public class EmpleadosUI extends Composite {
         return value;
     }
 
+    private void showEditor(boolean show) {
+        empleadosEditorUI.setVisible(show);
+    }
     private class SelectionHandler implements SelectionChangeEvent.Handler {
 
         @Override
@@ -295,9 +302,8 @@ public class EmpleadosUI extends Composite {
                 System.out.println("Sel>>>> " + empleadoSelected);
                 empleadosEditorUI.setBean(empleadoSelected);
                 
-                // Mostrar editor sólo cuando tiene empleado seleccionado
-                empleadosEditorUI.setVisible(empleadoSelected != null);
-                
+                // Mostrar editor sólo cuando hay seleccionado
+                EmpleadosUI.this.showEditor(empleadoSelected != null);
             }
         }
     }
