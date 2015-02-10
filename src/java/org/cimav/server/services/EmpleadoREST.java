@@ -86,7 +86,8 @@ public class EmpleadoREST extends AbstractREST<Empleado> {
     @Override
     @Produces("application/json")
     public List<Empleado> findAll() {
-        List<Empleado> result = super.findAll();
+        // TODO Debug sublist
+        List<Empleado> result = super.findAll().subList(1, 10);
         return result;
     }
     

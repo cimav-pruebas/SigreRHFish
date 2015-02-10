@@ -47,6 +47,7 @@ Uncomment this for XHTML entities
                                     <b:Button ui:field="btnAdd" addStyleNames="{style.buttons-bar-button}">Agregar</b:Button>
                                     <b:Button ui:field="btnEditar" addStyleNames="{style.buttons-bar-button}">Editar</b:Button>
                                     <b:Button ui:field="btnEliminar" addStyleNames="{style.buttons-bar-button}">Eliminar</b:Button>
+                                    <b:Button ui:field="btnExtra" addStyleNames="{style.buttons-bar-button}">EXTRA</b:Button>
                                 </g:HorizontalPanel>
                             </g:south>
                         </g:DockLayoutPanel>

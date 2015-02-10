@@ -65,6 +65,25 @@ public class BaseProvider<T> implements IFilter<T>{
     public String getRowCountPropotional() {
         return "" + getRowCount() + "/" + getTotalRowCount();
     }
+
+    /**
+     * 
+     * @param item
+     * @return True if the VisibleItems has the given Item.
+     */
+    public boolean containsItem(T item) {
+        if (this.display == null || item == null) {
+            return false;
+        }
+        boolean result = false;
+        for(T t : this.display.getVisibleItems()) {
+            if (item.equals(t)) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
     
     // <editor-fold defaultstate="collapsed" desc="interface MethodExecutedListener"> 
     public interface MethodExecutedListener extends java.util.EventListener {

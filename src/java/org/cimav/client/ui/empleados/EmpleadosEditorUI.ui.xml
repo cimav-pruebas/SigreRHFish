@@ -13,18 +13,18 @@ Uncomment this for XHTML entities
         <g:center>
             <g:FlowPanel>
                 <b3:NavTabs >
-                    <b3:TabListItem active="true" dataTarget="#tabEditorGeneralId" text="General"/>
-                    <b3:TabListItem dataTarget="#tabEditorLaboralId" text="Laboral"/>
+                    <b3:TabListItem dataTarget="#tabEditorGeneralId" text="General"/>
+                    <b3:TabListItem active="true"  dataTarget="#tabEditorLaboralId" text="Laboral"/>
                     <b3:TabListItem dataTarget="#tabEditorPersonalId" text="Personal"/>
                     <b3:TabListItem dataTarget="#tabEditorHistoricoId" text="Histórico"/>
                 </b3:NavTabs>
                 <b3:TabContent >
-                    <b3:TabPane active="true" b3:id="tabEditorGeneralId">
+                    <b3:TabPane b3:id="tabEditorGeneralId">
                         <g:VerticalPanel addStyleNames="{style.wrapper-panel-editor}">
                             <g:FlexTable ui:field="flexEditorGeneral"/>
                         </g:VerticalPanel>
                     </b3:TabPane>
-                    <b3:TabPane b3:id="tabEditorLaboralId">
+                    <b3:TabPane active="true"  b3:id="tabEditorLaboralId">
                         <g:VerticalPanel addStyleNames="{style.wrapper-panel-editor}">
                             <g:FlexTable ui:field="flexEditorLaboral"/>
                         </g:VerticalPanel>
@@ -48,7 +48,7 @@ Uncomment this for XHTML entities
                     <tr>
                         <td style="align:left; text-align: left !important;">
                             <b3:Tooltip title="Agregar empleado nuevo" placement="RIGHT">
-                                <b3:Button type="SUCCESS" icon="PLUS" /> <!-- iconSize="TIMES2" -->
+                                <b3:Button type="SUCCESS" icon="PLUS" enabled="false"/> <!-- iconSize="TIMES2" -->
                             </b3:Tooltip>
                         </td>
                         <td align="right">

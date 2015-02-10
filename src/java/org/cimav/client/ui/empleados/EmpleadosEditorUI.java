@@ -340,13 +340,19 @@ public class EmpleadosEditorUI extends Composite {
         row++;
         flexEditorLaboral.setHTML(row, 0, "Nivel SNI");
         flexEditorLaboral.setWidget(row, 1, new HTML(htmlColSpc));        
-        flexEditorLaboral.setHTML(row, 2, "Num SNI");
+        flexEditorLaboral.setHTML(row, 2, "Núm SNI");
         flexEditorLaboral.setWidget(row, 3, new HTML(htmlColSpc));        
         flexEditorLaboral.setHTML(row, 4, "Fecha SNI");
         row++;
         flexEditorLaboral.setWidget(row, 0, tipoSniChosen);
         flexEditorLaboral.setWidget(row, 2, numSNITxtBox);
         flexEditorLaboral.setWidget(row, 4, fechaSNIDatePicker);
+        row++;
+        flexEditorLaboral.setWidget(row, 0, new HTML("<span style='margin-bottom: 10px; display: block; border-top: 1px solid ligthgray;'></span>"));
+        row++;
+        flexEditorLaboral.setHTML(row, 0, "Número");
+        row++;
+        flexEditorLaboral.setWidget(row, 0, new Label("Not Yet...") );
 
         
 //        editor.setHTML(2, 0, "Descripción");

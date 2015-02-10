@@ -70,6 +70,8 @@ public class DepartamentosUI extends Composite {
     Button btnEditar;
     @UiField
     Button btnEliminar;
+    @UiField
+    Button btnExtra;
 
     //private Departamento currentDepto;
     public DepartamentosUI() {
@@ -153,6 +155,15 @@ public class DepartamentosUI extends Composite {
                 DeptoDatabase.get().removeDepto(deptoToRemove);
 
                 InfoView.show("Registro " + deptoToRemove.getCodigo() + " eliminado");
+            }
+        });
+        
+        btnExtra.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                
+                DeptoDatabase.get().extra();
+                
             }
         });
 

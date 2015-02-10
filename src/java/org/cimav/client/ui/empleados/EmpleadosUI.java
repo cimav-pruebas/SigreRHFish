@@ -98,18 +98,32 @@ public class EmpleadosUI extends Composite {
         searchTxt.addKeyUpHandler(new KeyUpHandler() {
             @Override
             public void onKeyUp(KeyUpEvent event) {
-                final String txtToSearch = searchTxt.getText();
-                EmpleadosProvider.get().getDataProvider().setFilter(txtToSearch);
-                String rows = EmpleadosProvider.get().getRowCountPropotional();
-                reloadBtn.setText(rows);
+                
+                EmpleadosUI.this.filtrar();
             }
         });
 
         // orden inicial
         orderBy = EmpleadosProvider.ORDER_BY_NAME;
+        // filtro inicial
+        EmpleadosProvider.get().getDataProvider().setFilter("");
 
         /* Al arrancar, cargar a todos los empleados */
         reloadAll();
+    }
+    
+    private void filtrar() {
+        final String txtToSearch = searchTxt.getText();
+        EmpleadosProvider.get().getDataProvider().setFilter(txtToSearch);
+        
+        String rows = EmpleadosProvider.get().getRowCountPropotional();
+        reloadBtn.setText(rows);
+        
+        // si en la lista filtrada no aparece el seleccionado, deseleccionar
+        Empleado empSel = selectionModel.getSelectedObject();
+        if (empSel != null && !EmpleadosProvider.get().containsItem(empSel)) {
+            selectionModel.setSelected(null, true);
+        }
     }
 
     private int orderBy;
@@ -144,11 +158,10 @@ public class EmpleadosUI extends Composite {
         @Override
         public void onMethodExecuted(ProviderEvent dbEvent) {
             if (ProviderMethod.FIND_ALL.equals(dbEvent.getDbMethod())) {
-                String m = "" + EmpleadosProvider.get().getDataProvider().getDataDisplays().size() + "/" + EmpleadosProvider.get().getDataProvider().getList().size();
-                reloadBtn.setText(m);
-                
                 EmpleadosUI.this.orderBy();
                 EmpleadosUI.this.selectionModel.setSelected(null, true);
+
+                EmpleadosUI.this.filtrar();
                 
             } else if (ProviderMethod.CREATE.equals(dbEvent.getDbMethod())) {
                 if (TypeResult.SUCCESS.equals(dbEvent.getDbTypeResult())) {
@@ -179,7 +192,8 @@ public class EmpleadosUI extends Composite {
             // TODO reemplazar código a pie por EmpleadosItem
             String es_null = "---";
             String grupoStr = value.getGrupo() != null ? value.getGrupo().getCode() : es_null;
-            String deptoStr = value.getDepartamento() != null ? value.getDepartamento().getCodigo() : es_null;
+            String deptoCodeStr = value.getDepartamento() != null ? value.getDepartamento().getCodigo() : es_null;
+            String deptoNameStr = value.getDepartamento() != null ? value.getDepartamento().getNombre() : es_null;
             String nivelStr = value.getNivel() != null ? value.getNivel().getCode() : es_null;
             String sedeStr = value.getSede() != null ? value.getSede().getAbrev() : es_null;
 
@@ -205,14 +219,15 @@ public class EmpleadosUI extends Composite {
                     + " <code class=\"label-cyt-grp-niv\"><span >GRUPO_REEMPLAZO</span></code> "
                     + " <code class=\"label-cyt-grp-niv\"><span >NIVEL_REEMPLAZO</span></code> "
                     + " <code class=\"label-cyt-grp-niv\"><span >SEDE_REEMPLAZO</span></code> "
-                    + " <code class=\"label-cyt-grp-niv\"><span >DEPTO_REEMPLAZO</span></code> "
+                    + " <code class=\"label-cyt-grp-niv\"><span >DEPTO_CODIGO_REEMPLAZO</span></code> "
 //                    + " <code class=\"label-cyt-grp-niv\"><span >ID_REEMPLAZO</span></code> "
                     + "    </td>\n"
 //                    + "    <td style='text-align: right;'><i class='fa fa-info-circle fa-lg' style='opacity: 0.5; padding-right: 5px;'></i></td>\n"
                     + "  </tr>\n"
                     + "  <tr>\n"
                     + "    <td style='text-align:center;' ></td>\n"
-                    + "    <td> "
+                    + "    <td>"
+                    + " <code class=\"label-cyt-grp-niv\"><span >DEPTO_NAME_REEMPLAZO</span></code> "
                     + "    </td>\n"
                     + "    <td></td>\n"
                     + "  </tr>\n"
@@ -239,7 +254,8 @@ public class EmpleadosUI extends Composite {
             html = html.replaceAll("RFC_REEMPLAZO", value.getRfc());
             html = html.replace("GRUPO_REEMPLAZO", grupoStr);
             html = html.replace("NIVEL_REEMPLAZO", nivelStr);
-            html = html.replace("DEPTO_REEMPLAZO", deptoStr);
+            html = html.replace("DEPTO_CODIGO_REEMPLAZO", deptoCodeStr);
+            html = html.replace("DEPTO_NAME_REEMPLAZO", EmpleadosUI.ellipse(deptoNameStr, 32));
             html = html.replace("SEDE_REEMPLAZO", sedeStr);
             html = html.replace("ID_REEMPLAZO", value.getId().toString());
 
@@ -276,8 +292,12 @@ public class EmpleadosUI extends Composite {
             if (event.getSource() instanceof SingleSelectionModel) {
                 SingleSelectionModel selModel = (SingleSelectionModel) event.getSource();
                 Empleado empleadoSelected = (Empleado) selModel.getSelectedObject();
-                //System.out.println(">>>> " + empleadoSelected);
+                System.out.println("Sel>>>> " + empleadoSelected);
                 empleadosEditorUI.setBean(empleadoSelected);
+                
+                // Mostrar editor sólo cuando tiene empleado seleccionado
+                empleadosEditorUI.setVisible(empleadoSelected != null);
+                
             }
         }
     }

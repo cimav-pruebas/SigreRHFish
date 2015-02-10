@@ -185,6 +185,37 @@ public class DeptoDatabase {
         dataProvider.refresh();
     }
 
+
+    public void extra() {
+    
+        HashMap<String, String> headers = new HashMap<String, String>();
+        headers.put(Resource.HEADER_CONTENT_TYPE, "application/json; charset=utf-8");
+        headers.put(Resource.HEADER_ACCEPT, "*/*");
+//        headers.put("Access-Control-Allow-Headers", "Content-Type, authorization");
+        
+        String ulr = "http://icalderas.cimav.edu.mx:8080/RestRh/webresources/entities.empleado/567";
+        //String ulr = "http://calderas.cimav.edu.mx:8080/rh-alpha/api/grupo";
+        //String ulr = "http://localhost:8080/SigreRHFish/api/grupo";
+        
+        Resource rb = new Resource( ulr, headers);
+        rb.get().send(Ajax.jsonCall(new JsonCallback() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                Window.alert(exception.getLocalizedMessage());
+                System.out.println("---Vacio--- ");
+            }
+
+            @Override
+            public void onSuccess(Method method, JSONValue response) {
+
+                System.out.println(">>>> " + response);
+                
+                InfoView.show(" .G.R.U.P.O.S. ");
+            }
+        }));
+
+    }
+    
     public void load() {
 
         dataProvider.getList().clear();
