@@ -11,14 +11,15 @@ Uncomment this for XHTML entities
     <g:DockLayoutPanel addStyleNames="{style.empleados-editor}">
         
         <g:center>
-            <g:FlowPanel>
+            <g:FlowPanel ui:field="panelEditor">
                 <b3:NavTabs >
                     <b3:TabListItem dataTarget="#tabEditorGeneralId" text="General"/>
                     <b3:TabListItem active="true"  dataTarget="#tabEditorLaboralId" text="Laboral"/>
                     <b3:TabListItem dataTarget="#tabEditorPersonalId" text="Personal"/>
                     <b3:TabListItem dataTarget="#tabEditorHistoricoId" text="Histórico"/>
                 </b3:NavTabs>
-                <b3:TabContent >
+                <g:HTMLPanel ui:field="panelEditorGlass" addStyleNames="{style.panel-editor-glass}"></g:HTMLPanel>
+                <b3:TabContent ui:field="tabPanelEditor">
                     <b3:TabPane b3:id="tabEditorGeneralId">
                         <g:VerticalPanel addStyleNames="{style.wrapper-panel-editor}">
                             <g:FlexTable ui:field="flexEditorGeneral"/>
@@ -48,7 +49,7 @@ Uncomment this for XHTML entities
                     <tr>
                         <td style="align:left; text-align: left !important;">
                             <b3:Tooltip title="Agregar empleado nuevo" placement="RIGHT">
-                                <b3:Button type="SUCCESS" icon="PLUS" enabled="false"/> <!-- iconSize="TIMES2" -->
+                                <b3:Button ui:field="addBtn" type="SUCCESS" icon="PLUS" /> <!-- iconSize="TIMES2"  enabled="false" -->
                             </b3:Tooltip>
                         </td>
                         <td align="right">
@@ -57,7 +58,7 @@ Uncomment this for XHTML entities
                                     <b3:Button ui:field="saveBtn" type="PRIMARY" icon="CHECK"  addStyleNames="{style.empleados-editor-buttons-bar-save}"/>
                                 </b3:Tooltip>
                                 <b3:Tooltip title="Cancelar" placement="LEFT">
-                                    <b3:Button icon="TIMES" type="WARNING"/>
+                                    <b3:Button ui:field="cancelBtn" icon="TIMES" type="WARNING"/>
                                 </b3:Tooltip>
                             </g:HorizontalPanel>        
                         </td>

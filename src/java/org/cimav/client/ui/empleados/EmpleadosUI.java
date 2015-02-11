@@ -290,7 +290,7 @@ public class EmpleadosUI extends Composite {
     }
 
     private void showEditor(boolean show) {
-        empleadosEditorUI.setVisible(show);
+        empleadosEditorUI.setActive(show);
     }
     private class SelectionHandler implements SelectionChangeEvent.Handler {
 
